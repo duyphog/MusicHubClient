@@ -1,0 +1,14 @@
+html, body {
+	background-color: #4cb6cb;
+	color: #eaf6f9;
+	overflow-x: hidden;
+	font-size: 62.5%;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	font-family: sans-serif;
+	-webkit-text-size-adjust: 100%;
+	display: block;
+}
+
+/*button {
+	background-color: #4cb6cb !important;
+}*/
