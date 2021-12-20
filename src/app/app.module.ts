@@ -5,12 +5,11 @@ import { FullwidthModule } from './@pages/layout/fullwidth/fullwidth.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SigninComponent } from './signin/signin.component';
+import { SigninComponent } from './@pages/components/signin/signin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SigninComponent
   ],
   imports: [
     BrowserModule,
