@@ -1,25 +1,22 @@
-import {AfterViewInit, Component, ElementRef, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.css'],
-	/*styles: [
-		'body { background-color: #4cb6cb !important; color: #eaf6f9; }'
-	]*/
+  styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit, AfterViewInit {
+export class SigninComponent implements OnInit {
 	title = 'Đăng nhập';
 
-  constructor(private route: ActivatedRoute, private elementRef: ElementRef) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
 		window.document.title = this.title;
+		window.document.body.classList.add('bg-info');
+		const root = document.getElementsByTagName('html')[0];
+		root.style.backgroundColor = "#4cb6cb";
+		root.style.color = "#eaf6f9";
   }
-
-	ngAfterViewInit() {
-		//window.document.body.style.backgroundColor = '#4cb6cb !important';
-	}
 
 }
