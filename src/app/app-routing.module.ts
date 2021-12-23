@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-<<<<<<< Updated upstream
-
-const routes: Routes = [];
-=======
 import { HomeComponent } from './@pages/components/home/home.component';
 import { NotFoundComponent } from './@pages/components/not-found/not-found.component';
 import { ProfileUserComponent } from './@pages/components/profile-user/profile-user.component';
@@ -29,7 +25,6 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: '/notfound', pathMatch: 'full' },
 ];
->>>>>>> Stashed changes
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
