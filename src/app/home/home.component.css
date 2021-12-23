@@ -86,9 +86,8 @@ a {
 }
 
 a {
-  color: #545a5f;
+  color: #fff;
   text-decoration: none;
-  color: rgb(84, 90, 95);
   text-decoration-line: none;
   text-decoration-thickness: initial;
   text-decoration-style: initial;
@@ -118,19 +117,11 @@ a {
 a:active,
 a:hover {
   outline: 0;
-  outline-color: initial;
-  outline-style: initial;
-  outline-width: 0px;
 }
 
 a:hover {
   color: #2a6496;
   text-decoration: underline;
-  color: rgb(42, 100, 150);
-  text-decoration-line: underline;
-  text-decoration-thickness: initial;
-  text-decoration-style: initial;
-  text-decoration-color: initial;
 }
 
 a:hover {
@@ -612,7 +603,7 @@ h3 {
 
 .bg-white {
   background-color: #fff;
-  color: #788188;
+  color: #fff;
   background-color: rgb(255, 255, 255);
   color: rgb(120, 129, 136);
 }
@@ -728,8 +719,7 @@ a.list-group-item {
 }
 
 .bg-white a {
-  color: #545a5f;
-  color: rgb(84, 90, 95);
+  color: #fff;
 }
 
 .list-group-item:first-child {
@@ -874,7 +864,7 @@ a:hover {
 
 .bg-light {
   background-color: #e8eff0;
-  color: #788188;
+  color: #fff;
   background-color: rgb(232, 239, 240);
   color: rgb(120, 129, 136);
 }

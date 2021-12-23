@@ -1,6 +1,6 @@
 .bg-light {
   background-color: #e8eff0;
-  color: #788188;
+  color: #fff;
   background-color: rgb(232, 239, 240);
   color: rgb(120, 129, 136);
 }
@@ -232,9 +232,8 @@ a {
 }
 
 a {
-  color: #545a5f;
+  color: #fff;
   text-decoration: none;
-  color: rgb(84, 90, 95);
   text-decoration-line: none;
   text-decoration-thickness: initial;
   text-decoration-style: initial;
