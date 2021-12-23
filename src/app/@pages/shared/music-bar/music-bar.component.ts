@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./music-bar.component.css']
 })
 export class MusicBarComponent implements OnInit {
+  isPlaying: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onClick(): void {
+    this.isPlaying = !this.isPlaying;
+  }
 }

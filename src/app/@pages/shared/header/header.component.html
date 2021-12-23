@@ -13,13 +13,14 @@
     </a>
   </div>
   <form class="search navbar-form navbar-left">
-      <div class="input-group search__container ">
-        <span class="input-group-btn">
-            <button type="submit" style="background-color: hsla(0,0%,100%,0.1); margin-top: 2px"  class="btn btn-md btn-icon rounded">
-                <i style="color: white" class="fa fa-search"> </i>
-            </button>
-        </span>
-        <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, albums..." />
+    <div class="input-group search__container ">
+      <span class="input-group-btn">
+        <button type="submit" style="background-color: hsla(0,0%,100%,0.1); margin-top: 2px"
+          class="btn btn-md btn-icon rounded">
+          <i style="color: white" class="fa fa-search"> </i>
+        </button>
+      </span>
+      <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, albums..." />
     </div>
   </form>
   <div class="navbar-right">
@@ -102,23 +103,29 @@
         </a>
         <ul class="dropdown-menu animated fadeInRight">
           <li>
-            <a href="#"> Settings </a>
-          </li>
-          <li>
-            <a routerLink="/profile-user"> Profile </a>
-          </li>
-          <li>
-            <a href="#">
-              <span class="badge bg-danger pull-right"> 3 </span>
-              Notifications
+            <a routerLink="/profile-user"> 
+              <i class="icon ic-profile"></i>
+              <span style="margin-left: 10px">Profile</span>
             </a>
           </li>
           <li>
-            <a href="docs.html"> Help </a>
+            <a routerLink="/change-password"> 
+              <i class="fa fa-key"></i>
+              <span style="margin-left: 10px">Change password</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="icon ic-settings"></i>
+              <span style="margin-left: 10px">Settings</span>
+            </a>
           </li>
           <li class="divider"></li>
           <li>
-            <a href="modal.lockme.html" data-toggle="ajaxModal"> Logout </a>
+            <a href="modal.lockme.html" data-toggle="ajaxModal"> 
+              <i class="icon ic-logout"></i>
+              <span style="margin-left: 10px">Logout</span>
+            </a>
           </li>
         </ul>
       </li>

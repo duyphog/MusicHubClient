@@ -6,13 +6,15 @@ import { ProfileUserComponent } from 'src/app/@pages/components/profile-user/pro
 import { ProfileComponent } from 'src/app/@pages/components/profile/profile.component';
 import { SharedModule } from 'src/app/@pages/shared/shared.module';
 import { DefaultComponent } from './default.component';
+import { ChangePasswordComponent } from '../../components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
     DefaultComponent,
     NavbarComponent,
     ProfileComponent,
-    ProfileUserComponent
+    ProfileUserComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,

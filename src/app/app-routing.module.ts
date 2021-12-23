@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ChangePasswordComponent } from './@pages/components/change-password/change-password.component';
+import { ForbiddenComponent } from './@pages/components/forbidden/forbidden.component';
 import { HomeComponent } from './@pages/components/home/home.component';
 import { NotFoundComponent } from './@pages/components/not-found/not-found.component';
 import { ProfileUserComponent } from './@pages/components/profile-user/profile-user.component';
@@ -15,12 +17,14 @@ const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'profile-user', component: ProfileUserComponent },
-      { path: 'notfound', component: NotFoundComponent },
+      { path: 'change-password', component: ChangePasswordComponent },
     ]
   },
   {
     path: '', component: FullwidthComponent, children: [
       { path: 'signin', component: SigninComponent },
+      { path: 'notfound', component: NotFoundComponent },
+      { path: 'forbidden', component: ForbiddenComponent },
     ]
   },
   { path: '**', redirectTo: '/notfound', pathMatch: 'full' },

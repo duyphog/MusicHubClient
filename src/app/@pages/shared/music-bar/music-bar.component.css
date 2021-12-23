@@ -809,20 +809,22 @@ h3 {
 
 .player-controls__player-bar .ic-play-circle-outline ,.player-controls__player-bar .ic-play-circle-outline ,.player-controls__player-bar .ic-play-circle-outline  { 
     font-size: 40px; 
-    font-size: 40px;
+} 
 
+.player-controls__player-bar .ic-pause-circle-outline ,.player-controls__player-bar .ic-pause-circle-outline ,.player-controls__player-bar .ic-pause-circle-outline  { 
+    font-size: 40px; 
 } 
 
 .ic-play-circle-outline:before { 
     content: "\5f"; 
-    content: "_";
+} 
 
+.ic-pause-circle-outline:before { 
+    content: "\3f"; 
 } 
 
 .ic-next:before { 
     content: "\4e"; 
-    content: "N";
-
 } 
 
 .ic-repeat:before { 
@@ -1048,6 +1050,25 @@ figure {
     height: 64px; 
     border: 2px solid hsla(0,0%,100%,0.8); 
 } 
+
+.player-controls-left .media-left .thumbnail-wrapper .thumbnail .image-spin ,.player-controls-left .media-left .thumbnail-wrapper .thumbnail .image-spin ,.player-controls-left .media-left .thumbnail-wrapper .thumbnail .image-spin
+{
+    -webkit-animation:spin 4s linear infinite;
+    -moz-animation:spin 4s linear infinite;
+    animation:spin 4s linear infinite;
+}
+@-moz-keyframes spin { 
+    100% { -moz-transform: rotate(360deg); } 
+}
+@-webkit-keyframes spin { 
+    100% { -webkit-transform: rotate(360deg); } 
+}
+@keyframes spin { 
+    100% { 
+        -webkit-transform: rotate(360deg); 
+        transform:rotate(360deg); 
+    } 
+}
 
 .ic-like:before { 
     content: "\3b"; 

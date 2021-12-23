@@ -532,9 +532,6 @@ button {
 .icon { 
     line-height: 66%; 
     display: inline-block; 
-    line-height: 66%; 
-    display: inline-block;
-
 } 
 
 .zm-btn.is-medium .icon  { 
@@ -557,14 +554,10 @@ button {
 
 .ic-play:before { 
     content: "\5e"; 
-    content: "^";
-
 } 
 
 .ic-addfriend:before { 
     content: "\68"; 
-    content: "h";
-
 } 
 
 .media-left .song-thumb  { 
@@ -1611,9 +1604,6 @@ button {
 .icon { 
     line-height: 66%; 
     display: inline-block; 
-    line-height: 66%; 
-    display: inline-block;
-
 } 
 
 .zm-tooltip-btn .icon  { 
@@ -1633,9 +1623,7 @@ button {
 } 
 
 .zm-actions .icon  { 
-    color: var(--white); 
-    color: var(--white);
-
+    color: #fff; 
 } 
 
 [class*=" ic-"]:before ,[class^="ic-"]:before,[data-icon]:before { 
@@ -1696,36 +1684,24 @@ button {
 
 .ic-play:before { 
     content: "\5e"; 
-    content: "^";
-
 } 
 
 .ic-more:before { 
     content: "\4a"; 
-    content: "J";
-
 } 
 
 .media-right .icon  { 
     color: var(--song-item-action); 
-    color: var(--song-item-action);
-
 } 
 
 .media-right .icon ,.media-item:hover .media-right .icon  { 
     color: var(--text-primary); 
-    color: var(--text-primary);
-
 } 
 
 .ic-karaoke:before { 
     content: "\46"; 
-    content: "F";
-
 } 
 
 .media-right .action-items .ic-like  { 
     display: none; 
-    display: none;
-
 } 
