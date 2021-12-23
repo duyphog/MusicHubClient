@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="app js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie8 no-ie10 no-ie11 no-ios no-ios7 ipad">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Musik | Web Application</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <style type="text/css">
+    
+    /* :root #content>#right>.dose>.dosesingle,
+    :root #content>#center>.dose>.dosesingle {
+      display: none !important;
+    } */
+  </style>
+</head>
+
+<body cz-shortcut-listen="true">
+  <div>
+    <section class="vbox">
+        <app-header></app-header>
+    <section>
+    <section class="hbox stretch">
+          <!-- .aside -->
+          <aside class="dk aside hidden-print" id="nav" style="height: 100vh; background-color: hsla(0,0%,100%,0.05)">
+            <section class="vbox">
+              <section class="w-f-md">
+                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 200px; height: 100vh;">
+                  <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0"
+                    data-size="10px" data-railopacity="0.2" style="overflow: hidden; width: auto; height: 100vh;">
+                    <!-- nav -->
+                    <app-navbar></app-navbar>
+                    <!-- / nav -->
+                  </div>
+                  <div class="slimScrollBar"
+                    style="background: rgb(0, 0, 0); width: 10px; position: absolute; top: -44px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 0px; height: 616px;">
+                  </div>
+                  <div class="slimScrollRail"
+                    style="width: 10px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 0px;">
+                  </div>
+                </div>
+              </section>
+            </section>
+          </aside>
+          <!-- /.aside -->
+          <div gdArea="content">
+            <section id="content">
+              <section class="hbox stretch">
+                <section>
+                  <section class="vbox">
+                    <!-- Main Content -->
+                    <router-outlet></router-outlet>
+                    <!-- End Main Content -->
+                   
+                  </section>
+                </section>
+              </section>
+              
+              <a href="http://flatfull.com/themes/musik/index.html#" class="hide nav-off-screen-block"
+                data-toggle="class:nav-off-screen,open" data-target="#nav,html"></a>
+            </section>
+          </div>
+        </section>
+        <div style="margin-top: -20vh" gdArea="footer">
+          <app-music-bar></app-music-bar>
+        </div>
+
+      </section>
+
+
+    </section>
+  </div>
+</body>
+
+</html>

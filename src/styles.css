@@ -13,7 +13,7 @@
 @font-face {
   font-family: "Source Sans Pro";
   font-style: normal;
-  font-weight: 300;
+  font-weight: 400;
   src: local("Source Sans Pro Light"), local("SourceSansPro-Light"),
     url("assets/fonts/sourcesanspro/sourcesanspro-light.woff") format("woff");
 }
@@ -27,12 +27,21 @@
 @font-face {
   font-family: "Source Sans Pro";
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   src: local("Source Sans Pro Bold"), local("SourceSansPro-Bold"),
     url("assets/fonts/sourcesanspro/sourcesanspro-bold.woff") format("woff");
 }
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap"); 
+@font-face { 
+  font-family:"mp3-zing";
+  src:url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.4.19/static/media/mp3-zing.a1e0ef0d.eot);
+  src:url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.4.19/static/media/mp3-zing.a1e0ef0d.eot) format("embedded-opentype"),url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.4.19/static/media/mp3-zing.0af2c140.woff) format("woff"),url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.4.19/static/media/mp3-zing.f6cdb812.ttf) format("truetype"),url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.4.19/static/media/mp3-zing.793cd366.svg) format("svg");
+  font-weight:700;
+  font-style:normal;
+} 
 * {
   box-sizing: border-box;
+  margin: 0;
 }
 
 section {
@@ -50,31 +59,13 @@ section {
 }
 
 body {
-  margin: 0;
+  background: #170f23;
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: Inter,sans-serif;
   font-size: 14px;
-  line-height: 1.42857143;
-  color: #333;
-  background-color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  line-height: 1.42857;
-  color: rgb(51, 51, 51);
-  background-color: rgb(255, 255, 255);
-}
-
-body {
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #788188;
-  background-color: transparent;
-  line-height: 1.4;
-  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: rgb(120, 129, 136);
+  color: #fff;
   background-color: transparent;
   line-height: 1.4;
 }
@@ -87,16 +78,17 @@ body {
 }
 
 html {
-  font-family: sans-serif;
+  font-family: Inter,sans-serif;
   text-size-adjust: 100%;
 }
 
 html {
   font-size: 62.5%;
+  height: 100%;
 }
 
 html {
-  background-color: #f2f4f8;
+  background-color: #170f23;
   overflow-x: hidden;
 }
 
@@ -147,7 +139,7 @@ html {
   }
   .vbox > footer {
     top: auto;
-    z-index: 1000;
+    /* z-index: 1000; */
   }
   .vbox.flex > header,
   .vbox.flex > section,
@@ -192,8 +184,8 @@ html {
   overflow-x: hidden;
   overflow-y: auto;
   height: calc(100% - 150px);
-  padding-bottom: 150px;
   box-sizing: border-box;
+  max-height: 630px;
 }
 
 #content section .vbox .scrollable {
@@ -290,3 +282,4 @@ summary {
 .active > .auto .text-active {
   display: inline-block !important;
 }
+
