@@ -7,6 +7,7 @@ import { NotFoundComponent } from './@pages/components/not-found/not-found.compo
 import { ProfileUserComponent } from './@pages/components/profile-user/profile-user.component';
 import { ProfileComponent } from './@pages/components/profile/profile.component';
 import { SigninComponent } from './@pages/components/signin/signin.component';
+import { SignupComponent } from './@pages/components/signup/signup.component';
 import { DefaultComponent } from './@pages/layout/default/default.component';
 import { FullwidthComponent } from './@pages/layout/fullwidth/fullwidth.component';
 
@@ -23,6 +24,7 @@ const routes: Routes = [
   {
     path: '', component: FullwidthComponent, children: [
       { path: 'signin', component: SigninComponent },
+      { path: 'signup', component: SignupComponent },
       { path: 'notfound', component: NotFoundComponent },
       { path: 'forbidden', component: ForbiddenComponent },
     ]

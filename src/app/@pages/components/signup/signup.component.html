@@ -1,0 +1,77 @@
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+  <div class="container aside-xl"><a class="navbar-brand block" href="index.html"><span
+        class="h1 font-bold">Musik</span></a>
+    <section class="m-b-lg">
+      <header class="wrapper text-center"><strong>Sign up to get in touch</strong></header>
+      <form [formGroup]="signUpFormGroup" (ngSubmit)="onSubmit()" action="index.html">
+        <div class="form-group">
+            <input formControlName="firstName" type="text" name="firstName" placeholder="First Name"
+            class="form-control rounded input-lg text-center no-border">
+            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="help-block mt-1">
+              <div *ngIf="firstName.errors.required">
+                First Name is required
+              </div>
+              <div *ngIf="firstName.errors.minlength">
+                First Name must be at least 2 characters
+              </div>
+            </div>
+        </div>
+        <div class="form-group">
+          <input formControlName="lastName" type="text" name="lastName" 
+          placeholder="Last Name" class="form-control rounded input-lg text-center no-border">
+          <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="help-block mt-1">
+            <div *ngIf="lastName.errors.required">
+              Last Name is required
+            </div>
+            <div *ngIf="lastName.errors.minlength">
+              Last Name must be at least 2 characters
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input formControlName="username" type="text" name="username" 
+          placeholder="Username" class="form-control rounded input-lg text-center no-border">
+          <div *ngIf="username.invalid && (username.dirty || username.touched)" class="help-block mt-1">
+            <div *ngIf="username.errors.required">
+              Username is required
+            </div>
+            <div *ngIf="username.errors.minlength">
+              Username must be at least 2 characters
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input formControlName="email" type="text" name="email" 
+          placeholder="Email" class="form-control rounded input-lg text-center no-border">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="help-block mt-1">
+            <div *ngIf="email.errors.required">
+              Email is required
+            </div>
+            <div *ngIf="email.errors.email">
+              Email is invalid
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input formControlName="password" type="password" name="password" 
+          placeholder="Password" class="form-control rounded input-lg text-center no-border">
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="help-block mt-1">
+            <div *ngIf="password.errors.required">
+              Password is required
+            </div>
+            <div *ngIf="password.errors.minlength">
+              Password must be at least 2 characters
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-lg btn-info lt b-white b-2x btn-block btn-rounded">
+          <span class="m-r-n-lg">Sign up</span>
+        </button>
+        <div class="line line-dashed"></div>
+        <p class="text-muted text-center">
+          <small>Already have an account?</small><a routerLink="/signin"> Sign In</a>
+        </p>
+      </form>
+    </section>
+  </div>
+</section>

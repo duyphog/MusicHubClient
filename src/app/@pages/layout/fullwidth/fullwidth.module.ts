@@ -6,17 +6,22 @@ import { RouterModule } from '@angular/router';
 import { SigninComponent } from '../../components/signin/signin.component';
 import { NotFoundComponent } from '../../components/not-found/not-found.component';
 import { ForbiddenComponent } from '../../components/forbidden/forbidden.component';
+import { SignupComponent } from './../../components/signup/signup.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     FullwidthComponent,
     SigninComponent,
     NotFoundComponent,
-    ForbiddenComponent
+    ForbiddenComponent,
+    SignupComponent
   ],
   imports: [
-    CommonModule,
+  CommonModule,
     RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
     SharedModule
   ]
 })
