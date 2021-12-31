@@ -1,11 +1,20 @@
-.container  { 
-    padding: 50px 59px;
-    height: 100vh;
-    background: #170f23;
-} 
+.container {
+  padding: 50px 59px;
+  height: 100vh;
+  background: #170f23;
+}
 
 .scrollable {
-    position: static !important;
+  position: static !important;
+}
+
+textarea.text-area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #2b3553;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: none;
 }
 
 .main-panel .content {
@@ -53,12 +62,11 @@ body {
 }
 
 html {
-  font-family: Inter,sans-serif;
+  font-family: Inter, sans-serif;
   line-height: 1.15;
 }
 
 .row {
-  
   display: flex;
   flex-wrap: wrap;
   margin-right: -15px;
@@ -229,16 +237,17 @@ button {
 }
 
 button {
-  font-family: Inter,sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 button,
 [type="submit"] {
   appearance: button;
 }
-
+.fa-spinner:before {
+	content: "\f110"
+}
 .btn {
-  display: inline-block;
   font-weight: 600;
   text-align: center;
   white-space: nowrap;
@@ -280,7 +289,11 @@ button,
 
 .btn-danger {
   background: #fd5d93;
-  background-image: linear-gradient(to bottom left, #fd5d93, #ec250d, #fd5d93);
+  background-image: linear-gradient(
+    to bottom left,
+    #432275,
+    rgba(41, 21, 71, 0.8)
+  );
   background-size: 210% 210%;
   background-position: top right;
   background-color: #fd5d93;
@@ -341,29 +354,13 @@ button,
 .btn-danger:hover,
 .btn-danger:active,
 .btn-danger:active:hover {
-  background-color: #ec250d !important;
-  background-image: linear-gradient(
-    to bottom left,
-    #fd5d93,
-    #ec250d,
-    #fd5d93
-  ) !important;
-  background-image: -moz-linear-gradient(
-    to bottom left,
-    #fd5d93,
-    #ec250d,
-    #fd5d93
-  ) !important;
-  color: #ffffff;
-  box-shadow: none;
   color: rgb(255, 255, 255);
   box-shadow: none;
-  background-color: rgb(236, 37, 13) !important;
+  /* background-color: rgb(236, 37, 13) !important; */
   background-image: linear-gradient(
-    to left bottom,
-    rgb(253, 93, 147),
-    rgb(236, 37, 13),
-    rgb(253, 93, 147)
+    to bottom left,
+    #432275,
+    rgba(41, 21, 71, 0.8)
   ) !important;
 }
 
@@ -800,7 +797,7 @@ input {
 }
 
 input {
-  font-family: Inter,sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 .form-control {
@@ -829,10 +826,11 @@ input {
   opacity: 1;
 }
 
-.form-control[disabled] {
-  background-color: #1d253b;
-  color: #344675;
-  cursor: not-allowed;
+.form-control[readonly] {
+  background-color: transparent;
+  border: none;
+  cursor: default;
+  padding: 0;
 }
 
 .card form label + .form-control {
@@ -849,20 +847,13 @@ textarea {
 }
 
 textarea {
-  font-family: Inter,sans-serif;
+  font-family: Inter, sans-serif;
 }
 
 textarea.form-control {
   height: auto;
 }
 
-textarea.form-control {
-  max-width: 100%;
-  max-height: 80px;
-  padding: 10px 10px 0 0;
-  resize: none;
-  border: none;
-  border-bottom: 1px solid #2b3553;
-  border-radius: 0;
-  line-height: 2;
+.form-control:focus-visible {
+  outline: none;
 }

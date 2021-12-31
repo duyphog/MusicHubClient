@@ -3,19 +3,28 @@
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
-          <h3 class="title">
-            Edit Profile
-          </h3>
+          <div class="row">
+            <div class="col-md-8 pr-md-1">
+              <h3 class="title">
+                Profile
+              </h3>
+            </div>
+            <div class="col-md-3 pr-md-1"></div>
+            <div class="col-md-1 pl-md-1">
+              <a (click)="onActiveEdit()" style="cursor: pointer;" [hidden]="activeEdit">Edit</a>
+            </div>
+          </div>
         </div>
         <div class="card-body">
-          <form novalidate="" class="ng-untouched ng-pristine ng-valid">
+          <form novalidate #profileForm="ngForm" (ngSubmit)="onEditUser(profileForm)" class="ng-untouched ng-pristine ng-valid">
             <div class="row">
               <div class="col-md-4 pr-md-1">
                 <div class="form-group">
                   <label>
                     First Name
                   </label>
-                  <input placeholder="Company" type="text" value="Mike" class="form-control">
+                  <input [readonly]="!activeEdit" name="firstName" [(ngModel)]="user.firstName" placeholder="First Name" type="text"
+                    class="form-control">
                 </div>
               </div>
               <div class="col-md-8 pl-md-1">
@@ -23,7 +32,8 @@
                   <label>
                     Last Name
                   </label>
-                  <input placeholder="Last Name" type="text" value="Andrew" class="form-control">
+                  <input [readonly]="!activeEdit" placeholder="Last Name" type="text" name="lastName" [(ngModel)]="user.lastName"
+                    class="form-control">
                 </div>
               </div>
             </div>
@@ -31,28 +41,34 @@
               <div class="col-md-12 pr-md-1">
                 <div class="form-group">
                   <label>
-                    Username
-                  </label>
-                  <input placeholder="Username" type="text" value="michael23" class="form-control">
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12 pr-md-1">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">
                     Email address
                   </label>
-                  <input placeholder="mike@email.com" type="email" class="form-control">
+                  <input [readonly]="!activeEdit" placeholder="account@email.com" name="email" [(ngModel)]="user.email" type="email"
+                    class="form-control">
                 </div>
               </div>
             </div>
+            <div *ngIf="activeEdit" class="row">
+              <div class="col-md-12 pr-md-1">
+                <div class="form-group">
+                  <label>
+                    Story
+                  </label>
+                  <textarea rows="5" name="story" [(ngModel)]="user.story" class="text-area form-control"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer row">
+              <button [hidden]="!activeEdit" type="submit" class="btn btn-fill btn-danger">
+                <i *ngIf="refreshing" class="fa fa-spinner"></i>
+                <span *ngIf="refreshing"> Saving...</span>
+                <span class="m-r-n-lg" *ngIf="!refreshing">Save</span>
+              </button>
+              <button style="margin-left: 10px" [hidden]="!activeEdit" type="button" (click)="onCancelEdit()" class="btn btn-fill btn-danger">
+                <span class="m-r-n-lg">Cancel</span>
+              </button>
+            </div>
           </form>
-        </div>
-        <div class="card-footer">
-          <button type="submit" class="btn btn-fill btn-danger">
-            Save
-          </button>
         </div>
       </div>
     </div>
@@ -71,37 +87,26 @@
             <div class="block block-four">
             </div>
             <a href="javascript:void(0)">
-              <img alt="..." src="../../../../assets/images/a0.png" class="avatar">
+              <img alt="{{ user?.firstName }}" src="{{ user?.avatarImg }}" class="avatar">
+              <ngb-progressbar class="progress mt-2" *ngIf="progress === 1" [showValue]="true" type="success" [value]="progress"></ngb-progressbar>
+              <div class="card-footer">
+                <button (click)="updateProfileImage()" type="submit" class="btn btn-fill btn-danger">
+                  Upload Image
+                </button>
+                <form enctype="multipart/form-data" style="display: none;">
+                  <input type="file" name="profile-image-input" id="profile-image-input" accept="image/*" (change)="onProfileImageChange($event); onUpdateProfileImage();">
+                </form>
+              </div>
               <h3 class="title">
-                Mike Andrew
+                {{ user?.lastName }} {{ user?.firstName }}
               </h3>
             </a>
-            <!-- <p class="description">
-              Ceo/Co-Founder
-            </p>
           </div>
-          <div class="card-description">
-            Do not be scared of the truth because we need to restart the human foundation in truth And I love you like
-            Kanye loves Kanye I love Rick Owens bed design but the back is...
-          </div> -->
-          </div>
-          <div class="card-footer">
-            <div class="button-container">
-              <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                <i class="fab fa-facebook">
-                </i>
-              </button>
-              <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                <i class="fab fa-twitter">
-                </i>
-              </button>
-              <!-- <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                <i class="fab fa-google-plus">
-                </i>
-              </button> -->
-            </div>
+          <div id="txtUserStory" class="card-description">
+            {{ user?.story }}
           </div>
         </div>
+        
       </div>
     </div>
   </div>

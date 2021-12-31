@@ -25,80 +25,18 @@
   </form>
   <div class="navbar-right">
     <ul class="nav navbar-nav m-n hidden-xs nav-user user">
-      <!-- <li class="hidden-xs">
-                        <a href="#" class="dropdown-toggle lt" data-toggle="dropdown">
-                            <i class="icon-bell">
-                            </i>
-                            <span class="badge badge-sm up bg-danger count" style="display: inline-block;">
-                                3
-                            </span>
-                        </a>
-                        <section class="dropdown-menu aside-xl animated fadeInUp">
-                            <section class="panel bg-white">
-                                <div class="panel-heading b-light bg-light">
-                                    <strong>
-                                        You have
-                                        <span class="count" style="display: inline;">
-                                            3
-                                        </span>
-                                        notifications
-                                    </strong>
-                                </div>
-                                <div class="list-group list-group-alt">
-                                    <a href="#" class="media list-group-item" style="display: block;">
-                                        <span class="pull-left thumb-sm text-center">
-                                            <i class="fa fa-envelope-o fa-2x text-success">
-                                            </i>
-                                        </span>
-                                        <span class="media-body block m-b-none">
-                                            Sophi sent you a email
-                                            <br>
-                                            <small class="text-muted">
-                                                1 minutes ago
-                                            </small>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="media list-group-item">
-                                        <span class="pull-left thumb-sm">
-                                            <img src="http://flatfull.com/themes/musik/images/a0.png" alt="..."
-                                                class="img-circle">
-                                        </span>
-                                        <span class="media-body block m-b-none">
-                                            Use awesome animate.css
-                                            <br>
-                                            <small class="text-muted">
-                                                10 minutes ago
-                                            </small>
-                                        </span>
-                                    </a>
-                                    <a href="#" class="media list-group-item">
-                                        <span class="media-body block m-b-none">
-                                            1.0 initial released
-                                            <br>
-                                            <small class="text-muted">
-                                                1 hour ago
-                                            </small>
-                                        </span>
-                                    </a>
-                                </div>
-                                <div class="panel-footer text-sm">
-                                    <a href="#" class="pull-right">
-                                        <i class="fa fa-cog">
-                                        </i>
-                                    </a>
-                                    <a href="#notes" data-toggle="class:show animated fadeInRight">
-                                        See all the notifications
-                                    </a>
-                                </div>
-                            </section>
-                        </section>
-                    </li> -->
-      <li class="dropdown">
+      <li *ngIf="!authenticationService.isLoggedIn()" style="margin-right: -30px" class="hidden-xs">
+        <a routerLink="/signin">Đăng nhập</a>
+      </li>
+      <li *ngIf="!authenticationService.isLoggedIn()" class="hidden-xs">
+        <a routerLink="/signup">Đăng kí</a>
+      </li>
+      <li *ngIf="authenticationService.isLoggedIn()" class="dropdown">
         <a href="#" class="dropdown-toggle bg clear" data-toggle="dropdown">
           <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
-            <img src="../../assets/images/a0.png" alt="..." />
+            <img src="{{ authenticationService.getLoggedInAvatar() }}" alt="..." />
           </span>
-          John.Smith
+          {{ authenticationService.getLoggedInUsername() }}
           <b class="caret"> </b>
         </a>
         <ul class="dropdown-menu animated fadeInRight">
@@ -122,7 +60,7 @@
           </li>
           <li class="divider"></li>
           <li>
-            <a href="modal.lockme.html" data-toggle="ajaxModal"> 
+            <a style="cursor: pointer;" (click)="logout()" data-toggle="ajaxModal"> 
               <i class="icon ic-logout"></i>
               <span style="margin-left: 10px">Logout</span>
             </a>

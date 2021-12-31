@@ -492,14 +492,6 @@ a {
   content: "\e96c";
 }
 
-.fa {
-  display: inline-block;
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-}
-
 .fa-key:before {
   content: "\f084";
   
@@ -682,14 +674,6 @@ img {
 .dropdown {
   position: relative;
   
-}
-
-.fa {
-  display: inline-block;
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
 }
 
 .fa-indent:before {
