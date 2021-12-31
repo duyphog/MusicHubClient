@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthenticationGuard } from './@guard/authentication.guard';
 import { ChangePasswordComponent } from './@pages/components/change-password/change-password.component';
 import { ForbiddenComponent } from './@pages/components/forbidden/forbidden.component';
 import { HomeComponent } from './@pages/components/home/home.component';
@@ -17,7 +18,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile-user', component: ProfileUserComponent },
+      { path: 'profile-user', component: ProfileUserComponent, canActivate: [AuthenticationGuard] },
       { path: 'change-password', component: ChangePasswordComponent },
     ]
   },
