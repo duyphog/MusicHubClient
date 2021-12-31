@@ -556,20 +556,6 @@ svg:not(:root) {
 
 } 
 
-.fa { 
-    display: inline-block; 
-    font-family: FontAwesome; 
-    font-style: normal; 
-    font-weight: normal; 
-    line-height: 1; 
-    display: inline-block; 
-    font-family: FontAwesome; 
-    font-style: normal; 
-    font-weight: normal; 
-    line-height: 1; 
-
-} 
-
 .icon-muted { 
     color: #ccc; 
     color: rgb(204, 204, 204);

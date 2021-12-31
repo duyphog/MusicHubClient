@@ -599,14 +599,6 @@ b {
   background-color: #108d4e;
 }
 
-.fa {
-  display: inline-block;
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-  line-height: 1;
-}
-
 .fa-angle-left:before {
   content: "\f104";
 }

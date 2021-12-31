@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from './../../../@model/product';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  products: Product[];
+  tempProduct: Product;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    
   }
-
 }

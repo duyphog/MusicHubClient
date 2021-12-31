@@ -307,4 +307,31 @@ summary {
 .active > .auto .text-active {
   display: inline-block !important;
 }
+.fa { 
+  display: inline-block; 
+  font-family: FontAwesome; 
+  font-style: normal; 
+  font-weight: normal; 
+  line-height: 1; 
+  display: inline-block; 
+  font-family: FontAwesome; 
+  font-style: normal; 
+  font-weight: normal; 
+  line-height: 1; 
+} 
+.fa-spinner:before {
+	content: "\f110"
+}
+.fa-spinner {
+  animation: spin-animation 0.5s infinite;
+  display: inline-block;
+}
 
+@keyframes spin-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
+}
