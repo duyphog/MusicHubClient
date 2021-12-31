@@ -8,6 +8,9 @@ import { NotFoundComponent } from '../../components/not-found/not-found.componen
 import { ForbiddenComponent } from '../../components/forbidden/forbidden.component';
 import { SignupComponent } from './../../components/signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    ToastrModule.forRoot({ timeOut: 5000, positionClass: "toast-bottom-right", preventDuplicates: true }),
     SharedModule
   ]
 })

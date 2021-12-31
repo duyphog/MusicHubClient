@@ -3,16 +3,13 @@
         class="h1 font-bold">Musik</span></a>
     <section class="m-b-lg">
       <header class="wrapper text-center"><strong>Sign in to get in touch</strong></header>
-      <form [formGroup]="signInFormGroup" (ngSubmit)="onSubmit()" action="index.html">
+      <form #signInForm="ngForm" [formGroup]="signInFormGroup" (ngSubmit)="onSubmit(signInForm.value)" action="index.html">
         <div class="form-group">
           <input formControlName="username" type="text" name="username" placeholder="Username"
             class="form-control rounded input-lg text-center no-border">
           <div *ngIf="username.invalid && (username.dirty || username.touched)" class="help-block mt-1">
             <div *ngIf="username.errors.required">
               Username is required
-            </div>
-            <div *ngIf="username.errors.minlength">
-              Username must be at least 2 characters
             </div>
           </div>
         </div>
@@ -23,13 +20,12 @@
             <div *ngIf="password.errors.required">
               Password is required
             </div>
-            <div *ngIf="password.errors.minlength">
-              Password must be at least 2 characters
-            </div>
           </div>
         </div>
         <button type="submit" class="btn btn-lg btn-info lt b-white b-2x btn-block btn-rounded">
-          <span class="m-r-n-lg">Sign in</span>
+          <i *ngIf="showLoading" class="fa fa-spinner"></i>
+          <span *ngIf="showLoading"> Loading...</span>
+          <span class="m-r-n-lg" *ngIf="!showLoading">Sign in</span>
         </button>
         <div class="text-center m-t m-b">
           <a href="#"><small>Forgot password?</small></a>

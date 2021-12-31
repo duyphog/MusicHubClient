@@ -1,17 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from "@angular/router";
+import { AuthenticationService } from 'src/app/@services/authentication.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AppUserService } from 'src/app/@services/app-user.service';
 
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
   styleUrls: ['./signin.component.css']
 })
-export class SigninComponent implements OnInit {
+export class SigninComponent implements OnInit, OnDestroy {
 	title = 'Đăng nhập';
   signInFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) { }
+  showLoading: boolean;
+
+  private subscriptions: Subscription[] = [];
+
+  constructor(private formBuilder: FormBuilder, private router: Router, private authenticationService: AuthenticationService, private toastr: ToastrService, private appUserService: AppUserService) { }
 
   ngOnInit(): void {
 		window.document.title = this.title;
@@ -30,11 +39,26 @@ export class SigninComponent implements OnInit {
     });
   }
 
-  onSubmit(): void {
+  onSubmit(user: any): void {
     if (this.signInFormGroup.invalid) {
       this.signInFormGroup.markAllAsTouched();
-      return;
+    } else {
+      this.showLoading = true;
+      this.subscriptions.push(
+        this.authenticationService.login(user)
+        .pipe(finalize(() => (this.showLoading = false)))
+        .subscribe((response: any) => {
+          this.authenticationService.saveToken(response.data.token);
+          this.appUserService.getUserInfo(+response.data.userId).subscribe((userInfo: any) => this.authenticationService.addUserInfoToLocalCache(userInfo.data));
+          this.router.navigate(['/home']).then(r => this.toastr.success("Login successfully!"));
+          
+        }, (error) => this.toastr.error(error.error.errorMessage))
+      )
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   get username(): AbstractControl {
