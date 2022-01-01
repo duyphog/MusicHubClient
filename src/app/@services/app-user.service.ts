@@ -5,6 +5,7 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppUser } from '../@model/app-user';
 import { UserInfo } from './../@model/user-info';
+import { ChangePassword } from './../@model/change-password';
 
 @Injectable({
   providedIn: 'root',
@@ -46,5 +47,9 @@ export class AppUserService extends BaseService {
       reportProgress: true,
       observe: 'events',
     });
+  }
+
+  public changePassword(data: ChangePassword) {
+    return this.putRequest<ChangePassword>(`${this.path}/password`, data);
   }
 }
