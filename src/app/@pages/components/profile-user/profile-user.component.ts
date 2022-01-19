@@ -75,7 +75,6 @@ export class ProfileUserComponent implements OnInit, OnDestroy {
         .pipe(finalize(() => {this.refreshing = false; this.profileImage = null; }))
         .subscribe(
           (event: any) => {
-            console.log(event);
                 if (event.type === HttpEventType.UploadProgress) {
                   this.progress = Math.round(100 * event.loaded / event.total);
                 } else if (event.type === HttpEventType.Response) {
