@@ -1,0 +1,368 @@
+<section class="scrollable padder-lg w-f-md" id="bjax-target">
+  <mat-tab-group color="transparent" animationDuration="0ms" backgroundColor="">
+    <div class="mat-elevation-z4">
+      <mat-tab label="Upload Song" [aria-label]="'accent'">
+        <!-- Form Upload Song -->
+        <form style="margin-top: 20px" method="post" #uploadSongForm="ngForm" (ngSubmit)="onUploadSong(uploadSongForm)"
+          id="formUploadHidden" enctype="multipart/form-data" novalidate class="box has-advanced-upload">
+          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)" class="upload-song">
+            <div *ngIf="!songFileArr.length || songFileArr.length !== 1 " class="box__input">
+              <input #songFileField (change)="upload($event.target.files)" type="file" name="file"
+                id="inputUploadHidden" class="box__file"
+                accept=".mp3,.wma,.mp2,.asf,.wav,.wmv,.mp4,.flv,.mpg,.mpe,.avi,.3gp,.dat,.flac">
+              <div class="icon_upload_v3">
+              </div>
+              <div class="title_upload_v3">
+                Chọn file để tải lên
+              </div>
+              <div class="desc_upload_v3">
+                Bạn có thể kéo và thả file tại đây
+              </div>
+            </div>
+            <div *ngIf="songFileArr.length === 1" class="box-upload">
+              <b>Đã tải lên {{ songFileArr.length }} mục</b> 
+              <div class="row song-uploading">
+                <div class="col-md-12 pr-md-1">
+                  <div class="file_box snipcss-TCQx6">
+                    <div class="row">
+                      <div class="avatar_small_upload">
+                        <img width="50" height="50" id="avatar_small_upload">
+                        <div class="title_small_upload">
+                          {{ songFile.name.length > 50 ? songFile.name.slice(0, 50).concat("... ", songFile.name.slice(songFile.name.lastIndexOf('.'))) : songFile.name  }}
+                          <span style="color: #b1b1b1; margin-left: 20px">
+                            {{ (songFile.size / 1000000).toFixed(2) }}MB&nbsp;&nbsp;
+                            <button type="button" (click)="onRemoveTrack(0)" style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
+                          </span> 
+                        </div>
+                        <div class="info_small_upload">
+                          <!-- <ngb-progressbar class="progress mt-2" [showValue]="true" type="success" [value]="50"></ngb-progressbar> -->
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div  class="song-info">
+            <div class="container row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Tên bài hát
+                          </label>
+                          <input [(ngModel)]="trackUpload.name" name="name" placeholder="Tên bài hát" type="text"
+                            class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
+                              Ca sĩ, diễn viên
+                            </label>
+                            <mat-chip-list #artistList>
+                              <mat-chip *ngFor="let artist of artists; let index=index" [selectable]="selectableArtist"
+                                [removable]="removableArtist" (removed)="removeArtist(index)">
+                                {{artist.name}}
+                                <mat-icon matChipRemove *ngIf="removableArtist">cancel</mat-icon>
+                              </mat-chip>
+                              <input #artistInput [formControl]="artistCtrl" [matAutocomplete]="autoArtist"
+                                [matChipInputFor]="artistList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesArtist"
+                                [matChipInputAddOnBlur]="addOnBlurArtist" (matChipInputTokenEnd)="addArtist($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoArtist="matAutocomplete" (optionSelected)="selectedArtist($event)">
+                              <ng-container *ngFor="let artist of filteredArtists | async">
+                                <mat-option *ngIf="!artists.includes(artist)" [value]="artist">
+                                  {{artist.name}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
+                              Thể loại
+                            </label>
+                            <mat-chip-list #genreList>
+                              <mat-chip *ngFor="let genre of genres; let index=index" [selectable]="selectableGenre"
+                                [removable]="removableGenre" (removed)="removeGenre(index)">
+                                {{genre.name}}
+                                <mat-icon matChipRemove *ngIf="removableGenre">cancel</mat-icon>
+                              </mat-chip>
+                              <input #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
+                                [matChipInputFor]="genreList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesGenre"
+                                [matChipInputAddOnBlur]="addOnBlurGenre" (matChipInputTokenEnd)="addGenre($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
+                              <ng-container *ngFor="let genre of filteredGenres | async">
+                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre">
+                                  {{genre.name}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Lời bài hát
+                          </label>
+                          <textarea rows="5" name="story" class="text-area form-control"></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Ngày ra mắt
+                          </label>
+                          <input name="dateRelease" type="date" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Chế độ công khai
+                          </label>
+                          <br>
+                          <input name="public" id="yesOption" type="radio" />
+                          <label for="yesOption">&nbsp;Có</label> &nbsp;
+                          <input name="public" id="noOption" type="radio"  />
+                          <label for="noOption">&nbsp;Không</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="justify-content: center;" class="card-footer row">
+                      <!-- <button (click)="onCancelUploadSong()" type="button" class="btn btn-fill btn-danger">
+                        <span class="m-r-n-lg">Cancel</span>
+                      </button> -->
+                      <button type="submit" class="btn btn-fill btn-danger">
+                        <!-- <i *ngIf="refreshing" class="fa fa-spinner"></i>
+                  <span *ngIf="refreshing"> Saving...</span> -->
+                        <span class="m-r-n-lg">Upload</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card card-user">
+                  <div class="author">
+                    <div class="card-footer">
+                      <div id="avatar_big_upload">
+                        <label (click)="onUploadImage()" id="labelImageInputUpload" for="fileAvatar">
+                        </label>
+                        <input type="file" accept="image/*" (change)="onImageChange($event)" name="imageFile"
+                          id="imageFile" style="display: none;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </form>
+        <!-- End Form Upload Song -->
+      </mat-tab>
+    </div>
+    <div class="mat-elevation-z4">
+      <mat-tab label="Upload Album">
+        <!-- Form Upload Album -->
+        <form style="margin-top: 20px" method="post" #uploadAlbumForm="ngForm"
+          (ngSubmit)="onUploadAlbum(uploadAlbumForm)" id="formUploadHidden" enctype="multipart/form-data" novalidate
+          class="box has-advanced-upload">
+          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)" class="upload-song">
+            <div *ngIf="!songFileArr.length" class="box__input">
+              <input #songFileField (change)="upload($event.target.files)" type="file" name="file"
+                id="inputUploadHidden" class="box__file" multiple
+                accept=".mp3,.wma,.mp2,.asf,.wav,.wmv,.mp4,.flv,.mpg,.mpe,.avi,.3gp,.dat,.flac">
+              <div class="icon_upload_v3">
+              </div>
+              <div class="title_upload_v3">
+                Chọn file để tải lên
+              </div>
+              <div class="desc_upload_v3">
+                Bạn có thể kéo và thả file tại đây
+              </div>
+            </div>
+            <div *ngIf="songFileArr.length" class="box-upload">
+              <b>Đã tải lên {{ songFileArr.length }} mục</b> 
+              <div *ngFor="let songFile of songFileArr; let index=index" class="row song-uploading">
+                <div class="col-md-12 pr-md-1">
+                  <div class="file_box snipcss-TCQx6">
+                    <div class="row">
+                      <div class="avatar_small_upload">
+                        <img width="50" height="50" id="avatar_small_upload">
+                        <div class="title_small_upload">
+                          {{ songFile.item.name.length > 50 ? songFile.item.name.slice(0, 50).concat("... ", songFile.item.name.slice(songFile.item.name.lastIndexOf('.'))) : songFile.item.name  }}
+                          <span style="color: #b1b1b1; margin-left: 20px">
+                            {{ (songFile.item.size / 1000000).toFixed(2) }}MB &nbsp;&nbsp;
+                            <button type="button" (click)="onRemoveTrack(index)" style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
+                          </span> 
+                        </div>
+                        <!-- <div class="info_small_upload">
+                          <ngb-progressbar class="progress mt-2" [showValue]="true" type="success" [value]="50"></ngb-progressbar>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="color: rgba(255, 255, 255, 0.541); text-align: center; font-size: 13px; margin-top: 15px">
+            <i>Bạn có thể upload nhiều bài hát cùng lúc bằng cách nhấn giữ phím Ctrl và click chọn các files.</i>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="song-info">
+            <div class="container row">
+              <div class="col-md-8">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Tên album
+                          </label>
+                          <input name="name" placeholder="Tên album" type="text" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
+                              Ca sĩ, diễn viên
+                            </label>
+                            <mat-chip-list #artistList>
+                              <mat-chip *ngFor="let artist of artists; let index=index" [selectable]="selectableArtist"
+                                [removable]="removableArtist" (removed)="removeArtist(index)">
+                                {{artist.name}}
+                                <mat-icon matChipRemove *ngIf="removableArtist">cancel</mat-icon>
+                              </mat-chip>
+                              <input #artistInput [formControl]="artistCtrl" [matAutocomplete]="autoArtist"
+                                [matChipInputFor]="artistList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesArtist"
+                                [matChipInputAddOnBlur]="addOnBlurArtist" (matChipInputTokenEnd)="addArtist($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoArtist="matAutocomplete" (optionSelected)="selectedArtist($event)">
+                              <ng-container *ngFor="let artist of filteredArtists | async">
+                                <mat-option *ngIf="!artists.includes(artist)" [value]="artist">
+                                  {{artist.name}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
+                              Thể loại
+                            </label>
+                            <mat-chip-list #genreList>
+                              <mat-chip *ngFor="let genre of genres; let index=index" [selectable]="selectableGenre"
+                                [removable]="removableGenre" (removed)="removeGenre(index)">
+                                {{genre.name}}
+                                <mat-icon matChipRemove *ngIf="removableGenre">cancel</mat-icon>
+                              </mat-chip>
+                              <input #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
+                                [matChipInputFor]="genreList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesGenre"
+                                [matChipInputAddOnBlur]="addOnBlurGenre" (matChipInputTokenEnd)="addGenre($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
+                              <ng-container *ngFor="let genre of filteredGenres | async">
+                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre">
+                                  {{genre.name}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Ngày ra mắt
+                          </label>
+                          <input name="dateRelease" type="date" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Chế độ công khai
+                          </label>
+                          <br>
+                          <input name="public" id="yesOption" type="radio" />
+                          <label for="yesOption">&nbsp;Có</label> &nbsp;
+                          <input name="public" id="noOption" type="radio"  />
+                          <label for="noOption">&nbsp;Không</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="justify-content: center;" class="card-footer row">
+                      <!-- <button (click)="onCancelUploadAlbumSong()" type="button" class="btn btn-fill btn-danger">
+                        <span class="m-r-n-lg">Cancel</span>
+                      </button> -->
+                      <button type="submit" class="btn btn-fill btn-danger">
+                        <!-- <i *ngIf="refreshing" class="fa fa-spinner"></i>
+                  <span *ngIf="refreshing"> Saving...</span> -->
+                        <span class="m-r-n-lg">Upload</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card card-user">
+                  <div class="author">
+                    <div class="card-footer">
+                      <div id="avatar_big_upload">
+                        <label (click)="onUploadAlbumImage()" id="labelImageInputUpload" for="fileAvatar">
+                        </label>
+                        <input type="file" accept="image/*" (change)="onAlbumImageChange($event)" name="albumImageFile"
+                          id="albumImageFile" style="display: none;">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- End Form Upload Album -->
+      </mat-tab>
+    </div>
+  </mat-tab-group>
+</section>

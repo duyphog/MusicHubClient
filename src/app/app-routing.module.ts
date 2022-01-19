@@ -9,6 +9,7 @@ import { ProfileUserComponent } from './@pages/components/profile-user/profile-u
 import { ProfileComponent } from './@pages/components/profile/profile.component';
 import { SigninComponent } from './@pages/components/signin/signin.component';
 import { SignupComponent } from './@pages/components/signup/signup.component';
+import { UploadSongComponent } from './@pages/components/upload-song/upload-song.component';
 import { DefaultComponent } from './@pages/layout/default/default.component';
 import { FullwidthComponent } from './@pages/layout/fullwidth/fullwidth.component';
 
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'profile-user', component: ProfileUserComponent, canActivate: [AuthenticationGuard] },
       { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'upload-song', component: UploadSongComponent, canActivate: [AuthenticationGuard] },
     ]
   },
   {
