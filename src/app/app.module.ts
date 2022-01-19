@@ -9,10 +9,11 @@ import { AppComponent } from './app.component';
 import { AppUtilService } from './@services/app-util.service';
 import { AuthInterceptor } from './@interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, AppRoutingModule, DefaultModule, FullwidthModule],
+  imports: [BrowserModule, AppRoutingModule, DefaultModule, FullwidthModule, BrowserAnimationsModule],
 
   providers: [
     AuthenticationGuard,

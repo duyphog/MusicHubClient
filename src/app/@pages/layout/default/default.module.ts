@@ -14,6 +14,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UploadSongComponent } from '../../components/upload-song/upload-song.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -22,7 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HomeComponent,
     ProfileComponent,
     ProfileUserComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    UploadSongComponent,
   ],
   imports: [
     CommonModule,
@@ -33,8 +41,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     HttpClientModule,
     NgbModule,
-    ToastrModule.forRoot({ timeOut: 5000, positionClass: "toast-bottom-right", preventDuplicates: true }),
-    SharedModule
-  ]
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatChipsModule,
+    MatTabsModule,
+    MatDividerModule,
+    ToastrModule.forRoot({
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
+    SharedModule,
+  ],
 })
-export class DefaultModule { }
+export class DefaultModule {}
