@@ -20,7 +20,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatDividerModule} from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { AddNewPlaylist, MySongListComponent } from '../../components/my-song-list/my-song-list.component';
+import { PlaylistComponent } from '../../components/playlist/playlist.component';
+import { AlbumComponent } from '../../components/album/album.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +35,10 @@ import {MatDividerModule} from '@angular/material/divider';
     ProfileUserComponent,
     ChangePasswordComponent,
     UploadSongComponent,
+    MySongListComponent,
+    AddNewPlaylist,
+    PlaylistComponent,
+    AlbumComponent
   ],
   imports: [
     CommonModule,
@@ -47,6 +55,8 @@ import {MatDividerModule} from '@angular/material/divider';
     MatChipsModule,
     MatTabsModule,
     MatDividerModule,
+    MatDialogModule,
+    MatIconModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',

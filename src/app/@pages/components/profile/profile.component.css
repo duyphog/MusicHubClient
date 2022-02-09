@@ -465,13 +465,13 @@ button {
 
 .read-more {
   display: inline-block;
-  color: var(--text-item-hover);
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.92;
   cursor: pointer;
   display: inline-block;
-  color: var(--text-item-hover);
+  color: #fff;
   font-size: 12px;
   font-weight: 700;
   line-height: 1.92;
@@ -536,22 +536,22 @@ button {
   font-size: 10px;
   font-weight: 500;
   line-height: 1.9;
-  color: var(--text-item-hover);
+  color: #fff;
   font-size: 10px;
   font-weight: 500;
   line-height: 1.9;
-  color: var(--text-item-hover);
+  color: #fff;
 }
 
 .zm-artist-new-release-album.media .media-content span {
   font-size: 10px;
   font-weight: 500;
   line-height: 1.9;
-  color: var(--text-item-hover);
+  color: #fff;
   font-size: 10px;
   font-weight: 500;
   line-height: 1.9;
-  color: var(--text-item-hover);
+  color: #fff;
 }
 
 h4 {

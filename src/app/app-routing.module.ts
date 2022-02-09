@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthenticationGuard } from './@guard/authentication.guard';
+import { AlbumComponent } from './@pages/components/album/album.component';
 import { ChangePasswordComponent } from './@pages/components/change-password/change-password.component';
 import { ForbiddenComponent } from './@pages/components/forbidden/forbidden.component';
 import { HomeComponent } from './@pages/components/home/home.component';
+import { MySongListComponent } from './@pages/components/my-song-list/my-song-list.component';
 import { NotFoundComponent } from './@pages/components/not-found/not-found.component';
+import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
 import { ProfileUserComponent } from './@pages/components/profile-user/profile-user.component';
 import { ProfileComponent } from './@pages/components/profile/profile.component';
 import { SigninComponent } from './@pages/components/signin/signin.component';
@@ -22,6 +25,9 @@ const routes: Routes = [
       { path: 'profile-user', component: ProfileUserComponent, canActivate: [AuthenticationGuard] },
       { path: 'change-password', component: ChangePasswordComponent },
       { path: 'upload-song', component: UploadSongComponent, canActivate: [AuthenticationGuard] },
+      { path: 'my-song', component: MySongListComponent, canActivate: [AuthenticationGuard] },
+      { path: 'playlist', component: PlaylistComponent, canActivate: [AuthenticationGuard] },
+      { path: 'album', component: AlbumComponent, canActivate: [AuthenticationGuard] },
     ]
   },
   {
