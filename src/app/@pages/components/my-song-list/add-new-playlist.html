@@ -1,0 +1,33 @@
+<div class="add-playlist">
+    <div mat-dialog-actions>
+        <button (click)="closeAddNewPlaylist()" class="btn-close" mat-button mat-dialog-close>&times;</button>
+    </div>    
+    <h2 mat-dialog-title style="font-weight: bold; margin-bottom: 10px; text-align: center;">Tạo playlist mới</h2>
+    <div mat-dialog-content>
+        <form>
+            <input (input)="onChangeNamePlaylist($event.target.value)" name="namePlaylist" class="input-name-playlist" type="text" placeholder="Nhập tên playlist" tabindex="-1" />
+            <p style="clear: both; margin: 10px">
+                <span class="title" style="float: left;">Công khai<p class="subtitle">Mọi người có thể nhìn thấy playlist này</p></span> 
+                <span style="float: right;" (click)="onChangePublicMode()">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </span>
+            </p>
+            <p style="clear: both; margin: 10px">
+                <span class="title" style="float: left;">Phát ngẫu nhiên<p class="subtitle">Luôn phát ngẫu nhiên tất cả bài hát</p></span> 
+                <span style="float: right;">
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </span>
+            </p>
+        </form>
+    </div>
+    <div mat-dialog-actions>
+        <button [disabled]="!namePlaylist" class="btn-add-new-playlist" mat-button>TẠO MỚI</button>
+    </div>  
+    
+</div>
