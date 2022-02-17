@@ -52,11 +52,11 @@
               </div>
             </div>
             <h3 class="is-one-line is-truncate subtitle">
-              <a class="is-ghost" href="/nghe-si/Dinh-Huong">
+              <a class="is-ghost" routerLink="/profile">
                 Đinh Hương
               </a>
               ,
-              <a class="is-ghost" href="/nghe-si/Ha-Anh-Tuan">
+              <a class="is-ghost" routerLink="/profile">
                 Hà Anh Tuấn
               </a>
             </h3>
@@ -92,17 +92,18 @@
             <i class="icon ic-shuffle">
             </i>
           </button>
-          <button class="zm-btn zm-tooltip-btn btn-pre is-hover-circle button" tabindex="-1" disabled="">
+          <button (click)="onPreviousSong()" class="zm-btn zm-tooltip-btn btn-pre is-hover-circle button" tabindex="-1">
             <i class="icon ic-pre">
             </i>
           </button>
-          <button (click)="onClick()" class="zm-btn zm-tooltip-btn btn-play button" tabindex="0">
+          <button (click)="onPlaySong()" style="outline: none;" class="zm-btn zm-tooltip-btn btn-play button"
+            tabindex="0">
             <i *ngIf="isPlaying" class="icon ic-pause-circle-outline"></i>
             <i *ngIf="!isPlaying" class="icon ic-play-circle-outline">
             </i>
           </button>
 
-          <button class="zm-btn zm-tooltip-btn btn-next is-hover-circle button" tabindex="0">
+          <button (click)="onNextSong()" class="zm-btn zm-tooltip-btn btn-next is-hover-circle button" tabindex="0">
             <i class="icon ic-next">
             </i>
           </button>
@@ -114,19 +115,37 @@
       </div>
       <div class="level-item mar-b-5">
         <span class="time left">
-          00:03
+          {{ timeElapsed }}
         </span>
-        <div class="zm-duration-bar" style="display: flex; justify-content: center;">
-          <div class="zm-slider-bar"
-            style="border-radius: 4px; background: linear-gradient(to right, #fff 0%, #fff 1.00882%, hsla(0,0%,100%,0.3) 1.00882%, hsla(0,0%,100%,0.3) 100%); align-self: center;">
-            <div tabindex="0" aria-valuemax="261.744" aria-valuemin="0" aria-valuenow="2.640517" draggable="false"
+        <!-- <div class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: 3px;"> -->
+        <!-- <div class="zm-slider-bar"
+            style="border-radius: 4px; background: linear-gradient(to right, #fff 0%, #fff 10.0882%, hsla(0,0%,100%,0.3) 10.0882%, hsla(0,0%,100%,0.3) 100%); align-self: center;">
+            <div tabindex="0" aria-valuemax="261.744" aria-valuemin="0" aria-valuenow="26.40517" draggable="false"
               role="slider" class="zm-slider-handle"
               style="border-radius: 50%; background-color: #fff; transform: translate(-1.61265px, -3.5px);">
             </div>
+          </div> -->
+        <!-- <ngb-progressbar color="white" class="progress mt-2" [showValue]="true" type="success" [value]="getProgress()"></ngb-progressbar> -->
+        <!-- <progress id="file" value="{{ percentElapsed }}" max="100">  </progress> -->
+
+        <!-- <audio controls id="myCurrentSong">
+            <source [src]="songList[currentIndex]" type="audio/ogg">
+            <source [src]="songList[currentIndex]" type="audio/mpeg">
+          </audio> -->
+        <!-- </div> -->
+        <!-- <div id="progressBar" class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: 3px;">
+          <input #slider (change)="onSeekAudio(slider)" class="slider-progress" type="range" min="1" max="100"
+            value="{{ percentElapsed }}">
+        </div> -->
+        <div class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: -2px;">
+          <div class="music-duration">
+            <span id="music-progressbar" class="music-progressbar"></span>
+            <input #songSlider (change)="onSeekAudio(songSlider)" type="range" min="0" max="100" value="{{ percentElapsed }}" id="np-music" class="music-slider" role="progressbar">
           </div>
         </div>
+
         <span class="time right">
-          04:22
+          {{ duration !== 'NaN:NaN' ? duration : '00:00' }}
         </span>
       </div>
     </div>
@@ -151,17 +170,16 @@
       </div>
       <div class="level-item is-narrow">
         <div class="zm-player-volume">
-          <button class="zm-btn zm-tooltip-btn btn-volume is-hover-circle button" tabindex="0">
-            <i class="icon ic-volume">
+          <button (click)="onMuted()" class="zm-btn zm-tooltip-btn btn-volume is-hover-circle button" tabindex="0">
+            <i *ngIf="!isMuted" class="icon ic-volume">
+            </i>
+            <i *ngIf="isMuted" class="icon ic-mute">
             </i>
           </button>
           <div class="zm-duration-bar" style="display: flex; justify-content: center;">
-            <div class="zm-slider-bar"
-              style="border-radius: 4px; background: linear-gradient(to right, #fff 0%, #fff 18.3%, hsla(0,0%,100%,0.3) 18.3%, hsla(0,0%,100%,0.3) 100%); align-self: center;">
-              <div tabindex="0" aria-valuemax="100" aria-valuemin="0" aria-valuenow="18.3" draggable="false"
-                role="slider" class="zm-slider-handle"
-                style="border-radius: 50%; background-color: #fff; transform: translate(0px, 0px);">
-              </div>
+            <div class="volume">
+              <span id="volume-progressbar" class="volume-progressbar"></span>
+              <input #volumeSlider (change)="onVolumeChange(volumeSlider)" type="range" min="0" max="100" step="1" value="{{ percentVolume }}" id="np-volume" class="volume-slider" role="progressbar">
             </div>
           </div>
         </div>
