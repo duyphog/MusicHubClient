@@ -445,23 +445,23 @@ button {
 
 .bg-img {
   background-position: 50%;
-  opacity: .6;
+  opacity: 0.6;
   background-image: url(https://s120-ava-talk.zadn.vn/a/f/8/e/8/120/b460fa6….jpg);
   background-position: 50%;
   background-size: cover;
-  filter: blur(50px);
+  filter: blur(120px);
   position: absolute;
   top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
-  height: 200px;
+  height: 100px;
   z-index: -1;
 }
 
 .parent-div {
   position: relative;
-  height: 50vh;
+  height: 40vh;
 }
 
 .card .avatar {
@@ -667,10 +667,6 @@ figure {
   padding: 0;
 }
 
-/* figure {
-  background-color: hsla(0, 0%, 100%, 0.1);
-} */
-
 .is-40x40 {
   width: 40px;
   height: 40px;
@@ -682,7 +678,6 @@ figure {
   position: absolute;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   visibility: hidden;
 }
 
@@ -763,7 +758,7 @@ img {
 .zm-actions {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 40%;
   bottom: auto;
   right: auto;
   z-index: 98;
@@ -1191,6 +1186,7 @@ h4 {
 
 .zm-card-image:hover {
   cursor: pointer;
+  position: static;
 }
 
 .zm-card-image:hover .opacity,
@@ -1768,13 +1764,15 @@ ul {
 .menu-list li:hover .submenu-content {
   visibility: visible;
 }
+
 .song-menu {
-  top: -100px;
+  top: -120px;
   width: 280px;
-  right: 70px;
+  right: 50px;
   z-index: 2;
   position: absolute;
 }
+
 .media.song-info-menu {
   padding: 15px 15px 0;
 }

@@ -13,7 +13,7 @@ export class MySongListComponent implements OnInit {
   selectAll: boolean = false;
   chooseOption: boolean = false;
   chooseOptionPlaylist: boolean = false;
-  chooseOptionSong: boolean = false;
+  chooseOptionSong: boolean[] = [];
   chooseOptionAlbum: boolean = false;
 
   songList: any[] = [
@@ -52,8 +52,8 @@ export class MySongListComponent implements OnInit {
     this.chooseOptionPlaylist = !this.chooseOptionPlaylist;
   }
 
-  openChooseOptionSong(): void {
-    this.chooseOptionSong = !this.chooseOptionSong;
+  openChooseOptionSong(index): void {
+    this.chooseOptionSong[index] = !this.chooseOptionSong[index];
   }
   
   openChooseOptionAlbum(): void {
