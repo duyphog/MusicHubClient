@@ -1,0 +1,27 @@
+<div class="container-navbar">
+    <button class="btn-menu" mat-button [matMenuTriggerFor]="menuPopup" #menuTrigger="matMenuTrigger">XẾP HẠNG</button>
+    <mat-menu #menuPopup="matMenu">
+        <!-- <button *ngFor="let menuItem of menuListItem"  mat-menu-item>{{ menuItem.name }}</button> -->
+        <div>
+            <button mat-menu-item>Nhạc Pop, Rock</button>
+            <button mat-menu-item>Nhạc Rap, HipHop</button>
+            <button mat-menu-item>Nhạc Dance, Remix</button>
+        </div>
+    </mat-menu>
+    <div *ngFor="let menu of menuList" class="menu">
+        
+        <button *ngIf="menu.name !== 'Beat, Playback'" class="btn-menu" mat-button [matMenuTriggerFor]="menuPopup" #menuTrigger="matMenuTrigger">{{ menu.name.toUpperCase() }}</button>
+        <mat-menu #menuPopup="matMenu">
+            <!-- <button *ngFor="let menuItem of menuListItem"  mat-menu-item>{{ menuItem.name }}</button> -->
+            <div>
+                <button mat-menu-item>Nhạc Pop, Rock</button>
+                <button mat-menu-item>Nhạc Rap, HipHop</button>
+                <button mat-menu-item>Nhạc Dance, Remix</button>
+            </div>
+        </mat-menu>
+    </div>
+
+    
+    
+
+</div>

@@ -1,0 +1,35 @@
+.container-navbar {
+  background: #170f23;
+  height: 50px;
+  width: 1350px;
+  z-index: 3;
+  position: absolute;
+  margin-left: 200px;
+  color: #fff;
+  /* border-top: 1px solid hsla(0, 0%, 100%, 0.1); */
+  border-bottom: 1px solid hsla(0, 0%, 100%, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 30px;
+}
+
+.btn-menu {
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  padding-bottom: 18px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.menu {
+    margin-right: 50px;
+}
+
+.btn-menu:hover {
+  /* border: 1px solid #fff; */
+  cursor: pointer;
+  color: rgb(212, 75, 75);
+}
