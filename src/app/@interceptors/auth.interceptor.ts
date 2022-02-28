@@ -10,14 +10,14 @@ import { AuthenticationService } from '../@services/authentication.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private readonly validRequestForNotAddingToken: Array<string>;
-  private readonly validGetRequestForNotAddingToken: Array<string>;
+  private readonly validRequestForNotAddingToken: Array<any>;
+  private readonly validGetRequestForNotAddingToken: Array<any>;
 
   constructor(private authenticationService: AuthenticationService) {
     this.validRequestForNotAddingToken = [
         'user/login',
         'user/register',
-        'user/resetpassword'
+        'user/reset-password',
     ];
     this.validGetRequestForNotAddingToken = [
         'product',
