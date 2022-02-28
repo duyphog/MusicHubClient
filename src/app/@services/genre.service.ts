@@ -2,18 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Genre } from './../@model/genre';
+import { BaseService } from './base.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GenreService{
+export class GenreService extends BaseService {
 
   path: string = "/genre";
 
-  constructor(private httpClient: HttpClient) {
+  constructor(httpClient: HttpClient) {
+    super(httpClient);
   }
 
   listGenre(): Observable<Genre[]> {
-    return this.httpClient.get<Genre[]>("https://61da80c9ce86530017e3cd75.mockapi.io/api/genre");
+    return this.getRequest<Genre[]>(`${this.path}`);
   }
 }

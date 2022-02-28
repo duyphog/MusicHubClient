@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from 'src/app/@services/base.service';
 import { CustomHttpResponse } from '../@model/custom-http-response';
 import { AppConstant } from '../@constant/app-constant';
@@ -84,5 +84,13 @@ export class AppUtilService extends BaseService{
     var object = {};
     formData.forEach((value, key) => object[key] = value);
     return JSON.parse(JSON.stringify(object));
+  }
+  /**
+   * 
+   * @param string 
+   */
+  convertStringToArray(string)
+  { 
+    return JSON.parse('[' + string + ']')
   }
 }

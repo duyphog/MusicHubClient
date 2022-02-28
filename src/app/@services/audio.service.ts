@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class AudioService {
   public audio: HTMLAudioElement;
+  public openPlaylist: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public timeElapsed: BehaviorSubject<string> = new BehaviorSubject('00:00');
   public timeDuration: BehaviorSubject<string> = new BehaviorSubject('00:00');
   public timeRemaining: BehaviorSubject<string> = new BehaviorSubject('-00:00');
@@ -15,6 +16,8 @@ export class AudioService {
 
   constructor() {
     this.audio = new Audio();
+    // this.audio.preload = 'none';
+    this.audio.controls = true;
     this.attachListeners();
   }
 

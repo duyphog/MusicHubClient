@@ -30,6 +30,10 @@ export class AuthenticationService extends BaseService {
     return super.postRequest<AppUser>(`${this.path}/login`, user);
   }
 
+  public resetPassword(email: string): Observable<AppUser> {
+    return super.postRequest<AppUser>(`${this.path}/reset-password/${email}`, email);
+  }
+
   public saveToken(token: string): void {
     this.token = token;
     this.appUtilService.addToLocalCache('token', token);
