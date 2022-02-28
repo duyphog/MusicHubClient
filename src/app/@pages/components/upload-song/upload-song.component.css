@@ -136,7 +136,14 @@ div {
     float: left;
   }
 }
-
+.select-category option {
+  background: linear-gradient(
+    to right,
+    rgba(60, 127, 234, 1) 0%,
+    rgba(55, 180, 237, 1) 100%
+  ) !important;
+  color: #000;
+}
 @media screen, print, projection {
   .title_small_upload {
     float: left;
@@ -426,7 +433,7 @@ html {
   width: 100%;
   min-height: 1px;
   padding-right: 15px;
-  padding-left: 15px;
+  padding-left: 10px;
 }
 
 @media (min-width: 768px) {
@@ -1022,8 +1029,8 @@ button {
   position: relative;
   width: 100%;
   min-height: 1px;
-  /* padding-right: 15px; */
-  /* padding-left: 15px; */
+  padding-right: 20px;
+  padding-left: 10px;
 }
 
 @media (min-width: 768px) {
@@ -1033,10 +1040,17 @@ button {
   }
 }
 
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: hsla(0, 0%, 100%, 0.5);
+  opacity: .5; /* Firefox */
+}
+
 .col-md-12 {
   position: relative;
   width: 100%;
   min-height: 1px;
+  /* padding-right: 15px; */
+  padding-left: 10px;
 }
 
 @media (min-width: 768px) {

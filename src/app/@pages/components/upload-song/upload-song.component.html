@@ -47,9 +47,37 @@
           <mat-divider></mat-divider>
           <div  class="song-info">
             <div class="container row">
-              <div class="col-md-8">
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
+                              Album
+                            </label>
+                            <mat-chip-list #albumList>
+                              <mat-chip *ngFor="let album of albums; let index=index" [selectable]="selectableAlbum"
+                                [removable]="removableAlbum" (removed)="removeAlbum(index)">
+                                {{album.name}}
+                                <mat-icon matChipRemove *ngIf="removableAlbum">cancel</mat-icon>
+                              </mat-chip>
+                              <input #albumInput [formControl]="albumCtrl" [matAutocomplete]="autoAlbum"
+                                [matChipInputFor]="albumList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesAlbum"
+                                [matChipInputAddOnBlur]="addOnBlurAlbum" (matChipInputTokenEnd)="addAlbum($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoAlbum="matAutocomplete" (optionSelected)="selectedAlbum($event)">
+                              <ng-container *ngFor="let album of filteredAlbums | async">
+                                <mat-option *ngIf="!albums.includes(album)" [value]="album">
+                                  {{album.name}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
                     <div class="row">
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
@@ -68,21 +96,21 @@
                             <label>
                               Ca sĩ, diễn viên
                             </label>
-                            <mat-chip-list #artistList>
-                              <mat-chip *ngFor="let artist of artists; let index=index" [selectable]="selectableArtist"
-                                [removable]="removableArtist" (removed)="removeArtist(index)">
-                                {{artist.name}}
-                                <mat-icon matChipRemove *ngIf="removableArtist">cancel</mat-icon>
+                            <mat-chip-list #singerList>
+                              <mat-chip *ngFor="let singer of singers; let index=index" [selectable]="selectableSinger"
+                                [removable]="removableSinger" (removed)="removeSinger(index)">
+                                {{singer.nickName}}
+                                <mat-icon matChipRemove *ngIf="removableSinger">cancel</mat-icon>
                               </mat-chip>
-                              <input #artistInput [formControl]="artistCtrl" [matAutocomplete]="autoArtist"
-                                [matChipInputFor]="artistList"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesArtist"
-                                [matChipInputAddOnBlur]="addOnBlurArtist" (matChipInputTokenEnd)="addArtist($event)">
+                              <input #singerInput [formControl]="singerCtrl" [matAutocomplete]="autoSinger"
+                                [matChipInputFor]="singerList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesSinger"
+                                [matChipInputAddOnBlur]="addOnBlurSinger" (matChipInputTokenEnd)="addSinger($event)">
                             </mat-chip-list>
-                            <mat-autocomplete #autoArtist="matAutocomplete" (optionSelected)="selectedArtist($event)">
-                              <ng-container *ngFor="let artist of filteredArtists | async">
-                                <mat-option *ngIf="!artists.includes(artist)" [value]="artist">
-                                  {{artist.name}}
+                            <mat-autocomplete #autoSinger="matAutocomplete" (optionSelected)="selectedSinger($event)">
+                              <ng-container *ngFor="let singer of filteredSingers | async">
+                                <mat-option *ngIf="!singers.includes(singer)" [value]="singer">
+                                  {{singer.nickName}}
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
@@ -95,6 +123,45 @@
                         <div class="form-group">
                           <mat-form-field class="example-chip-list" appearance="none">
                             <label>
+                              Sáng tác
+                            </label>
+                            <mat-chip-list #composerList>
+                              <mat-chip *ngFor="let composer of composers; let index=index" [selectable]="selectableComposer"
+                                [removable]="removableComposer" (removed)="removeComposer(index)">
+                                {{composer.nickName}}
+                                <mat-icon matChipRemove *ngIf="removableComposer">cancel</mat-icon>
+                              </mat-chip>
+                              <input #composerInput [formControl]="composerCtrl" [matAutocomplete]="autoComposer"
+                                [matChipInputFor]="composerList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesComposer"
+                                [matChipInputAddOnBlur]="addOnBlurComposer" (matChipInputTokenEnd)="addComposer($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autoComposer="matAutocomplete" (optionSelected)="selectedComposer($event)">
+                              <ng-container *ngFor="let composer of filteredComposers | async">
+                                <mat-option *ngIf="!composers.includes(composer)" [value]="composer">
+                                  {{composer.nickName}}
+                                </mat-option>
+                              </ng-container>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Chuyên mục
+                          </label>
+                          <select class="form-control select-category" name="category" [(ngModel)]="trackUpload.category">
+                            <!-- <option [value]="-1">Chọn chuyên mục</option> -->
+                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-8 pl-md-1">
+                        <div class="form-group">
+                          <mat-form-field class="example-chip-list" appearance="none">
+                            <label>
                               Thể loại
                             </label>
                             <mat-chip-list #genreList>
@@ -103,7 +170,7 @@
                                 {{genre.name}}
                                 <mat-icon matChipRemove *ngIf="removableGenre">cancel</mat-icon>
                               </mat-chip>
-                              <input #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
+                              <input placeholder="Nhạc pop, rock,..." #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
                                 [matChipInputFor]="genreList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesGenre"
                                 [matChipInputAddOnBlur]="addOnBlurGenre" (matChipInputTokenEnd)="addGenre($event)">
                             </mat-chip-list>
@@ -119,12 +186,30 @@
                       </div>
                     </div>
                     <div class="row">
+                      <div class="col-md-6 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Hãng sản xuất
+                          </label>
+                          <input [(ngModel)]="trackUpload.musicProduction" name="musicProduction" type="text" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="col-md-6 pl-md-1">
+                        <div class="form-group">
+                          <label>
+                            Năm phát hành
+                          </label>
+                          <input [(ngModel)]="trackUpload.musicYear" name="musicYear" type="text" class="form-control" />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
                           <label>
                             Lời bài hát
                           </label>
-                          <textarea rows="5" name="story" class="text-area form-control"></textarea>
+                          <textarea rows="5" [(ngModel)]="trackUpload.lyric" name="lyric" class="text-area form-control"></textarea>
                         </div>
                       </div>
                     </div>
@@ -132,13 +217,13 @@
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
                           <label>
-                            Ngày ra mắt
+                            Ghi chú
                           </label>
-                          <input name="dateRelease" type="date" class="form-control" />
+                          <input [(ngModel)]="trackUpload.description" name="description" type="text" class="form-control" />
                         </div>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
                           <label>
@@ -151,7 +236,7 @@
                           <label for="noOption">&nbsp;Không</label>
                         </div>
                       </div>
-                    </div>
+                    </div> -->
                     <div style="justify-content: center;" class="card-footer row">
                       <!-- <button (click)="onCancelUploadSong()" type="button" class="btn btn-fill btn-danger">
                         <span class="m-r-n-lg">Cancel</span>
@@ -165,7 +250,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <!-- <div class="col-md-4">
                 <div class="card card-user">
                   <div class="author">
                     <div class="card-footer">
@@ -178,7 +263,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -246,7 +331,7 @@
                           <label>
                             Tên album
                           </label>
-                          <input name="name" placeholder="Tên album" type="text" class="form-control" />
+                          <input name="name" [(ngModel)]="albumUpload.name" placeholder="Tên album" type="text" class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -257,25 +342,38 @@
                             <label>
                               Ca sĩ, diễn viên
                             </label>
-                            <mat-chip-list #artistList>
-                              <mat-chip *ngFor="let artist of artists; let index=index" [selectable]="selectableArtist"
-                                [removable]="removableArtist" (removed)="removeArtist(index)">
-                                {{artist.name}}
-                                <mat-icon matChipRemove *ngIf="removableArtist">cancel</mat-icon>
+                            <mat-chip-list #singerList>
+                              <mat-chip *ngFor="let singer of singers; let index=index" [selectable]="selectableSinger"
+                                [removable]="removableSinger" (removed)="removeSinger(index)">
+                                {{singer.nickName}}
+                                <mat-icon matChipRemove *ngIf="removableSinger">cancel</mat-icon>
                               </mat-chip>
-                              <input #artistInput [formControl]="artistCtrl" [matAutocomplete]="autoArtist"
-                                [matChipInputFor]="artistList"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesArtist"
-                                [matChipInputAddOnBlur]="addOnBlurArtist" (matChipInputTokenEnd)="addArtist($event)">
+                              <input #singerInput [formControl]="singerCtrl" [matAutocomplete]="autoSinger"
+                                [matChipInputFor]="singerList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesSinger"
+                                [matChipInputAddOnBlur]="addOnBlurSinger" (matChipInputTokenEnd)="addSinger($event)">
                             </mat-chip-list>
-                            <mat-autocomplete #autoArtist="matAutocomplete" (optionSelected)="selectedArtist($event)">
-                              <ng-container *ngFor="let artist of filteredArtists | async">
-                                <mat-option *ngIf="!artists.includes(artist)" [value]="artist">
-                                  {{artist.name}}
+                            <mat-autocomplete #autoSinger="matAutocomplete" (optionSelected)="selectedSinger($event)">
+                              <ng-container *ngFor="let singer of filteredSingers | async">
+                                <mat-option *ngIf="!singers.includes(singer)" [value]="singer">
+                                  {{singer.nickName}}
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 pr-md-1">
+                        <div class="form-group">
+                          <label>
+                            Chuyên mục
+                          </label>
+                          <select class="form-control select-category" name="category" [(ngModel)]="albumUpload.category">
+                            <!-- <option [value]="-1">Chọn chuyên mục</option> -->
+                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -298,7 +396,7 @@
                             </mat-chip-list>
                             <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
                               <ng-container *ngFor="let genre of filteredGenres | async">
-                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre">
+                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre.id">
                                   {{genre.name}}
                                 </mat-option>
                               </ng-container>
@@ -311,9 +409,9 @@
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
                           <label>
-                            Ngày ra mắt
+                            Năm phát hành
                           </label>
-                          <input name="dateRelease" type="date" class="form-control" />
+                          <input [(ngModel)]="albumUpload.musicYear" name="musicYear" type="text" class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -321,13 +419,9 @@
                       <div class="col-md-12 pr-md-1">
                         <div class="form-group">
                           <label>
-                            Chế độ công khai
+                            Hãng sản xuất
                           </label>
-                          <br>
-                          <input name="public" id="yesOption" type="radio" />
-                          <label for="yesOption">&nbsp;Có</label> &nbsp;
-                          <input name="public" id="noOption" type="radio"  />
-                          <label for="noOption">&nbsp;Không</label>
+                          <input [(ngModel)]="albumUpload.musicProduction" name="musicProduction" type="text" class="form-control" />
                         </div>
                       </div>
                     </div>
