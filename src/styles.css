@@ -245,6 +245,7 @@ html {
   height: calc(100% - 150px);
   box-sizing: border-box;
   max-height: 630px;
+  margin-top: 50px;
 }
 
 #content section .vbox .scrollable {
@@ -449,6 +450,15 @@ body {
   width: fit-content;
   border-radius: 20px;
   margin-left: 320px;
+}
+
+.container-playlist .mat-tab-header {
+  background-color: hsla(0, 0%, 100%, 0.1);
+  padding: 3px;
+  height: 32px !important;
+  width: fit-content;
+  border-radius: 20px;
+  margin: 20px 0px 10px 25px;
 }
 
 .mat-dialog-container {

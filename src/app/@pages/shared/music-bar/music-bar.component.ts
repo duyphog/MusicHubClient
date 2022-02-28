@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
 import { AudioService } from './../../../@services/audio.service';
 import * as $ from "jquery";
-import { Subscription } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { AppUtilService } from 'src/app/@services/app-util.service';
 
 @Component({
   selector: 'app-music-bar',
@@ -15,6 +15,10 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
   isPlaying: boolean = false;
   isMuted: boolean = false;
+  playlistOpened: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  playlistOpened$ = this.playlistOpened.asObservable();
+
+  buttonPlaylist = document.getElementsByName('btn-playlist');;
 
   currentIndex: number = 0;
   
@@ -25,17 +29,23 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   percentVolume: number = 50;
   
   songList: string[] = [
-    'assets/audio/[MV] end of a life - Calliope Mori (Original Song).mp3',
-    'assets/audio/【AZKi x IRyS】いのち(Inochi)【REMIX】.mp3',
-    'assets/audio/【Hololive x Nijsanji 】Mashup cover Kataomoi (カタオモイ) Aimer - Miyu Ottavia & Matsuri.mp3',
-    'assets/audio/【Hoshimachi Suisei x IRyS】GHOST - 星街すいせい【MV MASHUP】.mp3',
+    // 'assets/audio/[MV] end of a life - Calliope Mori (Original Song).mp3',
+    // 'assets/audio/【AZKi x IRyS】いのち(Inochi)【REMIX】.mp3',
+    // 'assets/audio/【Hololive x Nijsanji 】Mashup cover Kataomoi (カタオモイ) Aimer - Miyu Ottavia & Matsuri.mp3',
+    // 'assets/audio/【Hoshimachi Suisei x IRyS】GHOST - 星街すいせい【MV MASHUP】.mp3',
+    // "http://localhost:8081/api/myfile/songs/new-namesun-feb-27-21-48-35-ict-2022.mp3",
+    // 'assets/audio/new-namesun-feb-27-21-48-35-ict-2022.mp3'
+    'http://localhost:8081/api/myfile/songs/senbozakura.mp3', // Không seek audio được
+    'assets/audio/senbozakura.mp3' // Seek audio được
   ];
 
-  constructor(public audioService: AudioService) {}
+  constructor(public audioService: AudioService) {
+  }
 
   ngOnInit(): void {
 
     this.audioService.setAudio(this.songList[this.currentIndex]);
+    // this.audioService.setAudio("http://localhost:8081/api/myfile/songs/new-namesun-feb-27-21-48-35-ict-2022.mp3");
 
     this.onVolumeSlider(this.percentVolume / 100);
     
@@ -44,6 +54,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.push(this.audioService.getTimeElapsed().subscribe((time: any) => {
+        
         let percent = this.convertTime(time) / this.convertTime(this.duration);
         if (this.timeElapsed === this.duration) {
           this.duration = '00:00';
@@ -53,6 +64,8 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           this.timeElapsed = time;
           this.onSongSlider(percent);
         }
+      }, (err) => {
+        console.log(err);
       })
     );
    
@@ -70,6 +83,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   onPlaySong(): void {
     this.isPlaying = !this.isPlaying;
     this.isPlaying ? this.audioService.playAudio() : this.audioService.pauseAudio();
+    console.log(this.audioService.audio);
   }
 
   onMuted(): void {
@@ -118,6 +132,15 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       + 'color-stop(' + percent + ', hsla(0,0%,100%,0.3))'
       + ')'
     );
+  }
+
+  onOpenPlaylist(): void {
+    if (this.audioService.openPlaylist.value) {
+      this.buttonPlaylist[0].classList.remove('active');
+    } else {
+      this.buttonPlaylist[0].classList.add('active');
+    }
+    this.audioService.openPlaylist.next(!this.audioService.openPlaylist.value);
   }
 
   public convertTime(time: string): number {

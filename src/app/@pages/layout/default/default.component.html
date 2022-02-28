@@ -17,8 +17,11 @@
 <body cz-shortcut-listen="true">
   <div>
     <section class="vbox">
-        <app-header></app-header>
+        <app-header></app-header>    
     <section>
+    <!-- <section class="vbox"> -->
+      <app-navbar></app-navbar>
+    <!-- </section> -->
     <section class="hbox stretch">
           <!-- .aside -->
           <aside class="dk aside hidden-print" id="nav" style="height: 100vh; background-color: hsla(0,0%,100%,0.05)">
@@ -27,9 +30,9 @@
                 <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 200px; height: 100vh;">
                   <div class="slim-scroll" data-height="auto" data-disable-fade-out="true" data-distance="0"
                     data-size="10px" data-railopacity="0.2" style="overflow: hidden; width: auto; height: 100vh;">
-                    <!-- nav -->
-                    <app-navbar></app-navbar>
-                    <!-- / nav -->
+                    <!-- sidebar -->
+                    <app-sidebar></app-sidebar>
+                    <!-- / sidebar -->
                   </div>
                   <div class="slimScrollBar"
                     style="background: rgb(0, 0, 0); width: 10px; position: absolute; top: -44px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 0px; height: 616px;">
@@ -42,7 +45,10 @@
             </section>
           </aside>
           <!-- /.aside -->
-          <div gdArea="content">
+          <div #myPlaylist name="my-playlist" class="show-playlist" style="position: relative; float: right; z-index: 1; top: 50px;">
+            <app-playlist></app-playlist>
+          </div>
+          <div style="position: absolute;" gdArea="content">
             <section id="content">
               <section class="hbox stretch">
                 <section>
@@ -60,6 +66,7 @@
             </section>
           </div>
         </section>
+        
         <div style="margin-top: -20vh" gdArea="footer">
           <app-music-bar></app-music-bar>
         </div>

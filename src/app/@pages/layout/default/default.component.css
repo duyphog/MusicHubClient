@@ -1,0 +1,26 @@
+.show-playlist {
+  display: block !important;
+  animation: open 0.3s ease-out forwards;
+}
+
+.close-playlist {
+  animation: close 0.3s ease-out forwards;
+  display: block !important;
+}
+@keyframes open {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes close {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}

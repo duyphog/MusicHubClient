@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileUserComponent } from 'src/app/@pages/components/profile-user/profile-user.component';
 import { ProfileComponent } from 'src/app/@pages/components/profile/profile.component';
 import { SharedModule } from '../../shared/shared.module';
@@ -22,14 +21,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatMenuModule } from '@angular/material/menu';
 import { AddNewPlaylist, MySongListComponent } from '../../components/my-song-list/my-song-list.component';
-import { PlaylistComponent } from '../../components/playlist/playlist.component';
+import { PlaylistDetailComponent } from '../../components/playlist-detail/playlist-detail.component';
 import { AlbumComponent } from '../../components/album/album.component';
-
+import { GenreComponent } from './../../components/genre/genre.component';
+import { GenreDetailComponent } from '../../components/genre-detail/genre-detail.component';
+import { PlaylistComponent } from '../../components/playlist/playlist.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
+  
 @NgModule({
   declarations: [
     DefaultComponent,
-    NavbarComponent,
+    SidebarComponent,
     HomeComponent,
     ProfileComponent,
     ProfileUserComponent,
@@ -38,10 +43,14 @@ import { AlbumComponent } from '../../components/album/album.component';
     MySongListComponent,
     AddNewPlaylist,
     PlaylistComponent,
-    AlbumComponent
+    PlaylistDetailComponent,
+    AlbumComponent,
+    GenreComponent,
+    GenreDetailComponent,
+    NavbarComponent
   ],
   imports: [
-    CommonModule,
+  CommonModule,
     RouterModule,
     FlexLayoutModule,
     FormsModule,
@@ -57,6 +66,7 @@ import { AlbumComponent } from '../../components/album/album.component';
     MatDividerModule,
     MatDialogModule,
     MatIconModule,
+    MatMenuModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',

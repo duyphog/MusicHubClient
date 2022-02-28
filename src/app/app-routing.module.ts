@@ -7,7 +7,7 @@ import { ForbiddenComponent } from './@pages/components/forbidden/forbidden.comp
 import { HomeComponent } from './@pages/components/home/home.component';
 import { MySongListComponent } from './@pages/components/my-song-list/my-song-list.component';
 import { NotFoundComponent } from './@pages/components/not-found/not-found.component';
-import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
+import { PlaylistDetailComponent } from './@pages/components/playlist-detail/playlist-detail.component';
 import { ProfileUserComponent } from './@pages/components/profile-user/profile-user.component';
 import { ProfileComponent } from './@pages/components/profile/profile.component';
 import { SigninComponent } from './@pages/components/signin/signin.component';
@@ -15,34 +15,65 @@ import { SignupComponent } from './@pages/components/signup/signup.component';
 import { UploadSongComponent } from './@pages/components/upload-song/upload-song.component';
 import { DefaultComponent } from './@pages/layout/default/default.component';
 import { FullwidthComponent } from './@pages/layout/fullwidth/fullwidth.component';
+import { GenreComponent } from './@pages/components/genre/genre.component';
+import { GenreDetailComponent } from './@pages/components/genre-detail/genre-detail.component';
+import { ForgotPasswordComponent } from './@pages/components/forgot-password/forgot-password.component';
+import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
 
 const routes: Routes = [
   {
-    path: '', component: DefaultComponent, children: [
+    path: '',
+    component: DefaultComponent,
+    children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'profile', component: ProfileComponent },
-      { path: 'profile-user', component: ProfileUserComponent, canActivate: [AuthenticationGuard] },
+      {
+        path: 'profile-user',
+        component: ProfileUserComponent,
+        canActivate: [AuthenticationGuard],
+      },
       { path: 'change-password', component: ChangePasswordComponent },
-      { path: 'upload-song', component: UploadSongComponent, canActivate: [AuthenticationGuard] },
-      { path: 'my-song', component: MySongListComponent, canActivate: [AuthenticationGuard] },
-      { path: 'playlist', component: PlaylistComponent, canActivate: [AuthenticationGuard] },
-      { path: 'album', component: AlbumComponent, canActivate: [AuthenticationGuard] },
-    ]
+      {
+        path: 'upload-song',
+        component: UploadSongComponent,
+        canActivate: [AuthenticationGuard],
+      },
+      {
+        path: 'my-song',
+        component: MySongListComponent,
+        canActivate: [AuthenticationGuard],
+      },
+      {
+        path: 'playlist-detail',
+        component: PlaylistDetailComponent,
+        canActivate: [AuthenticationGuard],
+      },
+      {
+        path: 'playlist',
+        component: PlaylistComponent,
+      },
+      { path: 'album', component: AlbumComponent },
+      { path: 'genre', component: GenreComponent },
+      { path: 'genre-detail', component: GenreDetailComponent },
+    ],
   },
   {
-    path: '', component: FullwidthComponent, children: [
+    path: '',
+    component: FullwidthComponent,
+    children: [
       { path: 'signin', component: SigninComponent },
       { path: 'signup', component: SignupComponent },
       { path: 'notfound', component: NotFoundComponent },
       { path: 'forbidden', component: ForbiddenComponent },
-    ]
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+    ],
   },
   { path: '**', redirectTo: '/notfound', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

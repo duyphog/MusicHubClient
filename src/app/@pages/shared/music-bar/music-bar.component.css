@@ -1411,3 +1411,7 @@ img {
 #volume-progressbar {
   background-color: linear-gradient(to left top, to right top, #fff 0%, #fff 100%, hsla(0,0%,100%,0.3));
 }
+.active {
+  background-color: #7200a1 !important;
+  color: #fff !important;
+}

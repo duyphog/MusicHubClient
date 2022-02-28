@@ -177,25 +177,37 @@ body :-webkit-scrollbar-track {
 
 .media-left {
   flex-basis: auto;
-  flex-grow: 1;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: auto;
+  flex-grow: 0;
   flex-shrink: 0;
 }
 
 .media-left {
   margin-right: 10px;
+  margin-right: 10px;
 }
 
 .playlist-header .media-left {
+  margin-right: 20px;
   margin-right: 20px;
 }
 
 @media screen and (min-width: 1200px) {
   .playlist-header .media-left {
+    margin-right: 0;
     margin-right: 0px;
   }
 }
 
 .media-content {
+  flex-basis: auto;
+  flex-grow: 1;
+  flex-shrink: 1;
+  text-align: left;
+  align-self: center;
+  width: 0;
   flex-basis: auto;
   flex-grow: 1;
   flex-shrink: 1;
@@ -1080,6 +1092,7 @@ img {
 
 .media-item.hide-right .media-right .hover-items {
   display: none;
+  display: none;
 }
 
 .zm-actions .icon {
@@ -1576,6 +1589,7 @@ input {
 
 .media-item.hide-right .media-right .action-items .ic-like {
   display: none;
+  display: none;
 }
 
 .animation-like.done .icon:last-child {
@@ -1631,9 +1645,11 @@ input {
 
 .media-item .media-right .icon.ic-mv {
   font-size: 18px;
+  font-size: 18px;
 }
 
 .ic-mv:before {
+  content: "\4b";
   content: "K";
 }
 
@@ -2091,9 +2107,10 @@ ul {
 .playlist-menu {
   width: 250px;
   padding: 10px 0;
-  left: calc(100% - 110px);
-  top: calc(100% - 50px);
+  left: calc(100% - 135px);
+  top: 470px;
 }
+
 .ic-comment:before {
   content: "\71";
 }
@@ -2195,28 +2212,4 @@ video {
   align-items: center;
   font-size: 12px;
   color: #a0a0a0;
-}
-.song-prefix .number {
-  font-size: 14px;
-  line-height: 1.29;
-  font-weight: 500;
-  width: -webkit-max-content;
-  width: -moz-max-content;
-  width: max-content;
-  min-width: 18px;
-  text-align: center;
-  color: hsla(0, 0%, 100%, 0.5);
-}
-
-.zm-card-image:hover {
-  cursor: pointer;
-}
-
-.zm-card-image:hover .opacity,
-.zm-card-image:hover .zm-actions {
-  visibility: visible;
-}
-
-.zm-card-image:hover img {
-  filter: opacity(0.5);
 }

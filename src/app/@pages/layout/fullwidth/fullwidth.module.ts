@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { ForgotPasswordComponent } from '../../components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { ToastrModule } from 'ngx-toastr';
     SigninComponent,
     NotFoundComponent,
     ForbiddenComponent,
-    SignupComponent
+    SignupComponent,
+    ForgotPasswordComponent
   ],
   imports: [
   CommonModule,

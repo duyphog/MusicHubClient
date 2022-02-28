@@ -1,19 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthenticationService } from 'src/app/@services/authentication.service';
 
 @Component({
-  selector: 'app-my-song-list',
-  templateUrl: './my-song-list.component.html',
-  styleUrls: ['./my-song-list.component.css'],
+  selector: 'app-playlist-detail',
+  templateUrl: './playlist-detail.component.html',
+  styleUrls: ['./playlist-detail.component.css']
 })
-export class MySongListComponent implements OnInit {
-  user: any;
+export class PlaylistDetailComponent implements OnInit {
+
   selectAll: boolean = false;
   chooseOption: boolean = false;
   chooseOptionPlaylist: boolean = false;
-  chooseOptionSong: boolean[] = [];
-  chooseOptionAlbum: boolean = false;
+  chooseOptionSong: boolean = false;
 
   songList: any[] = [
     {
@@ -29,15 +27,11 @@ export class MySongListComponent implements OnInit {
   ];
   songSelected: any[] = [];
 
-  constructor(
-    private authenticationService: AuthenticationService,
-    public dialog: MatDialog
-  ) {}
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.user = this.authenticationService.getUserInfoFromLocalCache();
   }
-
+  
   openAddNewPlaylist() {
     this.dialog.open(AddNewPlaylist);
   }
@@ -49,13 +43,9 @@ export class MySongListComponent implements OnInit {
   openChooseOptionPlaylist(): void {
     this.chooseOptionPlaylist = !this.chooseOptionPlaylist;
   }
-
-  openChooseOptionSong(index): void {
-    this.chooseOptionSong[index] = !this.chooseOptionSong[index];
-  }
   
-  openChooseOptionAlbum(): void {
-    this.chooseOptionAlbum = !this.chooseOptionAlbum;
+  openChooseOptionSong(): void {
+    this.chooseOptionSong = !this.chooseOptionSong;
   }
 
   selectedSong(item: any, index): void {
@@ -86,13 +76,14 @@ export class MySongListComponent implements OnInit {
       this.songSelected = [];
     }
   }
- 
+
+
 }
 
 @Component({
   selector: 'add-new-playlist',
-  templateUrl: 'add-new-playlist.html',
-  styleUrls: ['./my-song-list.component.css'],
+  templateUrl: '../my-song-list/add-new-playlist.html',
+  styleUrls: ['../my-song-list/my-song-list.component.css'],
 })
 export class AddNewPlaylist {
 
