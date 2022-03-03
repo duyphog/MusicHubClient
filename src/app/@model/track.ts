@@ -21,6 +21,8 @@ export class Track {
     description: string;
     category: Category;
     appStatus: AppStatus;
+    durationSeconds: number;
+    bitRate: number;
     isActive: boolean;
     liked: number;
     listened: number;

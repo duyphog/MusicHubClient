@@ -2,6 +2,8 @@ import { AppStatus } from "./app-status";
 import { AppUser } from "./app-user";
 import { Artist } from "./artist";
 import { Category } from "./category";
+import { Genre } from "./genre";
+import { Track } from "./track";
 
 export class Album {
     id: number;
@@ -11,8 +13,10 @@ export class Album {
     imgUrl: string;
     category: Category;
     appStatus: AppStatus;
+    tracks: Track[];
     singers: Artist[];
-    genres: Artist[];
+    genres: Genre[];
+    
     appUser: AppUser;
     isActive: boolean;
 
