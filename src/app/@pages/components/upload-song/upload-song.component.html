@@ -1,4 +1,4 @@
-<section class="scrollable padder-lg w-f-md" id="bjax-target">
+<section class="scrollable container-upload padder-lg w-f-md" id="bjax-target">
   <mat-tab-group color="transparent" animationDuration="0ms" backgroundColor="">
     <div class="mat-elevation-z4">
       <mat-tab label="Upload Song" [aria-label]="'accent'">
@@ -170,7 +170,7 @@
                                 {{genre.name}}
                                 <mat-icon matChipRemove *ngIf="removableGenre">cancel</mat-icon>
                               </mat-chip>
-                              <input placeholder="Nhạc pop, rock,..." #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
+                              <input #genreInput [formControl]="genreCtrl" [matAutocomplete]="autoGenre"
                                 [matChipInputFor]="genreList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesGenre"
                                 [matChipInputAddOnBlur]="addOnBlurGenre" (matChipInputTokenEnd)="addGenre($event)">
                             </mat-chip-list>

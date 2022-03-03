@@ -123,37 +123,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     private appUtilService: AppUtilService,
     private trackService: TrackService,
     public dragDropService: DragDropService
-  ) {
-    // Singer
-    this.filteredSingers = this.singerCtrl.valueChanges.pipe(
-      startWith(null),
-      map((singer: Artist | null) =>
-        singer ? this._filterSinger(singer) : this.listSinger?.slice()
-      )
-    );
-
-    // Genre
-    this.filteredGenres = this.genreCtrl.valueChanges.pipe(
-      startWith(null),
-      map((genre: Genre | null) =>
-        genre ? this._filterGenre(genre) : this.listGenre?.slice()
-      )
-    );
-    // Album
-    this.filteredAlbums = this.albumCtrl.valueChanges.pipe(
-      startWith(null),
-      map((album: Album | null) =>
-        album ? this._filterAlbum(album) : this.listAlbum?.slice()
-      )
-    );
-    // Composer
-    this.filteredComposers = this.composerCtrl.valueChanges.pipe(
-      startWith(null),
-      map((composer: Artist | null) =>
-        composer ? this._filterComposer(composer) : this.listComposer?.slice()
-      )
-    );
-  }
+  ) {}
 
   // Singer
   addSinger(event: MatChipInputEvent): void {
@@ -185,10 +155,9 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   private _filterSinger(value: any): any[] {
-    return this.listSinger.filter((singer) => {
-      let nickName = value?.nickName === undefined ? value : value.nickName;
-      singer.nickName.toLowerCase().includes(nickName.toLowerCase());
-    });
+    return this.listSinger.filter((singer) =>
+      singer.nickName.toLowerCase().includes(value?.nickName === undefined ? value : value.nickName.toLowerCase())
+    );
   }
 
   // Genre
@@ -222,15 +191,15 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   private _filterGenre(value: any): any[] {
-    return this.listGenre.filter((genre) => {
+    return this.listGenre.filter((genre) =>
       genre.name
         .toLowerCase()
         .includes(
           value?.name === undefined
             ? value.toLowerCase()
             : value.name.toLowerCase()
-        );
-    });
+        )
+    );
   }
 
   // Album
@@ -303,23 +272,53 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   private _filterComposer(value: any): any[] {
-    return this.listComposer.filter((composer) => {
-      let nickName = value?.nickName === undefined ? value : value.nickName;
-      composer.nickName.toLowerCase().includes(nickName.toLowerCase());
-    });
+    return this.listComposer.filter((composer) =>
+      composer.nickName.toLowerCase().includes(value?.nickName === undefined ? value : value.nickName.toLowerCase())
+    );
   }
 
   ngOnInit(): void {
-    this.genreService
-      .listGenre()
-      .subscribe((response: any) => (this.listGenre = response.data));
-    this.albumService
-      .listAlbum()
-      .subscribe((response: any) => (this.listAlbum = response.data));
-    this.commonService
-      .listCategory()
-      .subscribe((response: any) => (this.listCategory = response.data));
+
+    // Init composer
+    this.listComposer.push(this.initArtist);
+    this.filteredComposers = this.composerCtrl.valueChanges.pipe(
+      startWith(''),
+      map((composer: Artist | null) =>
+        composer ? this._filterComposer(composer) : this.listComposer?.slice()
+      )
+    );
+
+    // Init singer
     this.listSinger.push(this.initArtist);
+    this.filteredSingers = this.singerCtrl.valueChanges.pipe(
+      startWith(''),
+      map((singer: Artist | null) =>
+        singer ? this._filterSinger(singer) : this.listSinger?.slice()
+      )
+    );
+
+    this.genreService.listGenre().subscribe((response: any) => {
+      this.listGenre = response.data;
+      this.filteredGenres = this.genreCtrl.valueChanges.pipe(
+        startWith(''),
+        map((genre: Genre | null) =>
+          genre ? this._filterGenre(genre) : this.listGenre?.slice()
+        )
+      );
+    });
+
+    this.albumService.listAlbum().subscribe((response: any) => {
+      this.listAlbum = response.data;
+      this.filteredAlbums = this.albumCtrl.valueChanges.pipe(
+        startWith(''),
+        map((album: Album | null) =>
+          album ? this._filterAlbum(album) : this.listAlbum?.slice()
+        )
+      );
+    });
+
+    this.commonService.listCategory().subscribe((response: any) => (this.listCategory = response.data));
+
     this.singerCtrl.valueChanges.subscribe((val: any) => {
       let nickName = val?.nickName === undefined ? val : val.nickName;
       if (!(nickName instanceof Artist)) {
@@ -328,7 +327,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
         });
       }
     });
-    this.listComposer.push(this.initArtist);
+
     this.composerCtrl.valueChanges.subscribe((val) => {
       let nickName = val?.nickName === undefined ? val : val.nickName;
       if (!(nickName instanceof Artist)) {
@@ -344,41 +343,46 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   onUploadSong(ngForm: NgForm) {
-    // console.log(ngForm.value);
-    // console.log(this.genres);
     const formData = this.trackService.createTrackFormData(
-      ngForm.value, this.genres, this.singers, this.composers, this.albums[0], this.songFile
+      ngForm.value,
+      this.genres,
+      this.singers,
+      this.composers,
+      this.albums[0],
+      this.songFile
     );
-    // console.log(this.appUtilService.convertFormDataToJSON(formData));
 
     this.subscriptions.push(
-      this.trackService.addTrack(formData).subscribe((response: any) => {
-          ngForm.reset();
+      this.trackService.addTrack(formData).subscribe(
+        (response: any) => {
+          // ngForm.reset();
           this.toastr.success('Add track successfully!');
-      }, (error: any) => {
+        },
+        (error: any) => {
           this.toastr.error('Add track failed!');
-      })
+        }
+      )
     );
   }
 
   onUploadAlbum(ngForm: NgForm) {
-    // console.log(this.songFileArr);
-    // console.log(ngForm.value);
-    // console.log(this.artists);
-    // console.log(this.genres);
     const formData = this.albumService.createAlbumFormData(
-      ngForm.value, this.genres, this.singers, this.albumImageFile, this.songFileArr
+      ngForm.value,
+      this.genres,
+      this.singers,
+      this.albumImageFile,
+      this.songFileArr
     );
-    // console.log(this.appUtilService.convertFormDataToJSON(formData));
 
     this.subscriptions.push(
-      this.albumService.addAlbum(formData).subscribe((response: any) => {
-          // ngForm.reset();
-          console.log(response);
+      this.albumService.addAlbum(formData).subscribe(
+        (response: any) => {
           this.toastr.success('Add album successfully!');
-      }, (error: any) => {
+        },
+        (error: any) => {
           this.toastr.error('Add album failed!');
-      })
+        }
+      )
     );
   }
 
