@@ -22,15 +22,19 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
-import { AddNewPlaylist, MySongListComponent } from '../../components/my-song-list/my-song-list.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import {
+  AddNewPlaylist,
+  MySongListComponent,
+} from '../../components/my-song-list/my-song-list.component';
 import { PlaylistDetailComponent } from '../../components/playlist-detail/playlist-detail.component';
 import { AlbumComponent } from '../../components/album/album.component';
 import { GenreComponent } from './../../components/genre/genre.component';
-import { GenreDetailComponent } from '../../components/genre-detail/genre-detail.component';
 import { PlaylistComponent } from '../../components/playlist/playlist.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
-  
+import { NgxPaginationModule } from 'ngx-pagination';
+
 @NgModule({
   declarations: [
     DefaultComponent,
@@ -46,12 +50,12 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
     PlaylistDetailComponent,
     AlbumComponent,
     GenreComponent,
-    GenreDetailComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
-  CommonModule,
+    CommonModule,
     RouterModule,
+    NgxPaginationModule,
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
@@ -67,6 +71,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
     MatDialogModule,
     MatIconModule,
     MatMenuModule,
+    MatGridListModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',
