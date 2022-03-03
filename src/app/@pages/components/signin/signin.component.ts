@@ -49,7 +49,7 @@ export class SigninComponent implements OnInit, OnDestroy {
         .pipe(finalize(() => (this.showLoading = false)))
         .subscribe((response: any) => {
           this.authenticationService.saveToken(response.data.token);
-          this.appUserService.getUserInfo(+response.data.userId).subscribe((userInfo: any) => this.authenticationService.addUserInfoToLocalCache(userInfo.data));
+          this.appUserService.getUserInfo(response.data.userId).subscribe((userInfo: any) => this.authenticationService.addUserInfoToLocalCache(userInfo.data));
           this.router.navigate(['/home']).then(r => this.toastr.success("Login successfully!"));
           
         }, (error) => this.toastr.error(error.error.errorMessage))
