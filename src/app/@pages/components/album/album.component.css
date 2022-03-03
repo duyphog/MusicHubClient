@@ -1,32 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap");
-@font-face {
-  font-family: "mp3-zing";
-  src: url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.5.11/static/media/mp3-zing.a1e0ef0d.eot);
-  src: url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.5.11/static/media/mp3-zing.a1e0ef0d.eot)
-      format("embedded-opentype"),
-    url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.5.11/static/media/mp3-zing.0af2c140.woff)
-      format("woff"),
-    url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.5.11/static/media/mp3-zing.f6cdb812.ttf)
-      format("truetype"),
-    url(https://zjs.zadn.vn/zmp3-desktop/releases/v1.5.11/static/media/mp3-zing.793cd366.svg)
-      format("svg");
-  font-weight: 400;
-  font-style: normal;
-}
-* {
-  text-rendering: optimizeLegibility;
-  text-rendering: optimizelegibility;
-}
-
-* {
-  box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-div {
-  word-break: break-word;
-  word-break: break-word;
-}
 
 .container {
   flex-grow: 1;
@@ -787,6 +758,7 @@ figure {
 
 figure {
   background-color: hsla(0, 0%, 100%, 0.1);
+  height: 40px;
 }
 
 .zm-card-image figure {
@@ -1179,6 +1151,10 @@ img {
   visibility: hidden;
 }
 
+.select-item:hover .zm-actions {
+  visibility: visible;
+}
+
 .song-list-select .checkbox input:checked {
   background-color: hsla(0, 0%, 100%, 0.15);
 }
@@ -1265,7 +1241,7 @@ img {
   content: "";
 }
 
-.is-40x40 {
+.is-40x40 img{
   width: 40px;
   height: 40px;
 }
@@ -1618,11 +1594,6 @@ input {
 
 .media-item.active .opacity {
   visibility: visible;
-  visibility: visible;
-}
-
-.media-item.active .zm-actions {
-  visibility: visible;
 }
 
 .media-item.active .media-right .icon {
@@ -1643,7 +1614,7 @@ input {
 }
 
 .scrollable {
-  margin-top: 20px;
+  margin-top: 100px;
   padding-left: 100px;
   width: 87%;
   padding-right: 100px;

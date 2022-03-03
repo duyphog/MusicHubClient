@@ -7,7 +7,8 @@
             <div class="z-thumb">
               <figure class="image is-48x48">
                 <img
-                  src="https://photo-playlist-zmp3.zadn.vn/s1/user-playlist?src=HavwqN7EvKCI1og5AfZbHm1SVTXkcELVKq9_rpkTw5HIHdJNQClf1GGMTe5hoEy0KKTvr3-UY5LLJ1_SEf63L5DKHvHjdSK6M1y5tJNMaKyFKacQ9Ch84b8PIPepojKV3qL3p6ARYHWDH1UHPvc9G5WKHi4vczj71a4Kg6wUZIW0HnggQ9kQQbyN5lOaaD4e5aXTect0d6HHMHtX9zISPb4F7UDkquCt0Lv8j6-1qZCEMn_WDeBIO5nO7ROmrz4sM5b7g6l2ZZeU2qpZAOlGSKf27xTotT1rM1aVwcNTq3uD14QwDTlTE5bJ4RnaZjqz3LOLwsI4tZvP2qMxC8QqEbfVAhenZBCuMabt-6SYVG&amp;size=thumb/240_240"
+                  style="width: 300px; height: 300px;"
+                  src="{{ albumInfo?.imgUrl }}"
                   alt="" class="">
               </figure>
               <div class="opacity">
@@ -39,19 +40,16 @@
         <div class="content-top">
           <div class="user-playlist-title">
             <h3 class="title">
-              Chẳng Hóa Tương Lai (Single)
+              {{ albumInfo?.name }}
             </h3>
           </div>
           <div class="subtitle">
-            <a style="color: hsla(0,0%,100%,0.5);" class="is-ghost" routerLink="/profile">
-              Thúy Khanh
-            </a>
+            <span *ngFor="let singer of albumInfo?.singers; let index = index" class="followers">
+              {{ singer.nickName }}{{ index === albumInfo?.singers.length - 1 ? '' : ',' }}
+            </span>
             •
-            <span>2016</span>
+            <span>{{ albumInfo?.musicYear }}</span>
           </div>
-          <h3 class="subtitle">
-            8K người yêu thích
-          </h3>
         </div>
         <div class="level actions">
           <button class="zm-btn btn-play-all is-outlined active is-medium is-upper button" tabindex="0">
@@ -105,7 +103,7 @@
           <div class="list user-song-section song-list-select">
             <div class="media select-header">
               <div class="media-left">
-                <div *ngIf="!songSelected.length" class="sort-wrapper">
+                <div *ngIf="!trackSelected.length" class="sort-wrapper">
                   <div class="zm-dropdown zm-group-dropdown mar-r-10">
                     <div class="zm-dropdown-trigger-btn">
                       <button class="zm-btn button" tabindex="0">
@@ -132,11 +130,11 @@
                     Bài hát
                   </div>
                 </div>
-                <div *ngIf="songSelected.length" class="actions">
+                <div *ngIf="trackSelected.length" class="actions">
                   <label class="checkbox">
-                    <input [hidden]="songSelected.length === songList.length" name="check-all" (click)="selectAllSong()"
+                    <input [hidden]="trackSelected.length === albumInfo?.tracks.length" name="check-all" (click)="selectAllTrack()"
                       type="checkbox">
-                    <input [hidden]="songSelected.length !== songList.length" name="check-all" (click)="selectAllSong()"
+                    <input [hidden]="trackSelected.length !== albumInfo?.tracks.length" name="check-all" (click)="selectAllTrack()"
                       type="checkbox" checked>
                   </label>
                   <button class="zm-btn action-btn add-queue-btn button" tabindex="0">
@@ -213,11 +211,11 @@
               </div>
             </div>
             <div class="">
-              <div *ngFor="let song of songList; let index = index" style="flex-grow: 1;" class="">
-                <div name="select-song" class="select-item" id="song{{ index }}" #item>
+              <div *ngFor="let track of albumInfo?.tracks; let index = index" style="flex-grow: 1;" class="">
+                <div name="select-song" class="select-item" id="track{{ index }}" #item>
                   <div class="checkbox-wrapper">
                     <label class="checkbox">
-                      <input name="checkbox-song" (click)="selectedSong(item, index)" type="checkbox">
+                      <input name="checkbox-song" (click)="selectedTrack(item, index)" type="checkbox">
                     </label>
                   </div>
                   <div class="list-item bor-b-1 media-item hide-right active">
@@ -229,18 +227,29 @@
                           </span>
                         </div>
                         <div class="song-thumb">
-                          <figure class="image is-40x40" title="Ai Ai Ai">
-                            <img src="{{ song.srcImg }}" alt="" class="">
+                          <figure class="image is-40x40" title="{{ track.name }}">
+                            <img src="{{ albumInfo.imgUrl }}" alt="" class="">
                           </figure>
-                          <div class="opacity">
-                          </div>
+                          <div class="opacity"></div>
+                          <div class="zm-actions-container">
+                            <div class="zm-box zm-actions">
+                                <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
+                                <button (click)="playCurrentTrack(track.id)" class="zm-btn action-play button" tabindex="0">
+                                  <i class="icon action-play ic-play"></i>
+                                </button>
+                                <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
+                                  <i class="icon ic-more"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
                         </div>
                         <div class="card-info">
                           <div class="title-wrapper">
                             <span class="item-title title">
                               <span>
                                 <span>
-                                  <span>{{ song.name }}</span>
+                                  <span>{{ track.name }}</span>
                                 </span>
                                 <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
                                   …
@@ -248,22 +257,16 @@
                               </span>
                             </span>
                           </div>
-                          <h3 class="is-one-line is-truncate subtitle">
-                            <a class="is-ghost" routerLink="/profile">
-                              {{ song.artist }}
-                            </a>
-                          </h3>
+                          <div class="subtitle">
+                            <span *ngFor="let singer of track.singers; let index = index" class="followers">
+                              {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div class="media-right">
                         <div class="hover-items">
                           <div class="level">
-                            <!-- <div class="level-item">
-                                <button class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
-                                  <i class="icon ic-mv">
-                                  </i>
-                                </button>
-                              </div> -->
                             <div class="level-item">
                               <button class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
                                 <i class="icon ic-karaoke">
@@ -281,35 +284,42 @@
                               </button>
                             </div>
                             <div class="level-item">
-                              <button (click)="openChooseOptionSong()"
+                              <button (click)="openChooseOptionTrack(index)"
                                 class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
                                 <i class="icon ic-more">
                                 </i>
                               </button>
-                              <div *ngIf="chooseOptionSong" class="zm-contextmenu song-menu">
+                              <div *ngIf="chooseOptionTrack[index]" class="zm-contextmenu song-menu">
                                 <div class="menu">
                                   <ul class="menu-list">
                                     <div class="menu-list--submenu">
                                       <div class="media song-info-menu" style="background: transparent !important;">
                                         <div class="media-left">
-                                          <figure class="image is-40x40"><img
-                                              src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_png/covers/8/8/88825ed8c45dd6409360affa18d36f1a_1470729217.png"
-                                              alt=""></figure>
+                                          <figure class="image is-40x40">
+                                            <img src="{{ albumInfo.imgUrl }}" alt="">
+                                          </figure>
                                         </div>
                                         <div class="is-w-150 media-content">
                                           <a>
-                                            <div class="title-wrapper"><span
-                                                class="item-title title"><span><span><span>Nỗi Đau Em Giấu Một
-                                                      Mình</span></span><span
-                                                    style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></span>
+                                            <div class="title-wrapper">
+                                              <span class="item-title title">
+                                                <span>
+                                                  <span>
+                                                    <span>{{ track.name }}</span>
+                                                  </span>
+                                                  <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
+                                                    …
+                                                  </span>
+                                                </span>
+                                              </span>
                                             </div>
                                           </a>
                                           <div class="song-stats">
                                             <div class="stat-item">
-                                              <i class="icon ic-like"></i><span>86K</span>
+                                              <i class="icon ic-like"></i><span>{{ track.liked }}</span>
                                             </div>
                                             <div class="stat-item">
-                                              <i class="icon ic-view"></i><span>8.6M</span>
+                                              <i class="icon ic-view"></i><span>{{ track.listened }}</span>
                                             </div>
                                           </div>
                                         </div>
@@ -407,7 +417,7 @@
                               </button>
                             </div>
                             <div class="level-item duration">
-                              03:36
+                              {{ appUtilService.getTimeDuration(track.durationSeconds) }}
                             </div>
                           </div>
                         </div>
@@ -421,11 +431,11 @@
         </div>
         <h3 class="bottom-info subtitle">
           <span>
-            {{ songList.length }} bài hát
+            {{ albumInfo?.tracks.length }} bài hát
           </span>
           •
           <span>
-            4 phút
+            {{ albumInfo?.tracks !== undefined ? getTotalDuration() : 0 }} phút
           </span>
         </h3>
       </div>
@@ -595,7 +605,7 @@
                       <i class="icon action-play ic-play">
                       </i>
                     </button>
-                    <button (click)="openChooseOptionOtherSong()" class="zm-btn zm-tooltip-btn is-hover-circle button "
+                    <button (click)="openChooseOptionOtherTrack()" class="zm-btn zm-tooltip-btn is-hover-circle button "
                       tabindex="0">
                       <i class="icon ic-more">
                       </i>
@@ -636,7 +646,7 @@
     </div>
   </div>
 </div>
-<div style="left: calc(100% - 830px);top: calc(100% + 330px);" *ngIf="chooseOptionOtherSong" class="zm-contextmenu playlist-menu">
+<div style="left: calc(100% - 830px);top: calc(100% + 330px);" *ngIf="chooseOptionOtherTrack" class="zm-contextmenu playlist-menu">
   <div class="menu">
     <ul class="menu-list">
       <li><button class="zm-btn button" tabindex="0"><i class="icon ic-add-play-now"></i><span>Thêm vào danh

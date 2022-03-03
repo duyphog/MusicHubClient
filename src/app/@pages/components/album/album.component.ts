@@ -1,38 +1,66 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { Album } from 'src/app/@model/album';
+import { Track } from 'src/app/@model/track';
+import { AlbumService } from './../../../@services/album.service';
+import { AppUtilService } from './../../../@services/app-util.service';
+import { TrackService } from './../../../@services/track.service';
 
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
-  styleUrls: ['./album.component.css']
+  styleUrls: ['./album.component.css'],
 })
 export class AlbumComponent implements OnInit {
-
   selectAll: boolean = false;
   chooseOption: boolean = false;
   chooseOptionAlbum: boolean = false;
-  chooseOptionSong: boolean = false;
-  chooseOptionOtherSong: boolean = false;
+  chooseOptionTrack: boolean[] = [];
+  chooseOptionOtherTrack: boolean = false;
 
-  songList: any[] = [
-    {
-      srcImg: "https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/avatars/6/7/67d14814930023cf3b56146571cd8d72_1399966280.jpg",
-      name: "Ai Ai Ai",
-      artist: "La Thăng New"
-    },
-    {
-      srcImg: "https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/avatars/6/7/67d14814930023cf3b56146571cd8d72_1399966280.jpg",
-      name: "Ai Ai Ai",
-      artist: "La Thăng New"
-    }
-  ];
-  songSelected: any[] = [];
+  trackSelected: any[] = [];
 
-  constructor(public dialog: MatDialog) { }
+  albumInfo: Album;
+
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService) {}
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(() => {
+      this.getAlbumDetail();
+    })
   }
-  
+
+  getAlbumDetail() {
+
+    const hasAlbumId: boolean = this.route.snapshot.paramMap.has('id');
+
+    if (hasAlbumId) {
+
+      const albumId = this.route.snapshot.paramMap.get('id');
+
+      this.albumService.getAlbumDetail(+albumId).subscribe((res: any) => {
+        this.albumInfo = res.data;
+      });
+    }
+    
+  }
+
+  getTotalDuration(): number {
+    let totalDuration: number = 0;
+    this.albumInfo?.tracks.forEach((track) => {
+      totalDuration += track.durationSeconds;
+    });
+
+    return Math.floor(totalDuration / 60);
+  }
+
+  playCurrentTrack(id) {
+    this.trackService.getTrack(id).subscribe((res: any) => {
+      this.trackService.setCurrentTrack(res.data);
+    });
+  }
+
   openAddNewPlaylist() {
     this.dialog.open(AddNewPlaylist);
   }
@@ -44,44 +72,42 @@ export class AlbumComponent implements OnInit {
   openChooseOptionAlbum(): void {
     this.chooseOptionAlbum = !this.chooseOptionAlbum;
   }
-  
-  openChooseOptionSong(): void {
-    this.chooseOptionSong = !this.chooseOptionSong;
+
+  openChooseOptionTrack(index): void {
+    this.chooseOptionTrack[index] = !this.chooseOptionTrack[index];
   }
 
-  openChooseOptionOtherSong(): void {
-    this.chooseOptionOtherSong = !this.chooseOptionOtherSong;
+  openChooseOptionOtherTrack(): void {
+    this.chooseOptionOtherTrack = !this.chooseOptionOtherTrack;
   }
 
-  selectedSong(item: any, index): void {
-
-    if (item.className.includes("select-item")) {
-      if (item.className.includes("is-selected")){
-        item.classList.remove("is-selected");
-        this.songSelected.splice(this.songSelected.indexOf(item.id), 1);
+  selectedTrack(item: any, index): void {
+    if (item.className.includes('select-item')) {
+      if (item.className.includes('is-selected')) {
+        item.classList.remove('is-selected');
+        this.trackSelected.splice(this.trackSelected.indexOf(item.id), 1);
       } else {
-        this.songSelected.push(item.id);
-        item.classList.add("is-selected");
+        this.trackSelected.push(item.id);
+        item.classList.add('is-selected');
       }
     }
   }
 
-  selectAllSong(): void {
+  selectAllTrack(): void {
     this.selectAll = !this.selectAll;
-    var element = document.getElementsByName("select-song");
-    var inputCheckbox: any = document.getElementsByName("checkbox-song");
+    var element = document.getElementsByName('select-song');
+    var inputCheckbox: any = document.getElementsByName('checkbox-song');
 
     if (this.selectAll) {
-      element.forEach(item => item.classList.add("is-selected"));
-      inputCheckbox.forEach(item => item.checked = true);
-      this.songList.forEach(song => this.songSelected.push(song.id));
+      element.forEach((item) => item.classList.add('is-selected'));
+      inputCheckbox.forEach((item) => (item.checked = true));
+      this.albumInfo.tracks.forEach((song) => this.trackSelected.push(song.id));
     } else {
-      element.forEach(item => item.classList.remove("is-selected"));
-      inputCheckbox.forEach(item => item.checked = false);
-      this.songSelected = [];
+      element.forEach((item) => item.classList.remove('is-selected'));
+      inputCheckbox.forEach((item) => (item.checked = false));
+      this.trackSelected = [];
     }
   }
-
 }
 
 @Component({
@@ -90,18 +116,15 @@ export class AlbumComponent implements OnInit {
   styleUrls: ['../my-song-list/my-song-list.component.css'],
 })
 export class AddNewPlaylist {
-
   publicMode: boolean = true;
   namePlaylist: string = null;
 
-  constructor(
-    public dialog: MatDialog
-  ) {}
+  constructor(public dialog: MatDialog) {}
 
   closeAddNewPlaylist() {
     this.dialog.closeAll();
   }
-  
+
   onChangePublicMode() {
     this.publicMode = !this.publicMode;
   }
