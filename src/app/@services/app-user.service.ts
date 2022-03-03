@@ -22,7 +22,7 @@ export class AppUserService extends BaseService {
   }
 
   public getUserInfo(id: number): Observable<UserInfo> {
-    return this.getRequest<UserInfo>(`${this.path}/profiles?userId=${id}`);
+    return this.getRequest<UserInfo>(`${this.path}/profiles?id=${id}`);
   }
 
   public createUserFormData(

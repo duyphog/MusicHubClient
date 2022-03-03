@@ -16,7 +16,6 @@ export class AudioService {
 
   constructor() {
     this.audio = new Audio();
-    // this.audio.preload = 'none';
     this.audio.controls = true;
     this.attachListeners();
   }

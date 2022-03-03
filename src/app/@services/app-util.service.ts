@@ -93,4 +93,13 @@ export class AppUtilService extends BaseService{
   { 
     return JSON.parse('[' + string + ']')
   }
+
+  getTimeDuration(duration): string {
+    let seconds = Math.floor(duration % 60),
+      displaySecs = seconds < 10 ? '0' + seconds : seconds,
+      minutes = Math.floor((duration / 60) % 60),
+      displayMins = minutes < 10 ? '0' + minutes : minutes;
+
+    return displayMins + ':' + displaySecs;
+  }
 }

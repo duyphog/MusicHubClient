@@ -9,6 +9,7 @@ import { BaseService } from './base.service';
 })
 export class GenreService extends BaseService {
 
+
   path: string = "/genre";
 
   constructor(httpClient: HttpClient) {

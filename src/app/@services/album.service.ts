@@ -17,8 +17,16 @@ export class AlbumService extends BaseService {
     super(httpClient);
   }
 
+  getAlbumDetail(albumId: number): Observable<Album> {
+    return this.getRequest<Album>(`${this.path}/${albumId}`);
+  }
+
   listAlbum(): Observable<Album[]> {
     return this.getRequest<Album[]>(`${this.path}`);
+  }
+
+  listAlbumByCategoryAndGenre(categoryId: number, genreId: number, thePageNumber: number, thePageSize: number): Observable<Album[]> {
+    return this.getRequest<Album[]>(`${this.path}/search?category-id=${categoryId}&genre-id=${genreId}&page-number=${thePageNumber}&page-size=${thePageSize}`);
   }
 
   public createAlbumFormData(album: Album, genres: Genre[], singers: Artist[], imgFile: File, trackFiles: File[]) {

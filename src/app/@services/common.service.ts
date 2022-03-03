@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from 'src/app/@services/base.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Category } from '../@model/category';
 import { Artist } from './../@model/artist';
 import { Genre } from '../@model/genre';
@@ -11,10 +11,30 @@ import { Genre } from '../@model/genre';
 })
 export class CommonService extends BaseService {
 
+
+  public currentCategory: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public currentGenre: BehaviorSubject<string> = new BehaviorSubject<string>('');
+
   path: string = '/common';
 
   constructor(httpClient: HttpClient) { 
     super(httpClient);
+  }
+
+  setCurrentCategory(name: string) {
+    this.currentCategory.next(name);
+  }
+
+  setCurrentGenre(name: string) {
+    this.currentGenre.next(name);
+  }
+
+  getCurrentCategory(): Observable<string> {
+    return this.currentCategory.asObservable();
+  }
+
+  getCurrentGenre(): Observable<string> {
+    return this.currentGenre.asObservable();
   }
 
   listCategory(): Observable<Category[]> {

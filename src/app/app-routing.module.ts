@@ -16,7 +16,6 @@ import { UploadSongComponent } from './@pages/components/upload-song/upload-song
 import { DefaultComponent } from './@pages/layout/default/default.component';
 import { FullwidthComponent } from './@pages/layout/fullwidth/fullwidth.component';
 import { GenreComponent } from './@pages/components/genre/genre.component';
-import { GenreDetailComponent } from './@pages/components/genre-detail/genre-detail.component';
 import { ForgotPasswordComponent } from './@pages/components/forgot-password/forgot-password.component';
 import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
 
@@ -53,9 +52,8 @@ const routes: Routes = [
         path: 'playlist',
         component: PlaylistComponent,
       },
-      { path: 'album', component: AlbumComponent },
-      { path: 'genre', component: GenreComponent },
-      { path: 'genre-detail', component: GenreDetailComponent },
+      { path: 'album/:id', component: AlbumComponent },
+      { path: 'genre/:category-id/:genre-id', component: GenreComponent },
     ],
   },
   {

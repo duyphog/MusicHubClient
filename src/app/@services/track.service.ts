@@ -2,7 +2,7 @@ import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Track } from './../@model/track';
 import { BaseService } from 'src/app/@services/base.service';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Genre } from '../@model/genre';
 import { Artist } from '../@model/artist';
 import { Album } from '../@model/album';
@@ -11,10 +11,20 @@ import { Album } from '../@model/album';
   providedIn: 'root',
 })
 export class TrackService extends BaseService{
+  
+  public currentTrackPlaying: BehaviorSubject<Track> = new BehaviorSubject<Track>(null);
   path: string = '/track';
 
   constructor(httpClient: HttpClient) {
     super(httpClient);
+  }
+
+  setCurrentTrack(track: Track) {
+    this.currentTrackPlaying.next(track);
+  }
+
+  getCurrentTrack(): Observable<Track> {
+    return this.currentTrackPlaying.asObservable();
   }
 
   public createTrackFormData(track: Track, genres: Genre[], singers: Artist[], composers: Artist[], album: Album, trackFile: File) {
@@ -47,5 +57,13 @@ export class TrackService extends BaseService{
       reportProgress: true,
       observe: 'events',
     });
+  }
+
+  listTrackByCategoryAndGenre(categoryId: number, genreId: number, thePageNumber: number, thePageSize: number): Observable<Track[]> {
+    return this.getRequest<Track[]>(`${this.path}/search?category-id=${categoryId}&genre-id=${genreId}&page-number=${thePageNumber}&page-size=${thePageSize}`);
+  }
+
+  getTrack(id: number): Observable<Track> {
+    return this.getRequest<Track>(`${this.path}/single/${id}`);
   }
 }
