@@ -7,33 +7,19 @@
             <a class="" href="/bai-hat/Minh-Yeu-Nhau-Yeu-Nhau-Binh-Yen-Thoi-Dinh-Huong-Ha-Anh-Tuan/ZW7F6COC.html">
               <div class="thumbnail-wrapper">
                 <div class="thumbnail">
-                  <figure *ngIf="!isPlaying" class="image is-50x50 is-rounded">
+                  <figure *ngIf="!isPlaying || currentTrack?.album === undefined" class="image is-50x50 is-rounded">
                     <img
-                      src="https://photo-resize-zmp3.zadn.vn/w240_r1x1_webp/covers/1/b/1b352fa8373feb08c631eb7a4f7cfb02_1494299663.jpg"
+                      style="width: 100%; height: 60px;"
+                      src="{{ imageSongPlaying() }}"
                       alt="">
                   </figure>
-                  <figure *ngIf="isPlaying" class="image image-spin is-50x50 is-rounded">
+                  <figure *ngIf="isPlaying && currentTrack?.album !== undefined" class="image image-spin is-50x50 is-rounded">
                     <img
-                      src="https://photo-resize-zmp3.zadn.vn/w240_r1x1_webp/covers/1/b/1b352fa8373feb08c631eb7a4f7cfb02_1494299663.jpg"
+                      style="width: 80px; height: 80px;"
+                      src="{{ imageSongPlaying() }}"
                       alt="">
                   </figure>
                 </div>
-                <!-- <svg viewBox="0 0 512 512" class="note note-1">
-                      <path d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z">
-                      </path>
-                    </svg>
-                    <svg viewBox="0 0 384 512" class="note note-2">
-                      <path d="M310.94 1.33l-96.53 28.51A32 32 0 0 0 192 60.34V360a148.76 148.76 0 0 0-48-8c-61.86 0-112 35.82-112 80s50.14 80 112 80 112-35.82 112-80V148.15l73-21.39a32 32 0 0 0 23-30.71V32a32 32 0 0 0-41.06-30.67z">
-                      </path>
-                    </svg>
-                    <svg viewBox="0 0 512 512" class="note note-3">
-                      <path d="M470.38 1.51L150.41 96A32 32 0 0 0 128 126.51v261.41A139 139 0 0 0 96 384c-53 0-96 28.66-96 64s43 64 96 64 96-28.66 96-64V214.32l256-75v184.61a138.4 138.4 0 0 0-32-3.93c-53 0-96 28.66-96 64s43 64 96 64 96-28.65 96-64V32a32 32 0 0 0-41.62-30.49z">
-                      </path>
-                    </svg>
-                    <svg viewBox="0 0 384 512" class="note note-4">
-                      <path d="M310.94 1.33l-96.53 28.51A32 32 0 0 0 192 60.34V360a148.76 148.76 0 0 0-48-8c-61.86 0-112 35.82-112 80s50.14 80 112 80 112-35.82 112-80V148.15l73-21.39a32 32 0 0 0 23-30.71V32a32 32 0 0 0-41.06-30.67z">
-                      </path>
-                    </svg> -->
               </div>
             </a>
           </div>
@@ -44,7 +30,7 @@
                   <a class="" href="/bai-hat/Minh-Yeu-Nhau-Yeu-Nhau-Binh-Yen-Thoi-Dinh-Huong-Ha-Anh-Tuan/ZW7F6COC.html">
                     <div class="title-wrapper">
                       <span class="item-title title">
-                        Mình Yêu Nhau Bình Yên Thôi
+                        {{ currentTrack?.name }}
                       </span>
                     </div>
                   </a>
@@ -52,16 +38,12 @@
               </div>
             </div>
             <h3 class="is-one-line is-truncate subtitle">
-              <a class="is-ghost" routerLink="/profile">
-                Đinh Hương
-              </a>
-              ,
-              <a class="is-ghost" routerLink="/profile">
-                Hà Anh Tuấn
+              <a *ngFor="let singer of currentTrack?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                {{ singer.nickName }}{{ index === currentTrack?.singers.length - 1 ? '' : ',' }}
               </a>
             </h3>
           </div>
-          <div class="media-right">
+          <!-- <div class="media-right">
             <div class="level">
               <div class="level-item">
                 <button class="zm-btn zm-tooltip-btn animation-like zm-disable-transition active is-hover-circle button"
@@ -81,16 +63,16 @@
                 </span>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
     <div class="player-controls__player-bar level-center">
       <div class="level-item">
         <div class="actions">
-          <button class="zm-btn zm-tooltip-btn btn-shuffle is-hover-circle button" tabindex="0">
-            <i class="icon ic-shuffle">
-            </i>
+          <button (click)="onOpenShuffle()" class="zm-btn zm-tooltip-btn btn-shuffle is-hover-circle button" tabindex="0">
+            <i *ngIf="!isShuffle" class="icon ic-shuffle"></i>
+            <i *ngIf="isShuffle"style="color: #7200a1" class="icon ic-shuffle"></i>
           </button>
           <button (click)="onPreviousSong()" class="zm-btn zm-tooltip-btn btn-pre is-hover-circle button" tabindex="-1">
             <i class="icon ic-pre">
@@ -99,17 +81,16 @@
           <button (click)="onPlaySong()" style="outline: none;" class="zm-btn zm-tooltip-btn btn-play button"
             tabindex="0">
             <i *ngIf="isPlaying" class="icon ic-pause-circle-outline"></i>
-            <i *ngIf="!isPlaying" class="icon ic-play-circle-outline">
-            </i>
+            <i *ngIf="!isPlaying" class="icon ic-play-circle-outline"></i>
           </button>
 
           <button (click)="onNextSong()" class="zm-btn zm-tooltip-btn btn-next is-hover-circle button" tabindex="0">
             <i class="icon ic-next">
             </i>
           </button>
-          <button class="zm-btn zm-tooltip-btn btn-repeat is-hover-circle button" tabindex="0">
-            <i class="icon ic-repeat">
-            </i>
+          <button (click)="onOpenLoop()" class="zm-btn zm-tooltip-btn btn-repeat is-hover-circle button" tabindex="0">
+            <i *ngIf="!isLoop" class="icon ic-repeat"></i>
+            <i *ngIf="isLoop"style="color: #7200a1" class="icon ic-repeat"></i>
           </button>
         </div>
       </div>
@@ -117,26 +98,6 @@
         <span class="time left">
           {{ timeElapsed }}
         </span>
-        <!-- <div class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: 3px;"> -->
-        <!-- <div class="zm-slider-bar"
-            style="border-radius: 4px; background: linear-gradient(to right, #fff 0%, #fff 10.0882%, hsla(0,0%,100%,0.3) 10.0882%, hsla(0,0%,100%,0.3) 100%); align-self: center;">
-            <div tabindex="0" aria-valuemax="261.744" aria-valuemin="0" aria-valuenow="26.40517" draggable="false"
-              role="slider" class="zm-slider-handle"
-              style="border-radius: 50%; background-color: #fff; transform: translate(-1.61265px, -3.5px);">
-            </div>
-          </div> -->
-        <!-- <ngb-progressbar color="white" class="progress mt-2" [showValue]="true" type="success" [value]="getProgress()"></ngb-progressbar> -->
-        <!-- <progress id="file" value="{{ percentElapsed }}" max="100">  </progress> -->
-
-        <!-- <audio controls id="myCurrentSong">
-            <source [src]="songList[currentIndex]" type="audio/ogg">
-            <source [src]="songList[currentIndex]" type="audio/mpeg">
-          </audio> -->
-        <!-- </div> -->
-        <!-- <div id="progressBar" class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: 3px;">
-          <input #slider (change)="onSeekAudio(slider)" class="slider-progress" type="range" min="1" max="100"
-            value="{{ percentElapsed }}">
-        </div> -->
         <div class="zm-duration-bar" style="display: flex; justify-content: center; margin-top: -2px;">
           <div class="music-duration">
             <span id="music-progressbar" class="music-progressbar"></span>

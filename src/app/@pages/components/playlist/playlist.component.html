@@ -13,7 +13,7 @@
                                     <div class="media is-pre">
                                         <div class="media-left">
                                             <div class="song-thumb">
-                                                <figure class="image is-40x40" title="Ai Ai Ai"><img src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/avatars/6/7/67d14814930023cf3b56146571cd8d72_1399966280.jpg" alt="" /></figure>
+                                                <figure class="image is-40x40" title="{{ currentTrack?.name }}"><img src="{{ imageTrack(currentTrack) }}" alt="" /></figure>
                                                 <div class="opacity"></div>
                                                 <div class="zm-actions-container">
                                                     <div class="zm-box zm-actions">
@@ -27,11 +27,15 @@
                                                 <div class="title-wrapper">
                                                     <span class="item-title title">
                                                         <span>
-                                                            <span><span>Ai Ai Ai</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
+                                                            <span><span>{{ currentTrack?.name }}</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
                                                         </span>
                                                     </span>
                                                 </div>
-                                                <h3 class="is-one-line is-truncate subtitle"><a class="is-ghost" href="/nghe-si/La Thăng New">La Thăng New</a></h3>
+                                                <h3 class="is-one-line is-truncate subtitle">
+                                                  <a *ngFor="let singer of currentTrack?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                                                    {{ singer.nickName }}{{ index === currentTrack?.singers.length - 1 ? '' : ',' }}
+                                                  </a>
+                                                </h3>
                                             </div>
                                         </div>
                                         <div class="media-right ">
@@ -54,35 +58,36 @@
                                                   </button>
                                                 </div>
                                                 <div class="level-item ">
-                                                  <button (click)="openChooseOptionSong(0)"
+                                                  <button (click)="openChooseOptionSong(currentIndex)"
                                                     class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
                                                     <i class="icon ic-more">
                                                     </i>
                                                   </button>
-                                                  <div *ngIf="chooseOptionSong[0]" class="zm-contextmenu song-menu">
+                                                  <div *ngIf="chooseOptionSong[currentIndex]" class="zm-contextmenu song-menu">
                                                     <div class="menu">
                                                       <ul class="menu-list">
                                                         <div class="menu-list--submenu">
                                                           <div class="media song-info-menu" style="background: transparent !important;">
                                                             <div class="media-left">
-                                                              <figure class="image is-40x40"><img
-                                                                  src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_png/covers/8/8/88825ed8c45dd6409360affa18d36f1a_1470729217.png"
-                                                                  alt=""></figure>
+                                                              <figure class="image is-40x40">
+                                                                <img
+                                                                  src="{{ imageTrack(currentTrack) }}"
+                                                                  alt="">
+                                                                </figure>
                                                             </div>
                                                             <div class="is-w-150 media-content">
                                                               <a>
                                                                 <div class="title-wrapper"><span
-                                                                    class="item-title title"><span><span><span>Nỗi Đau Em Giấu Một
-                                                                          Mình</span></span><span
+                                                                    class="item-title title"><span><span><span>{{ currentTrack.name }}</span></span><span
                                                                         style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></span>
                                                                 </div>
                                                               </a>
                                                               <div class="song-stats">
                                                                 <div class="stat-item">
-                                                                  <i class="icon ic-like"></i><span>86K</span>
+                                                                  <i class="icon ic-like"></i><span>{{ currentTrack.liked }}</span>
                                                                 </div>
                                                                 <div class="stat-item">
-                                                                  <i class="icon ic-view"></i><span>8.6M</span>
+                                                                  <i class="icon ic-view"></i><span>{{ currentTrack.listened }}</span>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -105,9 +110,6 @@
                                                         </div>
                                                       </ul>
                                                       <ul class="menu-list">
-                                                        <li><button class="zm-btn button" tabindex="0"><i
-                                                              class="icon ic-add-play-now"></i><span>Thêm vào danh sách phát</span></button>
-                                                        </li>
                                                         <li><button class="zm-btn button" tabindex="0"><i
                                                               class="icon ic-play-next"></i><span>Phát tiếp theo</span></button></li>
                                                         <li></li>
@@ -164,16 +166,6 @@
                                                             </div>
                                                           </div>
                                                         </li>
-                                                        <li><button class="zm-btn button" tabindex="0"><i
-                                                              class="icon ic-comment"></i><span>Bình luận</span><span
-                                                              class="comment-badge"></span></button></li>
-                                                        <li><button class="zm-btn button" tabindex="0"><i class="icon ic-link"></i><span>Sao
-                                                              chép link</span></button></li>
-                                                        <li>
-                                                          <div class="menu-list--submenu"><button class="zm-btn button" tabindex="0"><i
-                                                                class="icon ic-share"></i><span>Chia sẻ</span><i
-                                                                class="icon ic-go-right"></i></button></div>
-                                                        </li>
                                                       </ul>
                                                     </div>
                                                   </div>
@@ -186,13 +178,13 @@
                                 <span></span>
                                 <div class="next-songs"><h3 class="title is-6">Tiếp theo</h3></div>
                             </div>
-                         
-                            <div index="1" data-index="1" data-known-size="56" style="z-index: 1065;">
-                                <div class="list-item media-item full-left">
+                            <div class="next-track-list">
+                              <div *ngFor="let playlistDetail of currentPlaylist?.playlistDetails" index="1" data-index="1" data-known-size="56" style="z-index: 1065;">
+                                <div *ngIf="playlistDetail.track.name !== currentTrack.name" class="list-item media-item full-left">
                                     <div class="media">
                                         <div class="media-left">
                                             <div class="song-thumb">
-                                                <figure class="image is-40x40" title="Họ Yêu Ai Mất Rồi (Lofi Version)"><img src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/cover/d/f/b/f/dfbffc3b7c5a84a630371f1a1cf46e0d.jpg" alt="" /></figure>
+                                                <figure class="image is-40x40" title="{{ playlistDetail.track.name }}"><img src="{{ imageTrack(playlistDetail.track) }}" alt="" /></figure>
                                                 <div class="opacity"></div>
                                                 <div class="zm-actions-container">
                                                     <div class="zm-box zm-actions">
@@ -206,12 +198,14 @@
                                                 <div class="title-wrapper">
                                                     <span class="item-title title">
                                                         <span>
-                                                            <span><span>Họ Yêu Ai Mất Rồi (Lofi Version)</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
+                                                            <span><span>{{ playlistDetail.track.name }}</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
                                                         </span>
                                                     </span>
                                                 </div>
                                                 <h3 class="is-one-line is-truncate subtitle">
-                                                    <a class="is-ghost" href="/nghe-si/Doan-Hieu">Doãn Hiếu</a>, <a class="is-ghost" href="/nghe-si/Mr-Paa">Mr.Paa</a>, <a class="is-ghost" href="/nghe-si/BMZ">BMZ</a>
+                                                  <a *ngFor="let singer of playlistDetail.track?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                                                    {{ singer.nickName }}{{ index === playlistDetail.track?.singers.length - 1 ? '' : ',' }}
+                                                  </a>
                                                 </h3>
                                             </div>
                                         </div>
@@ -286,9 +280,7 @@
                                                         </div>
                                                       </ul>
                                                       <ul class="menu-list">
-                                                        <li><button class="zm-btn button" tabindex="0"><i
-                                                              class="icon ic-add-play-now"></i><span>Thêm vào danh sách phát</span></button>
-                                                        </li>
+                                                        
                                                         <li><button class="zm-btn button" tabindex="0"><i
                                                               class="icon ic-play-next"></i><span>Phát tiếp theo</span></button></li>
                                                         <li></li>
@@ -345,16 +337,6 @@
                                                             </div>
                                                           </div>
                                                         </li>
-                                                        <li><button class="zm-btn button" tabindex="0"><i
-                                                              class="icon ic-comment"></i><span>Bình luận</span><span
-                                                              class="comment-badge"></span></button></li>
-                                                        <li><button class="zm-btn button" tabindex="0"><i class="icon ic-link"></i><span>Sao
-                                                              chép link</span></button></li>
-                                                        <li>
-                                                          <div class="menu-list--submenu"><button class="zm-btn button" tabindex="0"><i
-                                                                class="icon ic-share"></i><span>Chia sẻ</span><i
-                                                                class="icon ic-go-right"></i></button></div>
-                                                        </li>
                                                       </ul>
                                                     </div>
                                                   </div>
@@ -364,8 +346,9 @@
                                         </div>
                                     </div>
                                 </div>
+                              </div>  
                             </div>
-                            <div></div>
+                            
                         </div>
                     </div>
                     <div style="height: 209px; position: absolute; top: 0px;">&nbsp;</div>

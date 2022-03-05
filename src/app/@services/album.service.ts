@@ -1,9 +1,9 @@
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Album } from '../@model/album';
-import { Artist } from '../@model/artist';
-import { Genre } from '../@model/genre';
+import { Album } from '../@model/album.model';
+import { Artist } from '../@model/artist.model';
+import { Genre } from '../@model/genre.model';
 import { BaseService } from './base.service';
 
 @Injectable({
@@ -38,12 +38,17 @@ export class AlbumService extends BaseService {
     genres.forEach(genre => {
       formData.append("genreIds", genre?.id.toString());
     });
-    trackFiles.forEach((trackFile: any) => {
-      formData.append("trackFiles", trackFile.item);
-    });
+    if (trackFiles.length !== 0) {
+      trackFiles.forEach((trackFile: any) => {
+        formData.append("trackFiles", trackFile.item);
+      });
+    }
+    if (imgFile) {
+      formData.append("imgFile", imgFile);
+    }
+    
     formData.append("categoryId", album?.category?.id.toString());
     formData.append("name", album?.name);
-    formData.append("imgFile", imgFile);
     formData.append("musicProduction", album?.musicProduction);
     formData.append("musicYear", album?.musicYear?.toString());
     return formData;

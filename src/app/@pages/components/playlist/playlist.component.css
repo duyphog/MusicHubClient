@@ -655,3 +655,12 @@ video {
   height: 185px;
   overflow-x: hidden;
 }
+
+.next-track-list {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.next-track-list:hover {
+  overflow-y: scroll !important;
+}
