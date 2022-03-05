@@ -6,25 +6,22 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormBuilder, FormControl, FormGroup, NgForm } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 import { Observable, Subscription } from 'rxjs';
 import { finalize, map, startWith } from 'rxjs/operators';
-import { ArtistService } from './../../../@services/artist.service';
-import { Artist } from '../../../@model/artist';
+import { Artist } from '../../../@model/artist.model';
 import { GenreService } from './../../../@services/genre.service';
-import { Genre } from './../../../@model/genre';
-import { Track } from './../../../@model/track';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Genre } from '../../../@model/genre.model';
+import { Track } from '../../../@model/track.model';
 import { DragDropService } from '../../../@services/drag-drop.service';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { TrackService } from './../../../@services/track.service';
 import { AppUtilService } from './../../../@services/app-util.service';
-import { Album } from 'src/app/@model/album';
+import { Album } from 'src/app/@model/album.model';
 import { AlbumService } from 'src/app/@services/album.service';
-import { Category } from 'src/app/@model/category';
+import { Category } from 'src/app/@model/category.model';
 import { CommonService } from 'src/app/@services/common.service';
 
 @Component({
@@ -40,9 +37,12 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   songFileArr = [];
   songImageArr = [];
   fileObj = [];
+  showLoading: boolean = false;
 
   albumSongFile: File[];
   albumImageFile: File;
+  uploadSongFormGroup: FormGroup;
+  uploadAlbumFormGroup: FormGroup;
 
   trackUpload: Track = new Track();
   albumUpload: Album = new Album();
@@ -74,6 +74,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     isSinger: false,
   };
 
+  @ViewChild('chipList') chipList: MatChipList;
   @ViewChild('singerInput') singerInput: ElementRef;
 
   // genre
@@ -122,8 +123,54 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private appUtilService: AppUtilService,
     private trackService: TrackService,
-    public dragDropService: DragDropService
-  ) {}
+    public dragDropService: DragDropService,
+    private formBuilder: FormBuilder
+  ) {
+    this.uploadSongFormGroup = this.formBuilder.group({
+      'name': new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
+      'singersFormControl': new FormControl('', [
+        
+      ]),
+      'composersFormControl': new FormControl('', [
+
+      ]),
+      'genresFormControl': new FormControl('', [
+
+      ]),
+      'category': new FormControl('', [
+        Validators.required,
+      ]),
+      
+    });
+
+    this.uploadAlbumFormGroup = this.formBuilder.group({
+      'name': new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
+      'singersFormControl': new FormControl('', [
+        
+      ]),
+      'composersFormControl': new FormControl('', [
+
+      ]),
+      'genresFormControl': new FormControl('', [
+
+      ]),
+      'category': new FormControl('', [
+        Validators.required,
+      ]),
+      'musicProduction': new FormControl('', [
+        Validators.required,
+      ]),
+      'musicYear': new FormControl('', [
+        Validators.required,
+      ]),
+    });
+  }
 
   // Singer
   addSinger(event: MatChipInputEvent): void {
@@ -192,13 +239,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
 
   private _filterGenre(value: any): any[] {
     return this.listGenre.filter((genre) =>
-      genre.name
-        .toLowerCase()
-        .includes(
-          value?.name === undefined
-            ? value.toLowerCase()
-            : value.name.toLowerCase()
-        )
+      genre.name.toLowerCase().includes(value?.name === undefined ? value.toLowerCase() : value.name.toLowerCase())
     );
   }
 
@@ -336,6 +377,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
         });
       }
     });
+  
   }
 
   ngOnDestroy(): void {
@@ -343,47 +385,67 @@ export class UploadSongComponent implements OnInit, OnDestroy {
   }
 
   onUploadSong(ngForm: NgForm) {
-    const formData = this.trackService.createTrackFormData(
-      ngForm.value,
-      this.genres,
-      this.singers,
-      this.composers,
-      this.albums[0],
-      this.songFile
-    );
 
-    this.subscriptions.push(
-      this.trackService.addTrack(formData).subscribe(
-        (response: any) => {
-          // ngForm.reset();
-          this.toastr.success('Add track successfully!');
-        },
-        (error: any) => {
-          this.toastr.error('Add track failed!');
-        }
-      )
-    );
+    if (this.uploadSongFormGroup.invalid) {
+      this.uploadSongFormGroup.markAllAsTouched();
+    } else if (this.singers.length !== 0 && this.composers.length && this.genres.length && this.songFile === undefined && this.trackUpload.category.id !== undefined) {
+      this.toastr.error('Vui lòng chọn file bài hát');
+    } else {
+      const formData = this.trackService.createTrackFormData(
+        ngForm.value,
+        this.genres,
+        this.singers,
+        this.composers,
+        this.albums[0],
+        this.songFile
+      );
+      
+      this.showLoading = true;
+  
+      this.subscriptions.push(
+        this.trackService.addTrack(formData)
+        .pipe(finalize(() => (this.showLoading = false)))
+        .subscribe(
+          (response: any) => {
+            this.toastr.success('Thêm bài hát thành công');
+          },
+          (error: any) => {
+            this.toastr.error(error.error.errorMessage);
+          }
+        )
+      );
+    }
+    
   }
 
   onUploadAlbum(ngForm: NgForm) {
-    const formData = this.albumService.createAlbumFormData(
-      ngForm.value,
-      this.genres,
-      this.singers,
-      this.albumImageFile,
-      this.songFileArr
-    );
 
-    this.subscriptions.push(
-      this.albumService.addAlbum(formData).subscribe(
-        (response: any) => {
-          this.toastr.success('Add album successfully!');
-        },
-        (error: any) => {
-          this.toastr.error('Add album failed!');
-        }
-      )
-    );
+    if (this.uploadAlbumFormGroup.invalid) {
+      this.uploadAlbumFormGroup.markAllAsTouched();
+    } else {
+      const formData = this.albumService.createAlbumFormData(
+        ngForm.value,
+        this.genres,
+        this.singers,
+        this.albumImageFile,
+        this.songFileArr
+      );
+      this.showLoading = true;
+  
+      this.subscriptions.push(
+        this.albumService.addAlbum(formData)
+        .pipe(finalize(() => (this.showLoading = false)))
+        .subscribe(
+          (response: any) => {
+            this.toastr.success('Thêm album thành công');
+          },
+          (error: any) => {
+            this.toastr.error(error.error.errorMessage);
+          }
+        )
+      );
+    }
+    
   }
 
   // upload song
@@ -455,5 +517,57 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     });
 
     this.songFile = this.songFileArr[0].item;
+  }
+
+  // Track validate
+
+  get name(): AbstractControl {
+    return this.uploadSongFormGroup.get('name');
+  }
+
+  get singersFormControl(): AbstractControl {
+    return this.uploadSongFormGroup.get('singersFormControl');
+  }
+
+  get composersFormControl(): AbstractControl {
+    return this.uploadSongFormGroup.get('composersFormControl');
+  }
+
+  get genresFormControl(): AbstractControl {
+    return this.uploadSongFormGroup.get('genresFormControl');
+  }
+
+  get category(): AbstractControl {
+    return this.uploadSongFormGroup.get('category');
+  }
+
+  // Album validate
+
+  get nameAlbum(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('name');
+  }
+
+  get singersAlbumFormControl(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('singersFormControl');
+  }
+
+  get composersAlbumFormControl(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('composersFormControl');
+  }
+
+  get genresAlbumFormControl(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('genresFormControl');
+  }
+
+  get categoryAlbum(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('category');
+  }
+
+  get musicProduction(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('musicProduction');
+  }
+
+  get musicYear(): AbstractControl {
+    return this.uploadAlbumFormGroup.get('musicYear');
   }
 }

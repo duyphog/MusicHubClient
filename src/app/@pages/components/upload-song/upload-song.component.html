@@ -3,9 +3,11 @@
     <div class="mat-elevation-z4">
       <mat-tab label="Upload Song" [aria-label]="'accent'">
         <!-- Form Upload Song -->
-        <form style="margin-top: 20px" method="post" #uploadSongForm="ngForm" (ngSubmit)="onUploadSong(uploadSongForm)"
-          id="formUploadHidden" enctype="multipart/form-data" novalidate class="box has-advanced-upload">
-          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)" class="upload-song">
+        <form style="margin-top: 20px" method="post" [formGroup]="uploadSongFormGroup" #uploadSongForm="ngForm"
+          (ngSubmit)="onUploadSong(uploadSongForm)" id="formUploadHidden" enctype="multipart/form-data" novalidate
+          class="box has-advanced-upload">
+          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)"
+            class="upload-song">
             <div *ngIf="!songFileArr.length || songFileArr.length !== 1 " class="box__input">
               <input #songFileField (change)="upload($event.target.files)" type="file" name="file"
                 id="inputUploadHidden" class="box__file"
@@ -20,7 +22,7 @@
               </div>
             </div>
             <div *ngIf="songFileArr.length === 1" class="box-upload">
-              <b>Đã tải lên {{ songFileArr.length }} mục</b> 
+              <b>Đã tải lên {{ songFileArr.length }} mục</b>
               <div class="row song-uploading">
                 <div class="col-md-12 pr-md-1">
                   <div class="file_box">
@@ -31,11 +33,11 @@
                           {{ songFile.name.length > 50 ? songFile.name.slice(0, 50).concat("... ", songFile.name.slice(songFile.name.lastIndexOf('.'))) : songFile.name  }}
                           <span style="color: #b1b1b1; margin-left: 20px">
                             {{ (songFile.size / 1000000).toFixed(2) }}MB&nbsp;&nbsp;
-                            <button type="button" (click)="onRemoveTrack(0)" style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
-                          </span> 
+                            <button type="button" (click)="onRemoveTrack(0)"
+                              style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
+                          </span>
                         </div>
-                        <div class="info_small_upload">
-                          <!-- <ngb-progressbar class="progress mt-2" [showValue]="true" type="success" [value]="50"></ngb-progressbar> -->
+                        <div class="info_small_upload">ư
                         </div>
                       </div>
                     </div>
@@ -45,7 +47,7 @@
             </div>
           </div>
           <mat-divider></mat-divider>
-          <div  class="song-info">
+          <div class="song-info">
             <div class="container row">
               <div class="col-md-12">
                 <div class="card">
@@ -85,7 +87,15 @@
                             Tên bài hát
                           </label>
                           <input [(ngModel)]="trackUpload.name" name="name" placeholder="Tên bài hát" type="text"
-                            class="form-control" />
+                            formControlName="name" class="form-control" />
+                          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="help-block">
+                            <div *ngIf="name.errors.required">
+                              Vui lòng nhập tên bài hát.
+                            </div>
+                            <div *ngIf="name.errors.minlength">
+                              Tên bài hát phải có ít nhất 4 kí tự.
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -96,7 +106,7 @@
                             <label>
                               Ca sĩ, diễn viên
                             </label>
-                            <mat-chip-list #singerList>
+                            <mat-chip-list formControlName="singersFormControl" name="singersFormControl" #singerList>
                               <mat-chip *ngFor="let singer of singers; let index=index" [selectable]="selectableSinger"
                                 [removable]="removableSinger" (removed)="removeSinger(index)">
                                 {{singer.nickName}}
@@ -114,7 +124,13 @@
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
+
                           </mat-form-field>
+                          <div class="help-block">
+                            <mat-error
+                              *ngIf="(singersFormControl.touched || singersFormControl.dirty) && singers.length === 0">
+                              Vui lòng chọn ca sĩ.</mat-error>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -125,17 +141,21 @@
                             <label>
                               Sáng tác
                             </label>
-                            <mat-chip-list #composerList>
-                              <mat-chip *ngFor="let composer of composers; let index=index" [selectable]="selectableComposer"
-                                [removable]="removableComposer" (removed)="removeComposer(index)">
+                            <mat-chip-list formControlName="composersFormControl" #composerList>
+                              <mat-chip *ngFor="let composer of composers; let index=index"
+                                [selectable]="selectableComposer" [removable]="removableComposer"
+                                (removed)="removeComposer(index)">
                                 {{composer.nickName}}
                                 <mat-icon matChipRemove *ngIf="removableComposer">cancel</mat-icon>
                               </mat-chip>
                               <input #composerInput [formControl]="composerCtrl" [matAutocomplete]="autoComposer"
-                                [matChipInputFor]="composerList" [matChipInputSeparatorKeyCodes]="separatorKeysCodesComposer"
-                                [matChipInputAddOnBlur]="addOnBlurComposer" (matChipInputTokenEnd)="addComposer($event)">
+                                [matChipInputFor]="composerList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodesComposer"
+                                [matChipInputAddOnBlur]="addOnBlurComposer"
+                                (matChipInputTokenEnd)="addComposer($event)">
                             </mat-chip-list>
-                            <mat-autocomplete #autoComposer="matAutocomplete" (optionSelected)="selectedComposer($event)">
+                            <mat-autocomplete #autoComposer="matAutocomplete"
+                              (optionSelected)="selectedComposer($event)">
                               <ng-container *ngFor="let composer of filteredComposers | async">
                                 <mat-option *ngIf="!composers.includes(composer)" [value]="composer">
                                   {{composer.nickName}}
@@ -143,6 +163,11 @@
                               </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
+                          <div class="help-block">
+                            <mat-error
+                            *ngIf="(composersFormControl.touched || composersFormControl.dirty) && composers.length === 0">
+                            Vui lòng chọn nhà sáng tác.</mat-error>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -152,10 +177,15 @@
                           <label>
                             Chuyên mục
                           </label>
-                          <select class="form-control select-category" name="category" [(ngModel)]="trackUpload.category">
-                            <!-- <option [value]="-1">Chọn chuyên mục</option> -->
-                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}</option>
+                          <select class="form-control select-category"
+                            [(ngModel)]="trackUpload.category" formControlName="category">
+                            <option [ngValue]="null" disabled>Chọn chuyên mục</option>
+                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}
+                            </option>
                           </select>
+                          <div *ngIf="trackUpload.category.id === undefined && category.touched" class="help-block">
+                            Vui lòng chọn chuyên mục nhạc.
+                          </div> 
                         </div>
                       </div>
                       <div class="col-md-8 pl-md-1">
@@ -164,7 +194,7 @@
                             <label>
                               Thể loại
                             </label>
-                            <mat-chip-list #genreList>
+                            <mat-chip-list formControlName="genresFormControl" #genreList>
                               <mat-chip *ngFor="let genre of genres; let index=index" [selectable]="selectableGenre"
                                 [removable]="removableGenre" (removed)="removeGenre(index)">
                                 {{genre.name}}
@@ -182,6 +212,11 @@
                               </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
+                          <div class="help-block">
+                            <mat-error
+                              *ngIf="(genresFormControl.touched || genresFormControl.dirty) && genres.length === 0">Vui
+                              lòng chọn thể loại.</mat-error>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -191,7 +226,8 @@
                           <label>
                             Hãng sản xuất
                           </label>
-                          <input [(ngModel)]="trackUpload.musicProduction" name="musicProduction" type="text" class="form-control" />
+                          <input [(ngModel)]="trackUpload.musicProduction" name="musicProduction" type="text"
+                            class="form-control" />
                         </div>
                       </div>
                       <div class="col-md-6 pl-md-1">
@@ -199,7 +235,8 @@
                           <label>
                             Năm phát hành
                           </label>
-                          <input [(ngModel)]="trackUpload.musicYear" name="musicYear" type="text" class="form-control" />
+                          <input [(ngModel)]="trackUpload.musicYear" name="musicYear" type="number"
+                            class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -209,7 +246,8 @@
                           <label>
                             Lời bài hát
                           </label>
-                          <textarea rows="5" [(ngModel)]="trackUpload.lyric" name="lyric" class="text-area form-control"></textarea>
+                          <textarea rows="5" [(ngModel)]="trackUpload.lyric" name="lyric"
+                            class="text-area form-control"></textarea>
                         </div>
                       </div>
                     </div>
@@ -219,32 +257,16 @@
                           <label>
                             Ghi chú
                           </label>
-                          <input [(ngModel)]="trackUpload.description" name="description" type="text" class="form-control" />
+                          <input [(ngModel)]="trackUpload.description" name="description" type="text"
+                            class="form-control" />
                         </div>
                       </div>
                     </div>
-                    <!-- <div class="row">
-                      <div class="col-md-12 pr-md-1">
-                        <div class="form-group">
-                          <label>
-                            Chế độ công khai
-                          </label>
-                          <br>
-                          <input name="public" id="yesOption" type="radio" />
-                          <label for="yesOption">&nbsp;Có</label> &nbsp;
-                          <input name="public" id="noOption" type="radio"  />
-                          <label for="noOption">&nbsp;Không</label>
-                        </div>
-                      </div>
-                    </div> -->
                     <div style="justify-content: center;" class="card-footer row">
-                      <!-- <button (click)="onCancelUploadSong()" type="button" class="btn btn-fill btn-danger">
-                        <span class="m-r-n-lg">Cancel</span>
-                      </button> -->
                       <button type="submit" class="btn btn-fill btn-danger">
-                        <!-- <i *ngIf="refreshing" class="fa fa-spinner"></i>
-                  <span *ngIf="refreshing"> Saving...</span> -->
-                        <span class="m-r-n-lg">Upload</span>
+                        <i *ngIf="showLoading" class="fa fa-spinner"></i>
+                        <span *ngIf="showLoading"> Uploading...</span>
+                        <span *ngIf="!showLoading" class="m-r-n-lg">Upload</span>
                       </button>
                     </div>
                   </div>
@@ -274,10 +296,11 @@
     <div class="mat-elevation-z4">
       <mat-tab label="Upload Album">
         <!-- Form Upload Album -->
-        <form style="margin-top: 20px" method="post" #uploadAlbumForm="ngForm"
+        <form style="margin-top: 20px" method="post" [formGroup]="uploadAlbumFormGroup" #uploadAlbumForm="ngForm"
           (ngSubmit)="onUploadAlbum(uploadAlbumForm)" id="formUploadHidden" enctype="multipart/form-data" novalidate
           class="box has-advanced-upload">
-          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)" class="upload-song">
+          <div style="border: 1px dashed #fff;" appDragDropFileUpload (fileDropped)="upload($event)"
+            class="upload-song">
             <div *ngIf="!songFileArr.length" class="box__input">
               <input #songFileField (change)="upload($event.target.files)" type="file" name="file"
                 id="inputUploadHidden" class="box__file" multiple
@@ -292,7 +315,7 @@
               </div>
             </div>
             <div *ngIf="songFileArr.length" class="box-upload">
-              <b>Đã tải lên {{ songFileArr.length }} mục</b> 
+              <b>Đã tải lên {{ songFileArr.length }} mục</b>
               <div *ngFor="let songFile of songFileArr; let index=index" class="row song-uploading">
                 <div class="col-md-12 pr-md-1">
                   <div class="file_box">
@@ -303,12 +326,10 @@
                           {{ songFile.item.name.length > 50 ? songFile.item.name.slice(0, 50).concat("... ", songFile.item.name.slice(songFile.item.name.lastIndexOf('.'))) : songFile.item.name  }}
                           <span style="color: #b1b1b1; margin-left: 20px">
                             {{ (songFile.item.size / 1000000).toFixed(2) }}MB &nbsp;&nbsp;
-                            <button type="button" (click)="onRemoveTrack(index)" style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
-                          </span> 
+                            <button type="button" (click)="onRemoveTrack(index)"
+                              style="border: none; background-color: transparent; color: rgba(255, 255, 255, 0.541); border-radius: 5px;">x</button>
+                          </span>
                         </div>
-                        <!-- <div class="info_small_upload">
-                          <ngb-progressbar class="progress mt-2" [showValue]="true" type="success" [value]="50"></ngb-progressbar>
-                        </div> -->
                       </div>
                     </div>
                   </div>
@@ -331,7 +352,16 @@
                           <label>
                             Tên album
                           </label>
-                          <input name="name" [(ngModel)]="albumUpload.name" placeholder="Tên album" type="text" class="form-control" />
+                          <input name="name" [(ngModel)]="albumUpload.name" formControlName="name" placeholder="Tên album" type="text"
+                            class="form-control" />
+                          <div *ngIf="nameAlbum.invalid && (nameAlbum.dirty || nameAlbum.touched)" class="help-block">
+                            <div *ngIf="nameAlbum.errors.required">
+                              Vui lòng nhập tên album.
+                            </div>
+                            <div *ngIf="nameAlbum.errors.minlength">
+                              Tên album phải có ít nhất 4 kí tự.
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -342,7 +372,7 @@
                             <label>
                               Ca sĩ, diễn viên
                             </label>
-                            <mat-chip-list #singerList>
+                            <mat-chip-list formControlName="singersFormControl" name="singersFormControl" #singerList>
                               <mat-chip *ngFor="let singer of singers; let index=index" [selectable]="selectableSinger"
                                 [removable]="removableSinger" (removed)="removeSinger(index)">
                                 {{singer.nickName}}
@@ -360,7 +390,13 @@
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
+
                           </mat-form-field>
+                          <div class="help-block">
+                            <mat-error
+                              *ngIf="(singersAlbumFormControl.touched || singersAlbumFormControl.dirty) && singers.length === 0">
+                              Vui lòng chọn ca sĩ.</mat-error>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -370,10 +406,15 @@
                           <label>
                             Chuyên mục
                           </label>
-                          <select class="form-control select-category" name="category" [(ngModel)]="albumUpload.category">
-                            <!-- <option [value]="-1">Chọn chuyên mục</option> -->
-                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}</option>
+                          <select class="form-control select-category"
+                            [(ngModel)]="trackUpload.category" formControlName="category">
+                            <option [ngValue]="null" disabled>Chọn chuyên mục</option>
+                            <option *ngFor="let category of listCategory" [ngValue]="category"> {{ category.name }}
+                            </option>
                           </select>
+                          <div *ngIf="trackUpload.category.id === undefined && categoryAlbum.touched" class="help-block">
+                            Vui lòng chọn chuyên mục nhạc.
+                          </div> 
                         </div>
                       </div>
                     </div>
@@ -384,7 +425,7 @@
                             <label>
                               Thể loại
                             </label>
-                            <mat-chip-list #genreList>
+                            <mat-chip-list formControlName="genresFormControl" #genreList>
                               <mat-chip *ngFor="let genre of genres; let index=index" [selectable]="selectableGenre"
                                 [removable]="removableGenre" (removed)="removeGenre(index)">
                                 {{genre.name}}
@@ -396,12 +437,17 @@
                             </mat-chip-list>
                             <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
                               <ng-container *ngFor="let genre of filteredGenres | async">
-                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre.id">
+                                <mat-option *ngIf="!genres.includes(genre)" [value]="genre">
                                   {{genre.name}}
                                 </mat-option>
                               </ng-container>
                             </mat-autocomplete>
                           </mat-form-field>
+                          <div class="help-block">
+                            <mat-error
+                              *ngIf="(genresAlbumFormControl.touched || genresAlbumFormControl.dirty) && genres.length === 0">Vui
+                              lòng chọn thể loại.</mat-error>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -411,7 +457,13 @@
                           <label>
                             Năm phát hành
                           </label>
-                          <input [(ngModel)]="albumUpload.musicYear" name="musicYear" type="text" class="form-control" />
+                          <input [(ngModel)]="albumUpload.musicYear" formControlName="musicYear" name="musicYear" type="number"
+                            class="form-control" />
+                          <div *ngIf="musicYear.invalid && (musicYear.dirty || musicYear.touched)" class="help-block">
+                            <div *ngIf="musicYear.errors.required">
+                              Vui lòng nhập năm phát hành.
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -421,7 +473,13 @@
                           <label>
                             Hãng sản xuất
                           </label>
-                          <input [(ngModel)]="albumUpload.musicProduction" name="musicProduction" type="text" class="form-control" />
+                          <input [(ngModel)]="albumUpload.musicProduction" formControlName="musicProduction" name="musicProduction" type="text"
+                            class="form-control" />
+                          <div *ngIf="musicProduction.invalid && (musicProduction.dirty || musicProduction.touched)" class="help-block">
+                            <div *ngIf="musicProduction.errors.required">
+                              Vui lòng nhập hãng sản xuất.
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -430,9 +488,9 @@
                         <span class="m-r-n-lg">Cancel</span>
                       </button> -->
                       <button type="submit" class="btn btn-fill btn-danger">
-                        <!-- <i *ngIf="refreshing" class="fa fa-spinner"></i>
-                  <span *ngIf="refreshing"> Saving...</span> -->
-                        <span class="m-r-n-lg">Upload</span>
+                        <i *ngIf="showLoading" class="fa fa-spinner"></i>
+                        <span *ngIf="showLoading"> Uploading...</span>
+                        <span *ngIf="!showLoading" class="m-r-n-lg">Upload</span>
                       </button>
                     </div>
                   </div>
