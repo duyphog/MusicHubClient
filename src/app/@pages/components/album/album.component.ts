@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { Album } from 'src/app/@model/album';
-import { Track } from 'src/app/@model/track';
+import { Album } from 'src/app/@model/album.model';
+import { Track } from 'src/app/@model/track.model';
 import { AlbumService } from './../../../@services/album.service';
 import { AppUtilService } from './../../../@services/app-util.service';
 import { TrackService } from './../../../@services/track.service';
+import { PlaylistService } from './../../../@services/playlist.service';
+import { ToastrService } from 'ngx-toastr';
+import { AudioService } from './../../../@services/audio.service';
 
 @Component({
   selector: 'app-album',
@@ -19,11 +22,11 @@ export class AlbumComponent implements OnInit {
   chooseOptionTrack: boolean[] = [];
   chooseOptionOtherTrack: boolean = false;
 
-  trackSelected: any[] = [];
+  trackSelected: Track[] = [];
 
   albumInfo: Album;
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService) {}
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService, public playlistService: PlaylistService, private toastr: ToastrService, private audioService: AudioService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -57,8 +60,45 @@ export class AlbumComponent implements OnInit {
 
   playCurrentTrack(id) {
     this.trackService.getTrack(id).subscribe((res: any) => {
-      this.trackService.setCurrentTrack(res.data);
+      if (!this.playlistService.checkExistTrackInCurrentPlaylist(res.data)) {
+        this.playlistService.addTrackToCurrentPlaylist(res.data);
+        this.trackService.setCurrentTrack(res.data);
+        this.audioService.setAudio(res.data.trackUrl);
+      } else {
+        this.trackService.setCurrentTrack(res.data);
+        this.audioService.setAudio(res.data.trackUrl);
+      }
     });
+  }
+
+  addToCurrentPlaylist(): void {
+
+    this.trackSelected.forEach((track) => {
+      this.trackService.getTrack(track.id).subscribe((response: any) => { 
+        if (!this.playlistService.checkExistTrackInCurrentPlaylist(response.data)) {
+          this.playlistService.addTrackToCurrentPlaylist(response.data);
+        }
+      });
+    })
+    this.toastr.info('Thêm vào danh sách phát thành công');
+
+    var element = document.getElementsByName('select-song');
+    var inputCheckbox: any = document.getElementsByName('checkbox-song');
+    element.forEach((item) => item.classList.remove('is-selected'));
+    inputCheckbox.forEach((item) => (item.checked = false));
+    this.trackSelected = [];
+  }
+
+  addAlbumToCurrentPlaylist(): void {
+    this.albumInfo.tracks.forEach((track) => {
+      this.trackService.getTrack(track.id).subscribe((response: any) => { 
+        if (!this.playlistService.checkExistTrackInCurrentPlaylist(response.data)) {
+          this.playlistService.addTrackToCurrentPlaylist(response.data);
+        }
+      });
+    });
+    this.chooseOptionAlbum = false;
+    this.toastr.info('Thêm vào danh sách phát thành công');
   }
 
   openAddNewPlaylist() {
@@ -81,13 +121,13 @@ export class AlbumComponent implements OnInit {
     this.chooseOptionOtherTrack = !this.chooseOptionOtherTrack;
   }
 
-  selectedTrack(item: any, index): void {
+  selectedTrack(track: Track, item: any): void {
     if (item.className.includes('select-item')) {
       if (item.className.includes('is-selected')) {
         item.classList.remove('is-selected');
-        this.trackSelected.splice(this.trackSelected.indexOf(item.id), 1);
+        this.trackSelected.splice(this.trackSelected.indexOf(track), 1);
       } else {
-        this.trackSelected.push(item.id);
+        this.trackSelected.push(track);
         item.classList.add('is-selected');
       }
     }
@@ -101,7 +141,7 @@ export class AlbumComponent implements OnInit {
     if (this.selectAll) {
       element.forEach((item) => item.classList.add('is-selected'));
       inputCheckbox.forEach((item) => (item.checked = true));
-      this.albumInfo.tracks.forEach((song) => this.trackSelected.push(song.id));
+      this.albumInfo.tracks.forEach((track) => this.trackSelected.push(track));
     } else {
       element.forEach((item) => item.classList.remove('is-selected'));
       inputCheckbox.forEach((item) => (item.checked = false));

@@ -2083,7 +2083,8 @@ ul {
 
 .song-menu {
   width: 280px;
-  top: 50px;
+  /* top: 100px; */
+  right: 20px;
 }
 .media.song-info-menu {
   padding: 15px 15px 0;
@@ -2190,4 +2191,8 @@ video {
 
 .zm-card-image:hover img {
   filter: opacity(0.5);
+}
+.track-list:hover {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
 }
