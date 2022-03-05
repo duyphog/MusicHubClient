@@ -13,7 +13,7 @@ export class AudioService {
   public percentElapsed: BehaviorSubject<number> = new BehaviorSubject(0);
   public percentLoaded: BehaviorSubject<number> = new BehaviorSubject(0);
   public playerStatus: BehaviorSubject<string> = new BehaviorSubject('paused');
-
+  
   constructor() {
     this.audio = new Audio();
     this.audio.controls = true;
@@ -90,22 +90,26 @@ export class AudioService {
   public setAudio(src: string): void {
     if (src !== undefined) {
       this.audio.src = src;
-      // this.playAudio();
     }
   }
 
   /**
    * The method to play audio
    */
-  public playAudio(): void {
-    this.audio.play();
+
+  public playAudio() {
+    if (this.audio.paused) {
+      this.audio.play();
+    }
   }
 
   /**
    * The method to pause audio
    */
-  public pauseAudio(): void {
-    this.audio.pause();
+  public pauseAudio() {
+    if (!this.audio.paused) {
+      this.audio.pause();
+    }
   }
 
   /**

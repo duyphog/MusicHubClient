@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Genre } from './../@model/genre';
+import { Genre } from '../@model/genre.model';
 import { BaseService } from './base.service';
 
 @Injectable({

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BaseService } from './base.service';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { AppUser } from '../@model/app-user';
+import { AppUser } from '../@model/app-user.model';
 import { Observable } from 'rxjs';
 import { AppUtilService } from './app-util.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { UserInfo } from '../@model/user-info';
+import { UserInfo } from '../@model/user-info.model';
 import { AppUserService } from 'src/app/@services/app-user.service';
 
 @Injectable({

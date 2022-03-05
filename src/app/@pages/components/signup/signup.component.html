@@ -4,30 +4,6 @@
     <section class="m-b-lg">
       <header class="wrapper text-center"><strong>Sign up to get in touch</strong></header>
       <form [formGroup]="signUpFormGroup" (ngSubmit)="onSubmit(signUpForm.value)" #signUpForm="ngForm">
-        <!-- <div class="form-group">
-            <input formControlName="firstName" type="text" name="firstName" placeholder="First Name"
-            class="form-control rounded input-lg text-center no-border">
-            <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="help-block mt-1">
-              <div *ngIf="firstName.errors.required">
-                First Name is required
-              </div>
-              <div *ngIf="firstName.errors.minlength">
-                First Name must be at least 2 characters
-              </div>
-            </div>
-        </div>
-        <div class="form-group">
-          <input formControlName="lastName" type="text" name="lastName" 
-          placeholder="Last Name" class="form-control rounded input-lg text-center no-border">
-          <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="help-block mt-1">
-            <div *ngIf="lastName.errors.required">
-              Last Name is required
-            </div>
-            <div *ngIf="lastName.errors.minlength">
-              Last Name must be at least 2 characters
-            </div>
-          </div>
-        </div> -->
         <div class="form-group">
           <input formControlName="username" type="text" name="username" 
           placeholder="Username" class="form-control rounded input-lg text-center no-border">

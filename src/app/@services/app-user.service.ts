@@ -3,9 +3,9 @@ import { BaseService } from './base.service';
 import { AppUtilService } from './app-util.service';
 import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AppUser } from '../@model/app-user';
-import { UserInfo } from './../@model/user-info';
-import { ChangePassword } from './../@model/change-password';
+import { AppUser } from '../@model/app-user.model';
+import { UserInfo } from '../@model/user-info.model';
+import { ChangePassword } from '../@model/change-password.model';
 
 @Injectable({
   providedIn: 'root',

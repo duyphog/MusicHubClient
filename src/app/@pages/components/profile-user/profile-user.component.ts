@@ -6,7 +6,7 @@ import { AuthenticationService } from './../../../@services/authentication.servi
 import { finalize } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { UserInfo } from 'src/app/@model/user-info';
+import { UserInfo } from 'src/app/@model/user-info.model';
 import { AppUtilService } from './../../../@services/app-util.service';
 
 @Component({

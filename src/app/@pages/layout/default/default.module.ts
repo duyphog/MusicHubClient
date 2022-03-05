@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatButtonModule } from '@angular/material/button';
 import {
   AddNewPlaylist,
   MySongListComponent,
@@ -72,6 +73,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatIconModule,
     MatMenuModule,
     MatGridListModule,
+    MatButtonModule,
     ToastrModule.forRoot({
       timeOut: 5000,
       positionClass: 'toast-bottom-right',

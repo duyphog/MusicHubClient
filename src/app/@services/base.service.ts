@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CustomHttpResponse } from '../@model/custom-http-response';
+import { CustomHttpResponse } from '../@model/custom-http-response.model';
 import { environment } from './../../environments/environment';
 import { AppUtilService } from './app-util.service';
 

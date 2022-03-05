@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { BaseService } from 'src/app/@services/base.service';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Category } from '../@model/category';
-import { Artist } from './../@model/artist';
-import { Genre } from '../@model/genre';
+import { Category } from '../@model/category.model';
+import { Artist } from '../@model/artist.model';
+import { Genre } from '../@model/genre.model';
 
 @Injectable({
   providedIn: 'root'

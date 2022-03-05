@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { BaseService } from 'src/app/@services/base.service';
-import { CustomHttpResponse } from '../@model/custom-http-response';
+import { CustomHttpResponse } from '../@model/custom-http-response.model';
 import { AppConstant } from '../@constant/app-constant';
 
 @Injectable({
