@@ -1,5 +1,5 @@
 
-import { AppUser } from './app-user';
+import { AppUser } from './app-user.model';
 
 export class VerificationToken {
     id: number;

@@ -1,9 +1,9 @@
-import { Album } from "./album";
-import { AppStatus } from "./app-status";
-import { AppUser } from "./app-user";
-import { Artist } from "./artist";
-import { Category } from "./category";
-import { Genre } from "./genre";
+import { Album } from "./album.model";
+import { AppStatus } from "./app-status.model";
+import { AppUser } from "./app-user.model";
+import { Artist } from "./artist.model";
+import { Category } from "./category.model";
+import { Genre } from "./genre.model";
 
 export class Track {
     id: number;

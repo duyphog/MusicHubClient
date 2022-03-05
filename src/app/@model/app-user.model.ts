@@ -1,7 +1,7 @@
-import { AppRole } from "./app-role";
-import { AppAuthority } from './app-authority';
-import { UserInfo } from "./user-info";
-import { VerificationToken } from "./verification-token";
+import { AppRole } from "./app-role.model";
+import { AppAuthority } from './app-authority.model';
+import { UserInfo } from "./user-info.model";
+import { VerificationToken } from "./verification-token.model";
 
 export class AppUser {
     id: number;
