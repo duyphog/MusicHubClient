@@ -1,27 +1,22 @@
 <div class="container-navbar">
-    <button class="btn-menu" mat-button [matMenuTriggerFor]="menuPopup" #menuTrigger="matMenuTrigger">XẾP HẠNG</button>
-    <mat-menu #menuPopup="matMenu">
-        <!-- <button *ngFor="let menuItem of menuListItem"  mat-menu-item>{{ menuItem.name }}</button> -->
+    <!-- <button class="btn-menu" mat-button [matMenuTriggerFor]="menuPopupRank" #menuTriggerRank="matMenuTrigger" >XẾP HẠNG</button>
+    <mat-menu #menuPopupRank="matMenu">
         <div>
             <button mat-menu-item>Nhạc Pop, Rock</button>
             <button mat-menu-item>Nhạc Rap, HipHop</button>
             <button mat-menu-item>Nhạc Dance, Remix</button>
         </div>
-    </mat-menu>
-    <div *ngFor="let menu of menuList" class="menu">
-        
-        <button *ngIf="menu.name !== 'Beat, Playback'" class="btn-menu" mat-button [matMenuTriggerFor]="menuPopup" #menuTrigger="matMenuTrigger">{{ menu.name.toUpperCase() }}</button>
-        <mat-menu #menuPopup="matMenu">
-            <!-- <button *ngFor="let menuItem of menuListItem"  mat-menu-item>{{ menuItem.name }}</button> -->
-            <div>
-                <button mat-menu-item>Nhạc Pop, Rock</button>
-                <button mat-menu-item>Nhạc Rap, HipHop</button>
-                <button mat-menu-item>Nhạc Dance, Remix</button>
-            </div>
+    </mat-menu> -->
+    <ng-container *ngFor="let menu of menuList; let index = index">
+        <button mat-button routerLink="/genre/{{ menu.id }}/0" (click)="commonService.setCurrentCategory(menu.name)" class="btn-menu" [matMenuTriggerFor]="menuPopup" #button #menuTrigger="matMenuTrigger" style="z-index: 1050" [class.opened]="menuTrigger.menuOpen">{{ menu.name.toUpperCase() }}</button>
+        <mat-menu direction="down" yPosition="below" #menuPopup="matMenu">
+            <mat-grid-list (mouseenter)="menuEnter()" (mouseleave)="menuLeave(menuTrigger, button)" cols="5" rowHeight="4:1">
+                <ng-container *ngFor="let menuItem of menuListItem" >
+                    <mat-grid-tile>
+                        <button routerLink="/genre/{{ menu.id }}/{{ menuItem.id }}" mat-menu-item  (click)="commonService.setCurrentGenre(menuItem.name)"> {{ menuItem.name }} </button> 
+                    </mat-grid-tile>
+                </ng-container>
+            </mat-grid-list>
         </mat-menu>
-    </div>
-
-    
-    
-
+    </ng-container>
 </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Album } from 'src/app/@model/album';
+import { Album } from 'src/app/@model/album.model';
 import { AlbumService } from 'src/app/@services/album.service';
 import { ActivatedRoute } from '@angular/router';
 import { CommonService } from 'src/app/@services/common.service';
 import { Subscription, BehaviorSubject } from 'rxjs';
-import { Track } from './../../../@model/track';
+import { Track } from '../../../@model/track.model';
 import { TrackService } from 'src/app/@services/track.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { AppUtilService } from './../../../@services/app-util.service';

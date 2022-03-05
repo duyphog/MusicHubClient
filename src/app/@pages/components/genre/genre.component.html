@@ -42,8 +42,8 @@
                         </figure>
                       </div>
                       <div style="text-align: left !important;" class="zm-card-content">
-                        <div class="title">
-                          <a class="is-ghost" style="text-align: left !important;" routerLink="/profile">
+                        <div routerLink="/album/{{ album.id }}" class="title">
+                          <a class="is-ghost" style="text-align: left !important;" >
                             {{ album.name }}
                           </a>
                         </div>
@@ -95,7 +95,7 @@
                           <span class="item-title title">
                             <span>
                               <span>
-                                <span>{{ track.name }}</span>
+                                <span >{{ track.name }}</span>
                               </span>
                               <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
                                 …
