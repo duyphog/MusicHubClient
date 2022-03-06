@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddNewPlaylist } from '../profile/profile.component';
 import { Playlist } from 'src/app/@model/playlist.model';
 import { Track } from 'src/app/@model/track.model';
 import { TrackService } from 'src/app/@services/track.service';
 import { PlaylistService } from './../../../@services/playlist.service';
 import { PlaylistDetail } from './../../../@model/playlist-detail.model';
+import { AddNewPlaylist } from '../my-song-list/my-song-list.component';
 
 @Component({
   selector: 'app-playlist',

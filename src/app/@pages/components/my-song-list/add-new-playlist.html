@@ -4,16 +4,16 @@
     </div>    
     <h2 mat-dialog-title style="font-weight: bold; text-align: center;">Tạo playlist mới</h2>
     <div mat-dialog-content>
-        <form class="form-playlist">
+        <form [formGroup]="addNewPlaylistFormGroup" class="form-playlist">
 
-            <input (input)="onChangeNamePlaylist($event.target.value)" name="namePlaylist" class="input-name-playlist" type="text" placeholder="Nhập tên playlist" tabindex="-1" />
+            <input formControlName="name" (input)="onChangeNamePlaylist($event.target.value)" name="namePlaylist" class="input-name-playlist" type="text" placeholder="Nhập tên playlist" tabindex="-1" />
 
-            <select (change)="onChangeCategoryPlaylist($event.target.value)" class="input-name-playlist" name="categoryIdPlaylist" id="">
+            <select formControlName="categoryId" (change)="onChangeCategoryPlaylist($event.target.value)" class="input-name-playlist" name="categoryIdPlaylist" id="">
                 <option [value]="0">Chọn chuyên mục</option>
                 <option *ngFor="let category of listCategory" [value]="category.id">{{ category.name }}</option>
             </select>
 
-            <select (change)="onChangeGenrePlaylist($event.target.value)" class="input-name-playlist" name="genreIdPlaylist" id="">
+            <select formControlName="genreId" (change)="onChangeGenrePlaylist($event.target.value)" class="input-name-playlist" name="genreIdPlaylist" id="">
                 <option [value]="0">Chọn thể loại</option>
                 <option *ngFor="let genre of listGenre" [value]="genre.id">{{ genre.name }}</option>
             </select>
@@ -21,7 +21,7 @@
         </form>
     </div>
     <div mat-dialog-actions>
-        <button (click)="onAddNewPlaylist()" [disabled]="!allowAdd" class="btn-add-new-playlist" mat-button>TẠO MỚI</button>
+        <button (click)="onAddNewPlaylist(addNewPlaylistFormGroup.value)" [disabled]="!allowAdd" class="btn-add-new-playlist" mat-button>TẠO MỚI</button>
     </div>  
     
 </div>

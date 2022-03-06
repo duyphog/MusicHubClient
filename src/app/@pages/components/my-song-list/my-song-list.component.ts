@@ -7,6 +7,7 @@ import { Category } from 'src/app/@model/category.model';
 import { Genre } from 'src/app/@model/genre.model';
 import { Playlist } from './../../../@model/playlist.model';
 import { ToastrService } from 'ngx-toastr';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-my-song-list',
@@ -109,13 +110,25 @@ export class AddNewPlaylist implements OnInit{
   allowAdd: boolean = false;
   listGenre: Genre[] = [];
   listCategory: Category[] = [];
+  addNewPlaylistFormGroup: FormGroup;
 
   constructor(
     public dialog: MatDialog,
     private playlistService: PlaylistService,
     private commonService: CommonService,
-    private toastr: ToastrService
-  ) {}
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder
+  ) {
+
+    this.addNewPlaylistFormGroup = this.formBuilder.group({
+      'name': new FormControl('', []),
+      'categoryId': new FormControl('0', []),
+      'genreId': new FormControl('0', []),
+      'description': new FormControl('', []),
+      'playlistTypeId': new FormControl('', []),
+      'imgFile': new FormControl('', []),
+    });
+  }
 
   ngOnInit(): void {
     this.commonService.listGenre().subscribe((res: any) => {
@@ -147,12 +160,18 @@ export class AddNewPlaylist implements OnInit{
     this.checkInformation();
   }
 
-  onAddNewPlaylist() {
-    let playlist: Playlist = new Playlist();
-    playlist.name = this.namePlaylist;
-    playlist.genre.id = this.genreIdPlaylist;
-    playlist.category.id = this.categoryIdPlaylist;
-    const formData = this.playlistService.createPlaylistFormData(playlist);
+  onAddNewPlaylist(playlistCreate: any) {
+
+    const data = {
+      name: playlistCreate.name,
+      genreId: playlistCreate.genreId,
+      categoryId: playlistCreate.categoryId,
+      description: playlistCreate.description,
+      playlistTypeId: playlistCreate.playlistTypeId,
+      imgFile: playlistCreate.imgFile
+    }
+
+    const formData = this.playlistService.createPlaylistFormData(data);
     this.playlistService.createPlaylist(formData).subscribe((res: any) => {
       this.toastr.success("Thêm playlist thành công");
     }, (error : any) => {

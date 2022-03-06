@@ -89,14 +89,14 @@ export class PlaylistService extends BaseService {
     return this.appUtilService.getFromLocalCache('currentPlaylist');
   }
 
-  createPlaylistFormData(playlist: Playlist): FormData {
+  createPlaylistFormData(playlist: any): FormData {
     const formData = new FormData();
     formData.append('name', playlist.name);
     formData.append('playlistTypeId', Number(1).toString());
-    formData.append('categoryId', playlist.category.id.toString());
-    formData.append('genreId', playlist.genre.id.toString());
-    // formData.append('imgFile', "https://photo-zmp3.zadn.vn/album_default.png");
-    formData.append('description', "");
+    formData.append('categoryId', playlist.categoryId.toString());
+    formData.append('genreId', playlist.genreId.toString());
+    formData.append('imgFile', playlist.imgFile);
+    formData.append('description', playlist.description);
 
     return formData;
   }
