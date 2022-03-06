@@ -95,7 +95,7 @@ export class PlaylistService extends BaseService {
     formData.append('playlistTypeId', Number(1).toString());
     formData.append('categoryId', playlist.category.id.toString());
     formData.append('genreId', playlist.genre.id.toString());
-    formData.append('imgFile', "https://photo-zmp3.zadn.vn/album_default.png");
+    // formData.append('imgFile', "https://photo-zmp3.zadn.vn/album_default.png");
     formData.append('description', "");
 
     return formData;
