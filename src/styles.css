@@ -475,6 +475,7 @@ body {
 
 .mat-dialog-actions {
   min-height: 0px !important;
+  justify-content: center;
 }
 
 .mat-tab-label-active {
