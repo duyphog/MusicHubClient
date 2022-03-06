@@ -1,6 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { Category } from 'src/app/@model/category.model';
+import { Genre } from 'src/app/@model/genre.model';
+import { Playlist } from 'src/app/@model/playlist.model';
+import { CommonService } from 'src/app/@services/common.service';
+import { PlaylistService } from './../../../@services/playlist.service';
 
 @Component({
   selector: 'app-profile',
@@ -106,21 +112,72 @@ export class ProfileComponent implements OnInit {
   templateUrl: '../my-song-list/add-new-playlist.html',
   styleUrls: ['../my-song-list/my-song-list.component.css'],
 })
-export class AddNewPlaylist {
-  publicMode: boolean = true;
-  namePlaylist: string = null;
+export class AddNewPlaylist implements OnInit{
 
-  constructor(public dialog: MatDialog) {}
+  namePlaylist: string;
+  genreIdPlaylist: number;
+  categoryIdPlaylist: number;
+  allowAdd: boolean = false;
+  listGenre: Genre[] = [];
+  listCategory: Category[] = [];
+
+  constructor(
+    public dialog: MatDialog,
+    private playlistService: PlaylistService,
+    private commonService: CommonService,
+    private toastr: ToastrService
+  ) {}
+
+  ngOnInit(): void {
+    this.commonService.listGenre().subscribe((res: any) => {
+      this.listGenre = res.data;
+    });
+
+    this.commonService.listCategory().subscribe((res: any) => {
+      this.listCategory = res.data;
+    });
+
+  }
 
   closeAddNewPlaylist() {
     this.dialog.closeAll();
   }
 
-  onChangePublicMode() {
-    this.publicMode = !this.publicMode;
-  }
-
   onChangeNamePlaylist(name: any) {
     this.namePlaylist = name;
+    this.checkInformation();
+  }
+
+  onChangeCategoryPlaylist(category: any) {
+    this.categoryIdPlaylist = category;
+    this.checkInformation();
+  }
+
+  onChangeGenrePlaylist(genre: any) {
+    this.genreIdPlaylist = genre;
+    this.checkInformation();
+  }
+
+  onAddNewPlaylist() {
+    let playlist: Playlist = new Playlist();
+    playlist.name = this.namePlaylist;
+    playlist.genre.id = this.genreIdPlaylist;
+    playlist.category.id = this.categoryIdPlaylist;
+    const formData = this.playlistService.createPlaylistFormData(playlist);
+    this.playlistService.createPlaylist(formData).subscribe((res: any) => {
+      this.toastr.success("Thêm playlist thành công");
+    }, (error : any) => {
+      this.toastr.error(error.error.errorMessage);
+    });
+    this.dialog.closeAll();
+
+  }
+
+  checkInformation(): void {
+    if (this.namePlaylist !== "" && this.genreIdPlaylist !== undefined &&this.categoryIdPlaylist !== undefined) {
+      this.allowAdd = true;
+    } else {
+      this.allowAdd = false;
+    }
   }
 }

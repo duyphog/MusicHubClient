@@ -7,16 +7,16 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 import { Track } from '../../../@model/track.model';
 import { TrackService } from 'src/app/@services/track.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { AppUtilService } from './../../../@services/app-util.service';
+import { AppUtilService } from '../../../@services/app-util.service';
 
 @Component({
-  selector: 'app-genre',
-  templateUrl: './genre.component.html',
+  selector: 'app-track-and-album-list',
+  templateUrl: './track-and-album-list.component.html',
   styleUrls: [
-    './genre.component.css',
+    './track-and-album-list.component.css',
   ],
 })
-export class GenreComponent implements OnInit, OnDestroy {
+export class TrackAndAlbumComponent implements OnInit, OnDestroy {
   
   private subscriptions: Subscription[] = [];
   defaultImage: string = 'assets/images/default-image.png';

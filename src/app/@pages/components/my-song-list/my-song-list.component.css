@@ -13,16 +13,25 @@ p .title {
   margin: 5px 0px;
 }
 .btn-add-new-playlist {
-  color: #fff;
+  color: #fff !important;
   text-align: center;
   border: #7200a1;
   background-color: #7200a1;
   width: 290px;
   height: 40px;
-  margin-top: 20px;
   border-radius: 25px;
   font-weight: bold;
   cursor: pointer;
+}
+
+.form-playlist {
+  display: grid;
+  justify-content: center;
+}
+
+option {
+  color: #fff;
+  background-color: #432275;
 }
 
 .btn-add-new-playlist[disabled] {

@@ -1,7 +1,7 @@
 import { Injectable, OnInit } from '@angular/core';
 import { BaseService } from 'src/app/@services/base.service';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Playlist } from './../@model/playlist.model';
 import { TrackService } from 'src/app/@services/track.service';
 import { AppUtilService } from 'src/app/@services/app-util.service';
@@ -13,6 +13,8 @@ import { Artist } from '../@model/artist.model';
   providedIn: 'root'
 })
 export class PlaylistService extends BaseService {
+
+  path: string = '/playlist';
 
   currentPlaylist: Playlist;
   currentPlaylist$: BehaviorSubject<Playlist> = new BehaviorSubject<Playlist>(null);
@@ -85,6 +87,22 @@ export class PlaylistService extends BaseService {
 
   getCurrentPlaylistFromLocalCache() {
     return this.appUtilService.getFromLocalCache('currentPlaylist');
+  }
+
+  createPlaylistFormData(playlist: Playlist): FormData {
+    const formData = new FormData();
+    formData.append('name', playlist.name);
+    formData.append('playlistTypeId', Number(1).toString());
+    formData.append('categoryId', playlist.category.id.toString());
+    formData.append('genreId', playlist.genre.id.toString());
+    formData.append('imgFile', "https://photo-zmp3.zadn.vn/album_default.png");
+    formData.append('description', "");
+
+    return formData;
+  }
+
+  createPlaylist(formData: FormData): Observable<any> {
+    return this.postRequest<any>(this.path, formData);
   }
 
 }

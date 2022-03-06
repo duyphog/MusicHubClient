@@ -30,7 +30,7 @@ import {
 } from '../../components/my-song-list/my-song-list.component';
 import { PlaylistDetailComponent } from '../../components/playlist-detail/playlist-detail.component';
 import { AlbumComponent } from '../../components/album/album.component';
-import { GenreComponent } from './../../components/genre/genre.component';
+import { TrackAndAlbumComponent } from '../../components/track-and-album-list/track-and-album-list.component';
 import { PlaylistComponent } from '../../components/playlist/playlist.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
@@ -50,7 +50,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PlaylistComponent,
     PlaylistDetailComponent,
     AlbumComponent,
-    GenreComponent,
+    TrackAndAlbumComponent,
     NavbarComponent,
   ],
   imports: [
