@@ -410,7 +410,7 @@
                 </span>
               </div>
             </div>
-            <div class="column mar-b-30 is-fullhd-20 is-widescreen-20 is-desktop-3 is-touch-3 is-tablet-3 ">
+            <div *ngFor="let playlist of listPlaylist" class="column mar-b-30 is-fullhd-20 is-widescreen-20 is-desktop-3 is-touch-3 is-tablet-3 ">
               <div class="library-playlist-item ">
                 <div class="zm-card ">
                   <a class="" title="abc">
@@ -471,18 +471,18 @@
                         </div>
                       </div>
                       <figure style="height: 204px;" class="image is-48x48">
-                        <img src="https://photo-zmp3.zadn.vn/album_default.png" alt="" class="">
+                        <img src="{{ playlist?.imageUrl === 'http://localhost:8081/api' ? 'https://photo-zmp3.zadn.vn/album_default.png' : playlist?.imageUrl }}" alt="" class="">
                       </figure>
                     </div>
                   </a>
                 </div>
                 <div class="zm-card-content ">
                   <h4 class="title is-6">
-                    <a class="" title="abc" routerLink="/playlist">
+                    <a class="" title="{{ playlist?.name }}" routerLink="/playlist-detail/{{ playlist.id }}">
                       <span>
                         <span>
                           <span>
-                            abc
+                            {{ playlist?.name }}
                           </span>
                         </span>
                         <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
@@ -492,7 +492,7 @@
                     </a>
                   </h4>
                   <h3 class="mt-10 subtitle ">
-                    Tường Huy
+                    {{ user.firstName }}
                   </h3>
                 </div>
               </div>

@@ -39,14 +39,7 @@ export class SignupComponent implements OnInit, OnDestroy {
     root.style.color = '#eaf6f9';
 
     this.signUpFormGroup = this.formBuilder.group({
-      // firstName: new FormControl('', [
-      //   Validators.required,
-      //   Validators.minLength(2),
-      // ]),
-      // lastName: new FormControl('', [
-      //   Validators.required,
-      //   Validators.minLength(2),
-      // ]),
+      
       username: new FormControl('', [
         Validators.required,
         Validators.minLength(2),
@@ -77,14 +70,6 @@ export class SignupComponent implements OnInit, OnDestroy {
       )
     }
   }
-
-  // get firstName(): AbstractControl {
-  //   return this.signUpFormGroup.get('firstName');
-  // }
-
-  // get lastName(): AbstractControl {
-  //   return this.signUpFormGroup.get('lastName');
-  // }
 
   get email(): AbstractControl {
     return this.signUpFormGroup.get('email');

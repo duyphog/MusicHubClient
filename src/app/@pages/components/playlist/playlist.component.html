@@ -10,16 +10,16 @@
                         <div class="player-queue__list undefined" style="margin-top: 0px;">
                             <div index="0" data-index="0" data-known-size="56" style="z-index: 1065;">
                                 <div class="list-item media-item full-left">
-                                    <div class="media is-pre">
+                                    <div class="media is-active">
                                         <div class="media-left">
                                             <div class="song-thumb">
                                                 <figure class="image is-40x40" title="{{ currentTrack?.name }}"><img src="{{ imageTrack(currentTrack) }}" alt="" /></figure>
                                                 <div class="opacity"></div>
                                                 <div class="zm-actions-container">
-                                                    <div class="zm-box zm-actions">
-                                                        <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
-                                                        <button class="zm-btn action-play button" tabindex="0"><i class="icon action-play ic-play"></i></button>
-                                                        <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0"><i class="icon ic-more"></i></button>
+                                                    <div class="zm-box" style="margin: 10px">
+                                                      <button class="zm-btn action-play button" tabindex="0"><i class="icon action-play ic-gif-playing-white"></i></button>
+                                                        <!-- <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button> -->
+                                                        <!-- <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0"><i class="icon ic-more"></i></button> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -47,7 +47,7 @@
                                                     </i>
                                                   </button>
                                                 </div>
-                                                <div class="level-item ">
+                                                <!-- <div class="level-item ">
                                                   <button
                                                     class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
                                                     tabindex="0">
@@ -56,14 +56,21 @@
                                                     <i class="icon ic-like-full">
                                                     </i>
                                                   </button>
-                                                </div>
+                                                </div> -->
                                                 <div class="level-item ">
-                                                  <button (click)="openChooseOptionSong(currentIndex)"
+                                                  <!-- <button class="zm-btn zm-tooltip-btn button" title="Phát tiếp theo" tabindex="0"><i
+                                                    class="icon ic-play-next"></i>
+                                                  </button> -->
+                                                  <button (click)="removeTrackFromCurrentPlaylist(currentTrack)" class="zm-btn zm-tooltip-btn button" title="Xóa khỏi danh sách phát" tabindex="0">
+                                                    <i class="icon ic-delete"></i>
+                                                  </button>
+                                                  <!-- <button (click)="openChooseOptionSong(currentIndex)"
                                                     class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
                                                     <i class="icon ic-more">
                                                     </i>
-                                                  </button>
-                                                  <div *ngIf="chooseOptionSong[currentIndex]" class="zm-contextmenu song-menu">
+                                                  </button> -->
+
+                                                  <!-- <div *ngIf="chooseOptionSong[currentIndex]" class="zm-contextmenu song-menu">
                                                     <div class="menu">
                                                       <ul class="menu-list">
                                                         <div class="menu-list--submenu">
@@ -168,7 +175,7 @@
                                                         </li>
                                                       </ul>
                                                     </div>
-                                                  </div>
+                                                  </div> -->
                                                 </div>
                                               </div>
                                             </div>
@@ -179,7 +186,7 @@
                                 <div class="next-songs"><h3 class="title is-6">Tiếp theo</h3></div>
                             </div>
                             <div class="next-track-list">
-                              <div *ngFor="let playlistDetail of currentPlaylist?.playlistDetails" index="1" data-index="1" data-known-size="56" style="z-index: 1065;">
+                              <div *ngFor="let playlistDetail of currentPlaylist?.playlistDetails; let idx = index" index="1" data-index="1" data-known-size="56" style="z-index: 1065;">
                                 <div *ngIf="playlistDetail.track.name !== currentTrack.name" class="list-item media-item full-left">
                                     <div class="media">
                                         <div class="media-left">
@@ -188,9 +195,9 @@
                                                 <div class="opacity"></div>
                                                 <div class="zm-actions-container">
                                                     <div class="zm-box zm-actions">
-                                                        <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
-                                                        <button class="zm-btn action-play button" tabindex="0"><i class="icon action-play ic-play"></i></button>
-                                                        <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0"><i class="icon ic-more"></i></button>
+                                                        <!-- <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button> -->
+                                                        <button (click)="playCurrentTrack(playlistDetail.track.id)" class="zm-btn action-play button" tabindex="0"><i class="icon action-play ic-play"></i></button>
+                                                        <!-- <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0"><i class="icon ic-more"></i></button> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -219,45 +226,51 @@
                                                   </button>
                                                 </div>
                                                 <div class="level-item ">
-                                                  <button
+                                                  <!-- <button
                                                     class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
                                                     tabindex="0">
                                                     <i class="icon ic-like">
                                                     </i>
                                                     <i class="icon ic-like-full">
                                                     </i>
-                                                  </button>
+                                                  </button> -->
+                                                  <!-- <button class="zm-btn zm-tooltip-btn button" title="Phát tiếp theo" tabindex="0"><i
+                                                    class="icon ic-play-next"></i>
+                                                  </button> -->
+                                                  
                                                 </div>
                                                 <div class="level-item ">
-                                                  <button (click)="openChooseOptionSong(0)"
+                                                  <button (click)="removeTrackFromCurrentPlaylist(playlistDetail?.track)" class="zm-btn zm-tooltip-btn button" title="Xóa khỏi danh sách phát" tabindex="0">
+                                                    <i class="icon ic-delete"></i>
+                                                  </button>
+                                                  <!-- <button (click)="openChooseOptionSong(idx)"
                                                     class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
                                                     <i class="icon ic-more">
                                                     </i>
-                                                  </button>
-                                                  <div *ngIf="chooseOptionSong[0]" class="zm-contextmenu song-menu">
+                                                  </button> -->
+                                                  <!-- <div *ngIf="chooseOptionSong[idx]" class="zm-contextmenu song-menu">
                                                     <div class="menu">
                                                       <ul class="menu-list">
                                                         <div class="menu-list--submenu">
                                                           <div class="media song-info-menu" style="background: transparent !important;">
                                                             <div class="media-left">
                                                               <figure class="image is-40x40"><img
-                                                                  src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_png/covers/8/8/88825ed8c45dd6409360affa18d36f1a_1470729217.png"
+                                                                  src="{{ imageTrack(playlistDetail.track) }}"
                                                                   alt=""></figure>
                                                             </div>
                                                             <div class="is-w-150 media-content">
                                                               <a>
                                                                 <div class="title-wrapper"><span
-                                                                    class="item-title title"><span><span><span>Nỗi Đau Em Giấu Một
-                                                                          Mình</span></span><span
+                                                                    class="item-title title"><span><span><span>{{ playlistDetail.track.name }}</span></span><span
                                                                         style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></span>
                                                                 </div>
                                                               </a>
                                                               <div class="song-stats">
                                                                 <div class="stat-item">
-                                                                  <i class="icon ic-like"></i><span>86K</span>
+                                                                  <i class="icon ic-like"></i><span>{{ playlistDetail.track.liked }}</span>
                                                                 </div>
                                                                 <div class="stat-item">
-                                                                  <i class="icon ic-view"></i><span>8.6M</span>
+                                                                  <i class="icon ic-view"></i><span>{{ playlistDetail.track.listened }}</span>
                                                                 </div>
                                                               </div>
                                                             </div>
@@ -339,7 +352,7 @@
                                                         </li>
                                                       </ul>
                                                     </div>
-                                                  </div>
+                                                  </div> -->
                                                 </div>
                                               </div>
                                             </div>

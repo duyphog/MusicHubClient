@@ -83,6 +83,7 @@ video {
   left: 0;
   bottom: 0;
   right: 0;
+  height: 42px;
 }
 .zm-actions {
   position: absolute;
@@ -106,6 +107,50 @@ video {
   -ms-flex-align: center;
   visibility: hidden;
   width: 80%;
+}
+
+.ic-gif-playing-white {
+  background-image: url(https://zmp3-static.zadn.vn/skins/zmp3-v6.1/images/icons/icon-playing.gif);
+}
+
+.icon.ic-gif-playing, .icon.ic-gif-playing-auto, .icon.ic-gif-playing-white {
+  width: 18px;
+  height: 18px;
+  background-size: 18px;
+  background-repeat: no-repeat;
+  background-position: 50%;
+}
+
+.media:hover .opacity,
+.media:hover .zm-actions {
+  visibility: visible;
+}
+
+.media.is-active .opacity{
+  visibility: visible;
+}
+
+.ic-play:before {
+  content: "\5e";
+  content: "^";
+}
+
+.opacity {
+  width: 100%;
+  height: 42px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: hidden;
+}
+
+.media .opacity {
+  visibility: hidden;
+}
+
+.header-thumbnail .opacity {
+  visibility: hidden !important;
 }
 .media-item .media-left .song-thumb .zm-btn {
   font-size: 18px;
@@ -245,7 +290,7 @@ a:hover {
   opacity: 0.5;
 }
 .media-right {
-  margin-left: 10px;
+  margin-left: -200px;
 }
 .media-left,
 .media-right {
@@ -295,6 +340,9 @@ a:hover {
 
 .media-item .media-right .icon.ic-mv {
   font-size: 18px;
+}
+.media-item .is-active {
+  background-color: #7200a1;
 }
 .media-item.active,
 .media-item.focus,

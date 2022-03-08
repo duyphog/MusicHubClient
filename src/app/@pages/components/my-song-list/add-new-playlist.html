@@ -6,22 +6,34 @@
     <div mat-dialog-content>
         <form [formGroup]="addNewPlaylistFormGroup" class="form-playlist">
 
-            <input formControlName="name" (input)="onChangeNamePlaylist($event.target.value)" name="namePlaylist" class="input-name-playlist" type="text" placeholder="Nhập tên playlist" tabindex="-1" />
-
-            <select formControlName="categoryId" (change)="onChangeCategoryPlaylist($event.target.value)" class="input-name-playlist" name="categoryIdPlaylist" id="">
+            <input formControlName="name" name="namePlaylist" class="input-name-playlist" type="text" placeholder="Nhập tên playlist" tabindex="-1" />
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="help-block">
+                <div *ngIf="name.errors.required">
+                  Vui lòng nhập tên playlist.
+                </div>
+            </div>
+            <select formControlName="categoryId" class="input-name-playlist" name="categoryIdPlaylist" id="">
                 <option [value]="0">Chọn chuyên mục</option>
                 <option *ngFor="let category of listCategory" [value]="category.id">{{ category.name }}</option>
             </select>
-
-            <select formControlName="genreId" (change)="onChangeGenrePlaylist($event.target.value)" class="input-name-playlist" name="genreIdPlaylist" id="">
+            <div *ngIf="categoryIdPlaylist.invalid && (categoryIdPlaylist.dirty || categoryIdPlaylist.touched)" class="help-block">
+                <!-- <div *ngIf="categoryId.errors.min"> -->
+                  Vui lòng chọn chuyên mục.
+                <!-- </div> -->
+            </div>
+            <select formControlName="genreId" class="input-name-playlist" name="genreIdPlaylist" id="">
                 <option [value]="0">Chọn thể loại</option>
                 <option *ngFor="let genre of listGenre" [value]="genre.id">{{ genre.name }}</option>
             </select>
-
+            <div *ngIf="genreIdPlaylist.invalid && (genreIdPlaylist.dirty || genreIdPlaylist.touched)" class="help-block">
+                <!-- <div *ngIf="genreId.errors.required"> -->
+                  Vui lòng chọn thể loại.
+                <!-- </div> -->
+            </div>
         </form>
     </div>
     <div mat-dialog-actions>
-        <button (click)="onAddNewPlaylist(addNewPlaylistFormGroup.value)" [disabled]="!allowAdd" class="btn-add-new-playlist" mat-button>TẠO MỚI</button>
+        <button (click)="onAddNewPlaylist(addNewPlaylistFormGroup.value)" class="btn-add-new-playlist" mat-button>TẠO MỚI</button>
     </div>  
     
 </div>

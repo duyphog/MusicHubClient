@@ -72,6 +72,13 @@ section {
   display: inline-block;
 }
 
+.ic-delete:before {
+  content: "\73";
+}
+.ic-pause:before {
+  content: "\40";
+}
+
 .ic-upload:before {
   content: "\0021";
 }

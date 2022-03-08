@@ -48,8 +48,8 @@ export class MusicBarComponent implements OnInit, OnDestroy {
 
   imageSongPlaying(): string {
     let imageUrl;
-    imageUrl = this.currentTrack?.album === undefined 
-      ? '/assets/images/default-image.png'
+    imageUrl = this.currentTrack?.album === undefined || this.currentTrack?.album === null
+      ? '/assets/images/my-logo.png'
       : this.currentTrack.album.imgUrl;
 
     return imageUrl;
@@ -75,7 +75,12 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     });
 
     this.trackService.getCurrentTrack().subscribe((track) => {
+      if (this.audioService.getAudio().src !== track.trackUrl) this.audioService.setAudio(track.trackUrl);
       if (track.id !== 0) this.trackService.listenedTrack(track.id).subscribe((res) => { });
+      if (this.isPlaying)
+        this.audioService.playAudio() 
+      else 
+        this.audioService.pauseAudio();
     });
 
 
@@ -160,7 +165,10 @@ export class MusicBarComponent implements OnInit, OnDestroy {
           );
     this.setCurrentTrack(this.currentIndex);
     this.audioService.setAudio(this.setTrack(this.currentIndex).trackUrl);
-    this.audioService.playAudio();
+    if (this.isPlaying)
+      this.audioService.playAudio() 
+    else 
+      this.audioService.pauseAudio();
   }
 
   onSeekAudio(event): void {

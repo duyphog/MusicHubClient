@@ -52,13 +52,20 @@
           </div>
         </div>
         <div class="level actions">
-          <button class="zm-btn btn-play-all is-outlined active is-medium is-upper button" tabindex="0">
+          <!-- <button *ngIf="status === 'pause' || status === 'start'" (click)="startToPlay()" class="zm-btn btn-play-all is-outlined active is-medium is-upper button" tabindex="0">
             <i class="icon ic-play">
             </i>
             <span>
               Bắt đầu phát
             </span>
           </button>
+          <button *ngIf="status === 'resume'" (click)="pauseAlbum()" class="zm-btn btn-play-all is-outlined active is-medium is-upper button" tabindex="0">
+            <i class="icon ic-pause">
+            </i>
+            <span>
+              Tạm dùng
+            </span>
+          </button> -->
           <div class="level">
             <div class="level-item is-narrow">
               <button class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">

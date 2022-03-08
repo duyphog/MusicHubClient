@@ -6,6 +6,7 @@ import { TrackService } from 'src/app/@services/track.service';
 import { PlaylistService } from './../../../@services/playlist.service';
 import { PlaylistDetail } from './../../../@model/playlist-detail.model';
 import { AddNewPlaylist } from '../my-song-list/my-song-list.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-playlist',
@@ -24,7 +25,7 @@ export class PlaylistComponent implements OnInit {
 
   currentIndex: number;
 
-  constructor(public dialog: MatDialog, private trackService: TrackService, private playlistService: PlaylistService) { }
+  constructor(public dialog: MatDialog, private trackService: TrackService, private playlistService: PlaylistService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
@@ -42,14 +43,25 @@ export class PlaylistComponent implements OnInit {
     });
   }
 
-  ngAfterViewInit() {
-    
-  }
-
   imageTrack(track: Track): string {
-    return track?.album === undefined ? '/assets/images/default-image.png' : track.album.imgUrl;
+    return track?.album === undefined || track?.album === null ? '/assets/images/my-logo.png' : track.album?.imgUrl;
   }
 
+  removeTrackFromCurrentPlaylist(track: Track) {
+    this.playlistService.removeTrackFromCurrentPlaylist(track);
+    this.toastr.info(`Xóa bài hát ${track.name} khỏi danh sách phát thành công`);
+  }
+
+  playCurrentTrack(id) {
+    this.trackService.getTrack(id).subscribe((res: any) => {
+      if (!this.playlistService.checkExistTrackInCurrentPlaylist(res.data)) {
+        this.playlistService.addTrackToCurrentPlaylist(res.data);
+        this.trackService.setCurrentTrack(res.data);
+      } else {
+        this.trackService.setCurrentTrack(res.data);
+      }
+    });
+  }
 
   openChooseOptionSong(index): void {
     this.chooseOptionSong[index] = !this.chooseOptionSong[index];

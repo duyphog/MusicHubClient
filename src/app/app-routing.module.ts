@@ -32,7 +32,7 @@ const routes: Routes = [
         component: ProfileUserComponent,
         canActivate: [AuthenticationGuard],
       },
-      { path: 'change-password', component: ChangePasswordComponent },
+      { path: 'change-password', component: ChangePasswordComponent, canActivate: [AuthenticationGuard] },
       {
         path: 'upload-song',
         component: UploadSongComponent,
@@ -44,13 +44,14 @@ const routes: Routes = [
         canActivate: [AuthenticationGuard],
       },
       {
-        path: 'playlist-detail',
+        path: 'playlist-detail/:id',
         component: PlaylistDetailComponent,
         canActivate: [AuthenticationGuard],
       },
       {
         path: 'playlist',
         component: PlaylistComponent,
+        canActivate: [AuthenticationGuard],
       },
       { path: 'album/:id', component: AlbumComponent },
       { path: 'genre/:category-id/:genre-id', component: TrackAndAlbumComponent },

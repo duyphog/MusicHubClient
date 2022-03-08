@@ -15,6 +15,7 @@ import { Genre } from 'src/app/@model/genre.model';
 import { Playlist } from 'src/app/@model/playlist.model';
 import { FormGroup } from '@angular/forms';
 import { AddNewPlaylist } from '../my-song-list/my-song-list.component';
+import { PlaylistDetail } from './../../../@model/playlist-detail.model';
 
 @Component({
   selector: 'app-album',
@@ -31,6 +32,8 @@ export class AlbumComponent implements OnInit {
   trackSelected: Track[] = [];
 
   albumInfo: Album;
+
+  status: string = 'start';
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService, public playlistService: PlaylistService, private toastr: ToastrService, private audioService: AudioService) {}
 
@@ -64,18 +67,39 @@ export class AlbumComponent implements OnInit {
     return Math.floor(totalDuration / 60);
   }
 
-  playCurrentTrack(id) {
-    this.trackService.getTrack(id).subscribe((res: any) => {
-      if (!this.playlistService.checkExistTrackInCurrentPlaylist(res.data)) {
-        this.playlistService.addTrackToCurrentPlaylist(res.data);
-        this.trackService.setCurrentTrack(res.data);
-        this.audioService.setAudio(res.data.trackUrl);
-      } else {
-        this.trackService.setCurrentTrack(res.data);
-        this.audioService.setAudio(res.data.trackUrl);
-      }
-    });
+  playCurrentTrack(track: Track) {
+    
+    if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
+      this.playlistService.addTrackToCurrentPlaylist(track);
+      this.trackService.setCurrentTrack(track);
+    } else {
+      this.trackService.setCurrentTrack(track);
+    }
+    
   }
+
+  // pauseAlbum(): void {
+  //   this.audioService.pauseAudio();
+  //   this.status = 'pause';
+  // }
+
+  // startToPlay(): void {
+  //   if (this.status === 'start') {
+  //     const newPlaylist = new Playlist();
+  //     newPlaylist.playlistDetails = [];
+  //     this.albumInfo.tracks.forEach((track, index) => {
+  //       const playlistDetail = new PlaylistDetail();
+  //       playlistDetail.track = track;
+  //       newPlaylist.playlistDetails.push(playlistDetail);
+  //     });
+  //     this.playlistService.setCurrentPlaylist(newPlaylist, 0);
+  //     this.audioService.playAudio();
+  //     this.status = 'resume';
+  //   } else {
+  //     this.status = 'resume';
+  //     this.audioService.playAudio();
+  //   }
+  // }
 
   addToCurrentPlaylist(): void {
 

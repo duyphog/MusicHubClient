@@ -7,7 +7,10 @@ import { Category } from 'src/app/@model/category.model';
 import { Genre } from 'src/app/@model/genre.model';
 import { Playlist } from './../../../@model/playlist.model';
 import { ToastrService } from 'ngx-toastr';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { AppUserService } from 'src/app/@services/app-user.service';
+import { debounceTime } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-my-song-list',
@@ -21,6 +24,7 @@ export class MySongListComponent implements OnInit {
   chooseOptionPlaylist: boolean = false;
   chooseOptionSong: boolean[] = [];
   chooseOptionAlbum: boolean = false;
+  listPlaylist: Playlist[] = [];
 
   songList: any[] = [
     {
@@ -38,11 +42,15 @@ export class MySongListComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private playlistService: PlaylistService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.user = this.authenticationService.getUserInfoFromLocalCache();
+    this.playlistService.getPlaylistByUserId(this.user.userId).pipe(debounceTime(500)).subscribe(res => {
+      this.listPlaylist = res.data;    
+    });
   }
 
   openAddNewPlaylist() {
@@ -104,26 +112,36 @@ export class MySongListComponent implements OnInit {
 
 export class AddNewPlaylist implements OnInit{
 
-  namePlaylist: string;
-  genreIdPlaylist: number;
-  categoryIdPlaylist: number;
   allowAdd: boolean = false;
+  user: any;
   listGenre: Genre[] = [];
   listCategory: Category[] = [];
   addNewPlaylistFormGroup: FormGroup;
+  listPlaylist: Playlist[] = [];
+
+  mySongListComponent: BehaviorSubject<MySongListComponent> = new BehaviorSubject(null);
 
   constructor(
     public dialog: MatDialog,
     private playlistService: PlaylistService,
     private commonService: CommonService,
     private toastr: ToastrService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authenticationService: AuthenticationService,
   ) {
 
     this.addNewPlaylistFormGroup = this.formBuilder.group({
-      'name': new FormControl('', []),
-      'categoryId': new FormControl('0', []),
-      'genreId': new FormControl('0', []),
+      'name': new FormControl('', [
+        Validators.required,
+      ]),
+      'categoryId': new FormControl(0, [
+        Validators.required,
+        Validators.min(1)
+      ]),
+      'genreId': new FormControl(0, [
+        Validators.required,
+        Validators.min(1)
+      ]),
       'description': new FormControl('', []),
       'playlistTypeId': new FormControl('', []),
       'imgFile': new FormControl('', []),
@@ -139,25 +157,12 @@ export class AddNewPlaylist implements OnInit{
       this.listCategory = res.data;
     });
 
+    this.user = this.authenticationService.getUserInfoFromLocalCache();
+
   }
 
   closeAddNewPlaylist() {
     this.dialog.closeAll();
-  }
-
-  onChangeNamePlaylist(name: any) {
-    this.namePlaylist = name;
-    this.checkInformation();
-  }
-
-  onChangeCategoryPlaylist(category: any) {
-    this.categoryIdPlaylist = category;
-    this.checkInformation();
-  }
-
-  onChangeGenrePlaylist(genre: any) {
-    this.genreIdPlaylist = genre;
-    this.checkInformation();
   }
 
   onAddNewPlaylist(playlistCreate: any) {
@@ -171,21 +176,31 @@ export class AddNewPlaylist implements OnInit{
       imgFile: playlistCreate.imgFile
     }
 
-    const formData = this.playlistService.createPlaylistFormData(data);
-    this.playlistService.createPlaylist(formData).subscribe((res: any) => {
-      this.toastr.success("Thêm playlist thành công");
-    }, (error : any) => {
-      this.toastr.error(error.error.errorMessage);
-    });
-    this.dialog.closeAll();
-
-  }
-
-  checkInformation(): void {
-    if (this.namePlaylist !== "" && this.genreIdPlaylist !== undefined &&this.categoryIdPlaylist !== undefined) {
-      this.allowAdd = true;
-    } else {
-      this.allowAdd = false;
+    if (this.addNewPlaylistFormGroup.invalid) {
+      this.addNewPlaylistFormGroup.markAllAsTouched();
+    } else {      
+      const formData = this.playlistService.createPlaylistFormData(data);
+      this.playlistService.createPlaylist(formData).subscribe((response: any) => {
+        // window.location.reload();
+        this.toastr.success("Thêm playlist thành công");
+      }, (error : any) => {
+        this.toastr.error(error.error.errorMessage);
+      });
+      this.dialog.closeAll();
     }
+
   }
+
+  get name(): AbstractControl {
+    return this.addNewPlaylistFormGroup.get('name');
+  }
+
+  get categoryIdPlaylist(): AbstractControl {
+    return this.addNewPlaylistFormGroup.get('categoryId');
+  }
+
+  get genreIdPlaylist(): AbstractControl {
+    return this.addNewPlaylistFormGroup.get('genreId');
+  }
+
 }

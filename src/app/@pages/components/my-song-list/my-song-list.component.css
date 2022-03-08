@@ -1837,3 +1837,9 @@ video {
 .ic-share:before {
   content: "\2c";
 }
+.help-block {
+	display: block;
+	/* margin-top: -4px; */
+	margin-left: 10px;
+	color: #f44336;
+}
