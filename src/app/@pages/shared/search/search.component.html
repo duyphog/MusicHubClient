@@ -1,0 +1,74 @@
+<!-- <form class="search navbar-form navbar-left"> -->
+<mat-form-field class="search navbar-form navbar-left" appearance="none">
+  <!-- <div class="input-group search__container ">
+    <span class="input-group-btn">
+      <button type="submit" style="background-color: hsla(0,0%,100%,0.1); margin-top: 2px"
+        class="btn btn-md btn-icon rounded">
+        <i style="color: white" class="fa fa-search"> </i>
+      </button>
+    </span>
+    <input type="text" />
+  </div> -->
+  <div class="input-group search__container ">
+    <span class="input-group-btn">
+      <button type="submit" style="background-color: hsla(0,0%,100%,0.1); margin-top: 2px"
+        class="btn btn-md btn-icon rounded">
+        <i style="color: white" class="fa fa-search"> </i>
+      </button>
+    </span>
+    <input matInput #trackInput [formControl]="trackFormControl" class="form-control input-sm no-border rounded" placeholder="Search songs, albums..."  [matAutocomplete]="autoTrack">
+  </div>
+  <mat-autocomplete #autoTrack="matAutocomplete">
+    <div class="search__title">
+      Kết quả tìm kiếm
+      <a style="font-size: 13px" routerLink="/search/{{ trackFormControl.value }}">Xem tất cả</a>
+    </div>
+    <ng-container *ngFor="let track of filteredTracks | async">
+      <mat-option *ngIf="!tracks.includes(track)" [value]="track">
+        <div class="media song">
+          <div class="media-left">
+             <div>
+                <figure class="image is-40x40"><img src="assets/images/my-logo.png" alt=""></figure>
+                <div class="opacity "></div>
+                <button (click)="playCurrentTrack(track.id)" class="zm-btn action-play button" tabindex="0">
+                  <i class="icon action-play ic-play"></i>
+                </button>
+             </div>
+          </div>
+          <div class="media-content">
+             <h3 class="title"><a class="" routerLink="/single/{{ track.id }}">{{ track.name }}</a></h3>
+             <div class="subtitle">
+              <span *ngFor="let singer of track?.singers; let index = index">
+                {{ singer.nickName }}{{ index === track?.singers.length - 1 ? '' : ',' }} &nbsp;
+               </span>
+             </div>
+          </div> 
+        </div>
+      </mat-option>
+    </ng-container>
+    <!-- <mat-divider></mat-divider>
+    <div class="search__title">Search 2</div>
+    <ng-container *ngFor="let track of filteredTracks | async">
+      <mat-option *ngIf="!tracks.includes(track)" [value]="track">
+        <div class="media song">
+          <div class="media-left">
+             <div>
+                <figure class="image is-40x40"><img src="{{ track.imgUrl }}" alt=""></figure>
+                <div class="opacity "></div>
+                <button class="zm-btn action-play  button" tabindex="0"><i class="icon action-play ic-play"></i></button>
+             </div>
+          </div>
+          <div class="media-content">
+             <h3 class="title"><a class="" href="/bai-hat/Chay-Ve-Khoc-Voi-Anh/ZZO0F8BW.html">{{ track.name }}</a></h3>
+             <div class="subtitle">
+              <span *ngFor="let singer of track?.singers; let index = index">
+                {{ singer.nickName }}{{ index === track?.singers.length - 1 ? '' : ',' }} &nbsp;
+               </span>
+             </div>
+          </div> 
+        </div>
+      </mat-option>
+    </ng-container> -->
+  </mat-autocomplete>
+</mat-form-field>
+<!-- </form> -->

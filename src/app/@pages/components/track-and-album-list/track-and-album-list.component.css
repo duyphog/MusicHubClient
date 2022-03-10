@@ -756,8 +756,8 @@ span:hover {
 }
 
 img {
-  height: auto;
-  width: 100%;
+  height: 40px;
+  width: 40px;
 }
 
 .zm-actions {
@@ -774,10 +774,6 @@ img {
   align-items: center;
   visibility: hidden;
   width: 80%;
-}
-
-.media-item.active .zm-actions {
-  visibility: visible;
 }
 
 .media .title {
@@ -1756,11 +1752,6 @@ ul {
   line-height: 1.3;
   text-transform: none;
 }
-img,
-video {
-  height: 200px;
-  width: 200px;
-}
 .group-button-menu {
   margin: 15px 0 10px;
   padding: 0 15px;
@@ -1867,4 +1858,85 @@ video {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+}
+.btn-load-more {
+  background-color: #432275; 
+  color: #fff; 
+  padding: 10px; 
+  border-radius: 999px; 
+  float: right; 
+  position: absolute; 
+  z-index: 2;
+}
+
+zm-actions {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  right: auto;
+  z-index: 98;
+  transform: translateX(-50%) translateY(-50%);
+  display: -moz-flex;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  visibility: hidden;
+  width: 80%;
+}
+
+.header-thumbnail > .zm-actions {
+  visibility: hidden !important;
+}
+
+.header-thumbnail:hover .zm-actions {
+  visibility: visible !important;
+}
+
+.zm-actions .zm-tooltip-btn {
+  font-size: 20px;
+}
+
+.header-thumbnail .zm-actions .zm-btn {
+  display: flex;
+}
+.zm-actions.playlist-actions .icon.action-play {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #fff;
+  border-radius: 50%;
+}
+.select-item:hover .zm-actions {
+  visibility: visible;
+}
+.zm-actions-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.select-item:hover .opacity {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: visible;
+}
+
+.media .opacity {
+  visibility: hidden;
+}
+
+.header-thumbnail .opacity {
+  visibility: hidden !important;
+}
+
+.header-thumbnail .opacity {
+  border-radius: 8px;
 }

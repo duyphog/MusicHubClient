@@ -1,13 +1,19 @@
 <section class="scrollable padder-lg w-f-md" id="bjax-target">
-  <h3 class="zm-section-title title is-1 ">
+  <h3 *ngIf="currentCategoryId && currentGenreId" class="zm-section-title title is-1 ">
     <!-- Nhạc Việt Nam -->
     {{ currentCategoryName }}
     <span *ngIf="currentGenreId !== 0"> > {{  currentGenreName }}</span>
   </h3>
+  <h3 *ngIf="currentKeyword" class="zm-section-title title is-1 ">
+    Kết quả tìm kiếm: {{ currentKeyword }}
+  </h3>
+  <a (click)="onLoadMore()" *ngIf="currentKeyword && tracks.length > 30" class="btn-load-more">
+    Xem thêm
+  </a>
   <div class="container">
     <mat-tab-group class="container-genre" mat-align-tabs="center" color="transparent" animationDuration="0ms"
-      backgroundColor="">
-      <div class="mat-elevation-z4">
+      backgroundColor="">  
+      <div *ngIf="!currentKeyword" class="mat-elevation-z4">
         <mat-tab label="Album mới" [aria-label]="'accent'">
           <div *ngIf="albums?.length !== 0 && albums !== null">
             <div style="display: inline-block" class="zm-carousel-wrapper ">
@@ -49,7 +55,7 @@
                         </div>
                         <div class="subtitle">
                           <span *ngFor="let singer of album.singers; let index = index" class="followers">
-                            {{ singer.nickName }}{{ index === album.singers.length - 1 ? '' : ',' }}
+                            {{ singer.nickName }}{{ index === album.singers.length - 1 ? '' : ',' }} &nbsp;
                           </span>
                         </div>
                       </div>
@@ -71,7 +77,7 @@
 
         </mat-tab>
       </div>
-      <div class="mat-elevation-z4">
+      <div *ngIf="!currentKeyword" class="mat-elevation-z4">
         <mat-tab label="Bài hát mới" [aria-label]="'accent'">
           <div *ngIf="tracks?.length !== 0">
             <div *ngFor="let track of tracks | paginate: { id: 'trackPagination', itemsPerPage: thePageSizeTrack, currentPage: thePageNumberTrack, totalItems: theTotalElementsTrack }; let index = index" style="flex-grow: 1;" class="">
@@ -79,17 +85,28 @@
                 <div class="list-item bor-b-1 media-item hide-right active ">
                   <div class="media ">
                     <div class="media-left " style="width: 50%;">
-                      <div class="song-prefix mar-r-10 ">
-                        <i class="icon ic-song">
-                        </i>
+                      <div class="song-prefix mar-r-15">
+                        <span class="number">
+                          {{ index + 1 }}
+                        </span>
                       </div>
-                      <!-- <div class="song-thumb ">
+                      <div class="song-thumb ">
                         <figure class="image is-40x40" title="Ai Ai Ai">
                           <img src="{{ defaultImage }}" width="20px" height="20px" alt="" class="">
                         </figure>
-                        <div class="opacity ">
+                        <div class="opacity"></div>
+                        <div class="zm-actions-container">
+                          <div class="zm-box zm-actions">
+                              <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
+                              <button (click)="playCurrentTrack(track.id)" class="zm-btn button" tabindex="0">
+                                <i class="icon ic-play"></i>
+                              </button>
+                              <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
+                                <i class="icon ic-more"></i>
+                              </button>
+                          </div>
                         </div>
-                      </div> -->
+                      </div>
                       <div class="card-info ">
                         <div class="title-wrapper ">
                           <span class="item-title title">
@@ -105,7 +122,7 @@
                         </div>
                         <div class="subtitle">
                           <span *ngFor="let singer of track.singers; let index = index" class="followers">
-                            {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }}
+                            {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                           </span>
                         </div>
                       </div>
@@ -124,158 +141,45 @@
                       <div class="hover-items ">
                         <div class="level ">
                           <div class="level-item ">
-                            <button class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
-                              <i class="icon ic-karaoke">
-                              </i>
+                            <button title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                              <i class="icon ic-add-play-now"></i>
                             </button>
                           </div>
                           <div class="level-item ">
-                            <button
+                            <button (click)="likedTrack(track.id)"
                               class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
                               tabindex="0">
-                              <i class="icon ic-like">
-                              </i>
-                              <i class="icon ic-like-full">
-                              </i>
-                            </button>
+                              
+                                <i *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                                </i>
+                                <i *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
+                                </i>
+                                <i class="icon ic-like-full">
+                                </i>
+                                
+                              </button>
                           </div>
                           <div class="level-item ">
-                            <button (click)="openChooseOptionTrack(index)"
-                              class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
-                              <i class="icon ic-more">
-                              </i>
+                            <button title="Phát tiếp theo" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                              <i class="icon ic-play-next"></i>
                             </button>
-                             <div *ngIf="chooseOptionTrack[index]" class="zm-contextmenu song-menu">
-                              <div class="menu">
-                                <ul class="menu-list">
-                                  <div class="menu-list--submenu">
-                                    <div class="media song-info-menu" style="background: transparent !important;">
-                                      <div class="media-left">
-                                        <figure class="image is-40x40"><img
-                                            src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_png/covers/8/8/88825ed8c45dd6409360affa18d36f1a_1470729217.png"
-                                            alt=""></figure>
-                                      </div>
-                                      <div class="is-w-150 media-content">
-                                        <a>
-                                          <div class="title-wrapper"><span
-                                              class="item-title title"><span><span><span>Nỗi Đau Em Giấu Một
-                                                    Mình</span></span><span
-                                                  style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></span>
-                                          </div>
-                                        </a>
-                                        <div class="song-stats">
-                                          <div class="stat-item">
-                                            <i class="icon ic-like"></i><span>{{ track.liked }}</span>
-                                          </div>
-                                          <div class="stat-item">
-                                            <i class="icon ic-view"></i><span>{{ track.listened }}</span>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </ul>
-                                <ul class="menu-list">
-                                  <div class="group-button-menu">
-                                    <div class="group-button-list">
-                                      <button class="zm-btn button">
-                                        <i class="icon ic-download"></i><span>Tải xuống</span>
-                                      </button>
-                                      <button class="zm-btn button" tabindex="0">
-                                        <i class="icon ic-16-Lyric"></i><span>Lời bài hát</span>
-                                      </button>
-                                      <span class="zm-btn button">
-                                        <i class="icon ic-denial"></i><span>Chặn</span>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </ul>
-                                <ul class="menu-list">
-                                  <li><button class="zm-btn button" tabindex="0"><i
-                                        class="icon ic-add-play-now"></i><span>Thêm vào danh sách phát</span></button>
-                                  </li>
-                                  <li><button class="zm-btn button" tabindex="0"><i
-                                        class="icon ic-play-next"></i><span>Phát tiếp theo</span></button></li>
-                                  <li></li>
-                                  <li>
-                                    <div class="menu-list--submenu">
-                                      <button class="zm-btn button" tabindex="0">
-                                        <i class="icon ic-16-Add"></i><span>Thêm vào playlist</span>
-                                        <i class="icon ic-go-right"></i>
-                                      </button>
-                                      <div style="left: -230px; top: -100px;"
-                                        class="menu add-playlist-content submenu-content">
-                                        <ul class="menu-list">
-                                          <li class="search-box">
-                                            <input class="input" placeholder="Tìm playlist">
-                                          </li>
-                                          <li class="mar-t-10">
-                                            <button mat-button (click)="openAddNewPlaylist()" class="zm-btn button"
-                                              tabindex="0">
-                                              <i class="icon ic- z-ic-svg ic-svg-add"></i><span>Tạo playlist
-                                                mới</span>
-                                            </button>
-                                          </li>
-                                        </ul>
-                                        <div class="playlist-container">
-                                          <div class="top-shadow"></div>
-                                          <div class="content">
-                                            <div
-                                              style="position: relative; overflow: hidden; width: 100%; height: 100%;">
-                                              <div
-                                                style="position: absolute; inset: 0px; overflow: hidden scroll; margin-right: -6px; margin-bottom: 0px;">
-                                                <ul class="menu-list">
-                                                  <li>
-                                                    <button class="zm-btn button" tabindex="0"><i
-                                                        class="icon ic-list-music"></i><span>aaa</span>
-                                                    </button>
-                                                  </li>
-                                                </ul>
-                                              </div>
-                                              <div class="track-horizontal"
-                                                style="position: absolute; height: 6px; transition: opacity 200ms ease 0s; opacity: 0;">
-                                                <div
-                                                  style="position: relative; display: block; height: 100%; cursor: pointer; border-radius: inherit; background-color: rgba(0, 0, 0, 0.2); width: 0px;">
-                                                </div>
-                                              </div>
-                                              <div class="track-vertical"
-                                                style="position: absolute; width: 4px; transition: opacity 200ms ease 0s; opacity: 0; right: 2px; top: 2px; bottom: 2px; z-index: 100;">
-                                                <div class="thumb-vertical"
-                                                  style="position: relative; display: block; width: 100%; height: 0px;">
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </li>
-                                  <!-- <li><button class="zm-btn button" tabindex="0"><i
-                                        class="icon ic-comment"></i><span>Bình luận</span><span
-                                        class="comment-badge"></span></button></li> -->
-                                  <li><button class="zm-btn button" tabindex="0"><i class="icon ic-link"></i><span>Sao
-                                        chép link</span></button></li>
-                                  <!-- <li>
-                                    <div class="menu-list--submenu"><button class="zm-btn button" tabindex="0"><i
-                                          class="icon ic-share"></i><span>Chia sẻ</span><i
-                                          class="icon ic-go-right"></i></button></div>
-                                  </li> -->
-                                </ul>
-                              </div>
-                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="action-items ">
                         <div class="level ">
                           <div class="level-item ">
-                            <button
-                              class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button "
-                              tabindex="0">
-                              <i class="icon ic-like">
+                            <button (click)="likedTrack(track.id)"
+                            class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                            tabindex="0">
+                            
+                              <i title="Thêm vào danh sách yêu thích" *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                              </i>
+                              <i title="Xóa khỏi danh sách yêu thích" *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
                               </i>
                               <i class="icon ic-like-full">
                               </i>
+                              
                             </button>
                           </div>
                           <div class="level-item duration ">
@@ -290,6 +194,124 @@
             </div>
             <div class="footer-pagination">
               <pagination-controls id="trackPagination" previousLabel="Prev" nextLabel="Next" (pageChange)="changePageTrack($event)"></pagination-controls>
+            </div>
+          </div>
+          <div *ngIf="tracks?.length === 0" class="no-content-box">
+            <i class="icon main-icon ic-song">
+            </i>
+            <span class="no-content-text">Hiện không có bài hát mới thuộc thể loại này</span>
+          </div>
+        </mat-tab>
+      </div>
+      <div *ngIf="currentKeyword" class="mat-elevation-z4">
+        <mat-tab label="Bài hát" [aria-label]="'accent'">
+          <div *ngIf="tracks?.length !== 0">
+            <div *ngFor="let track of tracks; let index = index" style="flex-grow: 1;" class="">
+              <div name="select-song" class="select-item" id="song{{ index }}" #item>
+                <div class="list-item bor-b-1 media-item hide-right active ">
+                  <div class="media ">
+                    <div class="media-left " style="width: 50%;">
+                      <div class="song-thumb ">
+                        <figure class="image is-40x40" title="Ai Ai Ai">
+                          <img src="{{ defaultImage }}" alt="" class="">
+                        </figure>
+                        <div class="opacity"></div>
+                        <div class="zm-actions-container">
+                          <div class="zm-box zm-actions">
+                              <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
+                              <button (click)="playCurrentTrack(track.id)" class="zm-btn button" tabindex="0">
+                                <i class="icon ic-play"></i>
+                              </button>
+                              <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
+                                <i class="icon ic-more"></i>
+                              </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-info ">
+                        <div class="title-wrapper ">
+                          <span class="item-title title">
+                            <span>
+                              <span>
+                                <span >{{ track.name }}</span>
+                              </span>
+                              <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
+                                …
+                              </span>
+                            </span>
+                          </span>
+                        </div>
+                        <div class="subtitle">
+                          <span *ngFor="let singer of track.singers; let index = index" class="followers">
+                            {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="media-content ">
+                      <div routerLink="/album" class="album-info">
+                        <span>
+                          <span>
+                            <!-- <span>Chẳng Hóa Tương Lai (Single)</span> -->
+                          </span>
+                          <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div class="media-right ">
+                      <div class="hover-items ">
+                        <div class="level ">
+                          <div class="level-item ">
+                            <button title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                              <i class="icon ic-add-play-now"></i>
+                            </button>
+                          </div>
+                          <div class="level-item ">
+                            <button (click)="likedTrack(track.id)"
+                              class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                              tabindex="0">
+                              
+                                <i *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                                </i>
+                                <i *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
+                                </i>
+                                <i class="icon ic-like-full">
+                                </i>
+                                
+                              </button>
+                          </div>
+                          <div class="level-item ">
+                            <button title="Phát tiếp theo" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                              <i class="icon ic-play-next"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="action-items ">
+                        <div class="level ">
+                          <div class="level-item ">
+                            <button (click)="likedTrack(track.id)"
+                            class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                            tabindex="0">
+                            
+                              <i title="Thêm vào danh sách yêu thích" *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                              </i>
+                              <i title="Xóa khỏi danh sách yêu thích" *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
+                              </i>
+                              <i class="icon ic-like-full">
+                              </i>
+                              
+                            </button>
+                          </div>
+                          <div class="level-item duration ">
+                            {{ appUtilService.getTimeDuration(track.durationSeconds) }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div *ngIf="tracks?.length === 0" class="no-content-box">
