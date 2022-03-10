@@ -39,7 +39,7 @@
             </div>
             <h3 class="is-one-line is-truncate subtitle">
               <a *ngFor="let singer of currentTrack?.singers; let index = index" class="is-ghost" routerLink="/profile">
-                {{ singer.nickName }}{{ index === currentTrack?.singers.length - 1 ? '' : ',' }}
+                {{ singer.nickName }}{{ index === currentTrack?.singers.length - 1 ? '' : ',' }} &nbsp;
               </a>
             </h3>
           </div>

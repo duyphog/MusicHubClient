@@ -19,6 +19,9 @@ export class PlaylistService extends BaseService {
 
   currentPlaylist: Playlist;
   currentPlaylist$: BehaviorSubject<Playlist> = new BehaviorSubject<Playlist>(null);
+
+  listPlaylist: BehaviorSubject<Playlist[]> = new BehaviorSubject<Playlist[]>(null);
+  listPlaylist$: Observable<Playlist[]> = this.listPlaylist.asObservable();
   
   constructor(httpClient: HttpClient, private trackService: TrackService, private appUtilService: AppUtilService) { 
     super(httpClient); 
@@ -84,12 +87,10 @@ export class PlaylistService extends BaseService {
     this.trackService.getCurrentTrack().subscribe((currentTrack) => {
       currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
       if (currentTrack.name === track.name) {
-        // currentTrackTmp = currentTrack;
         currentIndex = currentIndex === this.currentPlaylist.playlistDetails.length - 1 ? 0 : currentIndex + 1;
       }
     });
     this.setCurrentPlaylist(this.currentPlaylist, currentIndex);
-    // this.trackService.setCurrentTrack(currentTrackTmp);
   }
 
   checkExistTrackInCurrentPlaylist(track: Track) {
@@ -102,6 +103,30 @@ export class PlaylistService extends BaseService {
     return isExist;
   }
 
+  playNextCurrentTrack(track: Track) {
+
+    
+    let currentIndex, nextIndex;
+    let playlistDetail = new PlaylistDetail();
+    playlistDetail.track = track;
+
+    if (this.checkExistTrackInCurrentPlaylist(track)) {
+      this.removeTrackFromCurrentPlaylist(track);
+    }  
+
+    this.currentPlaylist = this.getCurrentPlaylistFromLocalCache();
+    this.trackService.getCurrentTrack().subscribe((currentTrack) => {
+      currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
+      nextIndex = currentIndex === this.currentPlaylist.playlistDetails.length - 1 ? 0 : currentIndex + 1;  
+    });
+    if (this.currentPlaylist.playlistDetails.length === 1) {
+      this.currentPlaylist.playlistDetails.push(playlistDetail);
+    } else {
+      this.currentPlaylist.playlistDetails.splice(nextIndex, 0, playlistDetail);
+    } 
+    this.setCurrentPlaylist(this.currentPlaylist, currentIndex);
+  }
+
   getCurrentPlaylistFromLocalCache() {
     return this.appUtilService.getFromLocalCache('currentPlaylist');
   }
@@ -109,7 +134,7 @@ export class PlaylistService extends BaseService {
   createPlaylistFormData(playlist: any): FormData {
     const formData = new FormData();
     formData.append('name', playlist.name);
-    formData.append('playlistTypeId', Number(1).toString());
+    formData.append('playlistTypeId', playlist.playlistTypeId.toString());
     formData.append('categoryId', playlist.categoryId.toString());
     formData.append('genreId', playlist.genreId.toString());
     formData.append('imgFile', playlist.imgFile);
@@ -135,7 +160,7 @@ export class PlaylistService extends BaseService {
   }
 
   public updateTrackToDetails(PlaylistDetailUpdate: any): Observable<PlaylistDetailUpdate> {
-    return this.postRequest<PlaylistDetailUpdate>(`${this.path}/details/update`, PlaylistDetailUpdate);
+    return this.postRequest<PlaylistDetailUpdate>(`${this.path}/details`, PlaylistDetailUpdate);
   }
 
   public removePlaylist(playlistId: number): Observable<Playlist> {

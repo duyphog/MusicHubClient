@@ -72,6 +72,18 @@ section {
   display: inline-block;
 }
 
+.ic-like-full:before {
+  content: "\3c";
+}
+.icon.ic-like-full {
+  color: #7200a1 !important;
+}
+
+.ic-play:before {
+  content: "\5e";
+  content: "^";
+}
+
 .ic-delete:before {
   content: "\73";
 }
@@ -252,7 +264,7 @@ html {
 .scrollable {
   overflow-x: hidden;
   overflow-y: auto;
-  height: calc(100% - 150px);
+  height: calc(100% - 210px);
   box-sizing: border-box;
   max-height: 630px;
   margin-top: 50px;
@@ -436,6 +448,12 @@ body {
   );
 }
 
+.search__container
+  .mat-autocomplete-panel
+  .mat-option.mat-selected:not(.mat-active):not(:hover) {
+  background-color: #432275;
+}
+
 .mat-tab-label {
   border-radius: 15px;
   margin: 0 auto;
@@ -447,7 +465,7 @@ body {
   opacity: 0.6 !important;
 }
 
-.mat-tab-label:hover { 
+.mat-tab-label:hover {
   color: #fff;
   /* background-color: transparent; */
   opacity: 1 !important;
@@ -459,9 +477,16 @@ body {
   height: 32px !important;
   width: fit-content;
   border-radius: 20px;
-  /* margin-left: 320px; */
   left: 30%;
-  /* right: 50%; */
+}
+
+.container-song-list .mat-tab-header {
+  left: 40%;
+}
+
+.toast-bottom-left {
+  left: 12px;
+  bottom: 100px;
 }
 
 .container-playlist .mat-tab-header {
@@ -545,64 +570,65 @@ body {
   display: none !important;
 }
 
-.ngx-pagination a, .ngx-pagination button {
+.ngx-pagination a,
+.ngx-pagination button {
   color: #fff !important;
 }
 
-.ngx-pagination a:hover, .ngx-pagination button:hover {
+.ngx-pagination a:hover,
+.ngx-pagination button:hover {
   color: red !important;
   background-color: #170f23 !important;
 }
 
-
 .ic-loading {
-	-webkit-animation: spin 2s infinite linear;
-	-moz-animation: spin 2s infinite linear;
-	-o-animation: spin 2s infinite linear;
-	animation: spin 2s infinite linear
+  -webkit-animation: spin 2s infinite linear;
+  -moz-animation: spin 2s infinite linear;
+  -o-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
 }
 
 @-moz-keyframes spin {
-	0% {
-		-moz-transform: rotate(0deg)
-	}
-	100% {
-		-moz-transform: rotate(359deg)
-	}
+  0% {
+    -moz-transform: rotate(0deg);
+  }
+  100% {
+    -moz-transform: rotate(359deg);
+  }
 }
 
 @-webkit-keyframes spin {
-	0% {
-		-webkit-transform: rotate(0deg)
-	}
-	100% {
-		-webkit-transform: rotate(359deg)
-	}
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+  }
 }
 
 @-o-keyframes spin {
-	0% {
-		-o-transform: rotate(0deg)
-	}
-	100% {
-		-o-transform: rotate(359deg)
-	}
+  0% {
+    -o-transform: rotate(0deg);
+  }
+  100% {
+    -o-transform: rotate(359deg);
+  }
 }
 
 @-ms-keyframes spin {
-	0% {
-		-ms-transform: rotate(0deg)
-	}
-	100% {
-		-ms-transform: rotate(359deg)
-	}
+  0% {
+    -ms-transform: rotate(0deg);
+  }
+  100% {
+    -ms-transform: rotate(359deg);
+  }
 }
 
 @keyframes spin {
-	0% {
-		transform: rotate(0deg)
-	}
-	100% {
-		transform: rotate(359deg)
-	}
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(359deg);
+  }
 }

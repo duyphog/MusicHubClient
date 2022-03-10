@@ -34,6 +34,7 @@ import { TrackAndAlbumComponent } from '../../components/track-and-album-list/tr
 import { PlaylistComponent } from '../../components/playlist/playlist.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
+
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
@@ -75,8 +76,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatGridListModule,
     MatButtonModule,
     ToastrModule.forRoot({
-      timeOut: 5000,
-      positionClass: 'toast-bottom-right',
+      timeOut: 2000,
+      positionClass: 'toast-bottom-left',
+      tapToDismiss: true,
       preventDuplicates: true,
     }),
     SharedModule,

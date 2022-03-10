@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthenticationService } from 'src/app/@services/authentication.service';
 import { PlaylistService } from './../../../@services/playlist.service';
@@ -11,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup, Validators, AbstractControl } from
 import { AppUserService } from 'src/app/@services/app-user.service';
 import { debounceTime } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { PlaylistType } from './../../../@model/playlist-type.model';
 
 @Component({
   selector: 'app-my-song-list',
@@ -44,14 +45,37 @@ export class MySongListComponent implements OnInit {
     private authenticationService: AuthenticationService,
     public dialog: MatDialog,
     private playlistService: PlaylistService,
+    private toastr: ToastrService,
+    private appUserService: AppUserService
   ) {}
 
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.user = this.authenticationService.getUserInfoFromLocalCache();
-    this.playlistService.getPlaylistByUserId(this.user.userId).pipe(debounceTime(500)).subscribe(res => {
-      this.listPlaylist = res.data;    
+    this.listPlaylistByUser();
+    this.playlistService.listPlaylist$.subscribe(res => {
+      this.listPlaylist = res;
     });
   }
+
+  listPlaylistByUser(): void {
+    this.playlistService.getPlaylistByUserId(this.user.userId).subscribe(res => {
+      this.playlistService.listPlaylist.next(res.data);
+    });
+  }
+
+  likedTrack(id: number) {
+    if (this.appUserService.checkExistTrackInTrackLikedList(id)) {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: false }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: false });
+        this.toastr.success('Đã xóa khỏi danh sách yêu thích');
+      });  
+    } else {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: true }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: true });
+        this.toastr.success('Đã thêm vào danh sách yêu thích');
+      });
+    }
+ }
 
   openAddNewPlaylist() {
     this.dialog.open(AddNewPlaylist);
@@ -116,10 +140,19 @@ export class AddNewPlaylist implements OnInit{
   user: any;
   listGenre: Genre[] = [];
   listCategory: Category[] = [];
+  listPlaylistType: PlaylistType[] = [
+    { id: 1, name: "Romance" },
+    { id: 2, name: "Sleep" },
+    { id: 3, name: "Gym" },
+    { id: 4, name: "Dance" },
+    { id: 5, name: "Work" },
+    { id: 6, name: "Coffee" },
+    { id: 7, name: "Game" },
+  ];
   addNewPlaylistFormGroup: FormGroup;
-  listPlaylist: Playlist[] = [];
+  // listPlaylist: Playlist[] = [];
 
-  mySongListComponent: BehaviorSubject<MySongListComponent> = new BehaviorSubject(null);
+  @ViewChild('listPlaylist') listPlaylist: Playlist[];
 
   constructor(
     public dialog: MatDialog,
@@ -142,8 +175,11 @@ export class AddNewPlaylist implements OnInit{
         Validators.required,
         Validators.min(1)
       ]),
+      'playlistTypeId': new FormControl(0, [
+        Validators.required,
+        Validators.min(1)
+      ]),
       'description': new FormControl('', []),
-      'playlistTypeId': new FormControl('', []),
       'imgFile': new FormControl('', []),
     });
   }
@@ -181,14 +217,19 @@ export class AddNewPlaylist implements OnInit{
     } else {      
       const formData = this.playlistService.createPlaylistFormData(data);
       this.playlistService.createPlaylist(formData).subscribe((response: any) => {
-        // window.location.reload();
+        this.listPlaylistByUser();
         this.toastr.success("Thêm playlist thành công");
       }, (error : any) => {
         this.toastr.error(error.error.errorMessage);
       });
       this.dialog.closeAll();
     }
+  }
 
+  listPlaylistByUser(): void {
+    this.playlistService.getPlaylistByUserId(this.user.userId).subscribe(res => {
+      this.playlistService.listPlaylist.next(res.data);
+    });
   }
 
   get name(): AbstractControl {
@@ -201,6 +242,10 @@ export class AddNewPlaylist implements OnInit{
 
   get genreIdPlaylist(): AbstractControl {
     return this.addNewPlaylistFormGroup.get('genreId');
+  }
+
+  get playlistTypeId(): AbstractControl {
+    return this.addNewPlaylistFormGroup.get('playlistTypeId');
   }
 
 }

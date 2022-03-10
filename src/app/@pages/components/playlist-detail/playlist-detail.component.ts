@@ -16,6 +16,7 @@ import { AppUtilService } from 'src/app/@services/app-util.service';
 import { PlaylistDetail } from './../../../@model/playlist-detail.model';
 import { PlaylistDetailUpdate } from './../../../@model/playlist-detail-update.model';
 import { AudioService } from 'src/app/@services/audio.service';
+import { AppUserService } from './../../../@services/app-user.service';
 
 @Component({
   selector: 'app-playlist-detail',
@@ -29,24 +30,12 @@ export class PlaylistDetailComponent implements OnInit {
   chooseOptionPlaylist: boolean = false;
   chooseOptionSong: boolean = false;
 
-  songList: any[] = [
-    {
-      srcImg: "https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/avatars/6/7/67d14814930023cf3b56146571cd8d72_1399966280.jpg",
-      name: "Ai Ai Ai",
-      artist: "La Thăng New"
-    },
-    {
-      srcImg: "https://photo-resize-zmp3.zadn.vn/w94_r1x1_webp/avatars/6/7/67d14814930023cf3b56146571cd8d72_1399966280.jpg",
-      name: "Ai Ai Ai",
-      artist: "La Thăng New"
-    }
-  ];
   trackSelected: any[] = [];
   user: any;
   playlistInfo: Playlist;
   listTrackRecommended: Track[] = [];
 
-  constructor(public dialog: MatDialog, private audioService: AudioService, private playlistService: PlaylistService, private trackService: TrackService, public appUtilService: AppUtilService, private route: ActivatedRoute, private authenticationService: AuthenticationService, private toastr: ToastrService, private router: Router) { }
+  constructor(public dialog: MatDialog, public appUserService: AppUserService, private playlistService: PlaylistService, private trackService: TrackService, public appUtilService: AppUtilService, private route: ActivatedRoute, private authenticationService: AuthenticationService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -58,6 +47,13 @@ export class PlaylistDetailComponent implements OnInit {
     })
 
     this.user = this.authenticationService.getUserInfoFromLocalCache();
+  }
+
+  addTrackToCurrentPlaylist(track: Track): void {
+    if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
+      this.playlistService.addTrackToCurrentPlaylist(track);
+    }
+    this.toastr.info('Thêm vào danh sách phát thành công');
   }
 
   getPlaylistDetail() {
@@ -74,9 +70,22 @@ export class PlaylistDetailComponent implements OnInit {
     }
   }
 
-  AddTrackToPlaylist(trackId) {
-    const formData = this.playlistService.createPlaylistDetailUpdateFormData({ playlistId: this.playlistInfo.id, trackId: trackId, isRemove: false });
-    this.playlistService.updateTrackToDetails(formData).subscribe((response) => {
+  likedTrack(id: number) {
+    if (this.appUserService.checkExistTrackInTrackLikedList(id)) {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: false }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: false });
+        this.toastr.success('Đã xóa khỏi danh sách yêu thích');
+      });  
+    } else {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: true }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: true });
+        this.toastr.success('Đã thêm vào danh sách yêu thích');
+      });
+    }
+ }
+
+  addTrackToPlaylist(trackId) {
+    this.playlistService.updateTrackToDetails({ playlistId: this.playlistInfo.id, trackId: trackId, isRemove: false }).subscribe((response) => {
       this.toastr.success('Thêm bài hát vào playlist thành công');
       this.getPlaylistDetail();
     }, (error: any) => {
@@ -86,17 +95,17 @@ export class PlaylistDetailComponent implements OnInit {
 
   removeTrackFromPlaylist() {
     this.trackSelected.forEach((track) => {
-      const formData = this.playlistService.createPlaylistDetailUpdateFormData({ playlistId: this.playlistInfo.id, trackId: track.id, isRemove: true })
-      this.playlistService.updateTrackToDetails(formData).subscribe(
+      this.playlistService.updateTrackToDetails({ playlistId: this.playlistInfo.id, trackId: track.id, isRemove: true }).subscribe(
         (response: any) => {
           this.toastr.success(`Xóa bài hát ${track.name} khỏi playlist thành công`);
+          this.chooseOption = false;
+          this.uncheckAfterAction();
+          this.getPlaylistDetail();
         }, (error) => {
           this.toastr.error(error.error.errorMessage);
         }
       );
     })
-    
-    this.getPlaylistDetail();
   }
 
   getTotalDuration(): number {
@@ -143,7 +152,10 @@ export class PlaylistDetailComponent implements OnInit {
       });
     })
     this.toastr.info('Thêm vào danh sách phát thành công');
+    this.uncheckAfterAction();
+  }
 
+  uncheckAfterAction() {
     var element = document.getElementsByName('select-song');
     var inputCheckbox: any = document.getElementsByName('checkbox-song');
     element.forEach((item) => item.classList.remove('is-selected'));
@@ -156,10 +168,8 @@ export class PlaylistDetailComponent implements OnInit {
       if (!this.playlistService.checkExistTrackInCurrentPlaylist(res.data)) {
         this.playlistService.addTrackToCurrentPlaylist(res.data);
         this.trackService.setCurrentTrack(res.data);
-        this.audioService.setAudio(res.data.trackUrl);
       } else {
         this.trackService.setCurrentTrack(res.data);
-        this.audioService.setAudio(res.data.trackUrl);
       }
     });
   }
@@ -181,7 +191,7 @@ export class PlaylistDetailComponent implements OnInit {
     if (item.className.includes("select-item")) {
       if (item.className.includes("is-selected")){
         item.classList.remove("is-selected");
-        this.trackSelected.splice(this.trackSelected.indexOf(track.id), 1);
+        this.trackSelected.splice(this.trackSelected.indexOf(track), 1);
       } else {
         this.trackSelected.push(track);
         item.classList.add("is-selected");
@@ -197,7 +207,7 @@ export class PlaylistDetailComponent implements OnInit {
     if (this.selectAll) {
       element.forEach(item => item.classList.add("is-selected"));
       inputCheckbox.forEach(item => item.checked = true);
-      this.songList.forEach(song => this.trackSelected.push(song.id));
+      this.playlistInfo.playlistDetails.forEach(playlistDetail => this.trackSelected.push(playlistDetail.track));
     } else {
       element.forEach(item => item.classList.remove("is-selected"));
       inputCheckbox.forEach(item => item.checked = false);

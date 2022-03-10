@@ -75,6 +75,7 @@ export class AuthenticationService extends BaseService {
     this.loggedInUsername = null;
     this.appUtilService.removeFromLocalCache('user');
     this.appUtilService.removeFromLocalCache('token');
+    this.appUtilService.removeFromLocalCache('trackLiked');
   }
 
   checkRole(roleToCheck: string): boolean {

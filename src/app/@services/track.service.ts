@@ -91,15 +91,11 @@ export class TrackService extends BaseService{
     return this.getRequest<Track>(`${this.path}/single/${id}`);
   }
 
-  likedTrack(id: number): Observable<Track> {
-    return this.getRequest<Track>(`${this.path}/liked/${id}`);
-  }
-
-  unlikedTrack(id: number): Observable<Track> {
-    return this.getRequest<Track>(`${this.path}/unliked/${id}`);
-  }
-
   listenedTrack(id: number): Observable<Track> {
     return this.getRequest<Track>(`${this.path}/listened/${id}`);
+  }
+
+  searchText(text: string, pageIndex: number): Observable<Track[]> {
+    return this.getRequest<Track[]>(`${this.path}/search-text?text=${text}&pageIndex=${pageIndex}`);
   }
 }

@@ -2068,7 +2068,7 @@ ul {
   width: 250px;
   padding: 10px 0;
   left: 260px;
-  top: 480px;
+  top: 420px;
 }
 
 .ic-comment:before {
@@ -2086,6 +2086,8 @@ ul {
 .ic-share:before {
   content: "\2c";
 }
+
+
 
 .song-menu {
   width: 280px;

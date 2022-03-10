@@ -16,6 +16,7 @@ import { Playlist } from 'src/app/@model/playlist.model';
 import { FormGroup } from '@angular/forms';
 import { AddNewPlaylist } from '../my-song-list/my-song-list.component';
 import { PlaylistDetail } from './../../../@model/playlist-detail.model';
+import { AppUserService } from 'src/app/@services/app-user.service';
 
 @Component({
   selector: 'app-album',
@@ -32,10 +33,11 @@ export class AlbumComponent implements OnInit {
   trackSelected: Track[] = [];
 
   albumInfo: Album;
+  trackInfo: Track;
 
   status: string = 'start';
 
-  constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService, public playlistService: PlaylistService, private toastr: ToastrService, private audioService: AudioService) {}
+  constructor(public dialog: MatDialog, private route: ActivatedRoute, private albumService: AlbumService, public appUtilService: AppUtilService, public trackService: TrackService, public playlistService: PlaylistService, private toastr: ToastrService, public appUserService: AppUserService) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
@@ -46,6 +48,7 @@ export class AlbumComponent implements OnInit {
   getAlbumDetail() {
 
     const hasAlbumId: boolean = this.route.snapshot.paramMap.has('id');
+    const hasTrackId: boolean = this.route.snapshot.paramMap.has('trackId');
 
     if (hasAlbumId) {
 
@@ -54,6 +57,13 @@ export class AlbumComponent implements OnInit {
       this.albumService.getAlbumDetail(+albumId).subscribe((res: any) => {
         this.albumInfo = res.data;
       });
+    } else if (hasTrackId) {
+        
+        const trackId = this.route.snapshot.paramMap.get('trackId');
+  
+        this.trackService.getTrack(+trackId).subscribe((res: any) => {
+          this.trackInfo = res.data;
+        });
     }
     
   }
@@ -119,6 +129,20 @@ export class AlbumComponent implements OnInit {
     this.trackSelected = [];
   }
 
+  addTrackToCurrentPlaylist(track: Track): void {
+    if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
+      this.playlistService.addTrackToCurrentPlaylist(track);
+    }
+    this.toastr.info('Thêm vào danh sách phát thành công');
+  }
+
+  playNextCurrentTrack(trackId: number): void {
+    this.trackService.getTrack(trackId).subscribe((response: any) => {
+      this.playlistService.playNextCurrentTrack(response.data);
+    });
+    this.toastr.info('Thêm vào danh sách phát thành công');
+  }
+
   addAlbumToCurrentPlaylist(): void {
     this.albumInfo.tracks.forEach((track) => {
       this.trackService.getTrack(track.id).subscribe((response: any) => { 
@@ -150,6 +174,20 @@ export class AlbumComponent implements OnInit {
   openChooseOptionOtherTrack(): void {
     this.chooseOptionOtherTrack = !this.chooseOptionOtherTrack;
   }
+
+  likedTrack(id: number) {
+    if (this.appUserService.checkExistTrackInTrackLikedList(id)) {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: false }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: false });
+        this.toastr.success('Đã xóa khỏi danh sách yêu thích');
+      });  
+    } else {
+      this.appUserService.updateWhiteList({ trackId: id, isAdd: true }).subscribe((response: any) => {
+        this.appUserService.updateTrackLikedFromLocalCache({ trackId: id, isAdd: true });
+        this.toastr.success('Đã thêm vào danh sách yêu thích');
+      });
+    }
+ }
 
   selectedTrack(track: Track, item: any): void {
     if (item.className.includes('select-item')) {

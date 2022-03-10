@@ -9,7 +9,6 @@ export class RoleGuard implements CanActivate {
   constructor(private authenticationService: AuthenticationService, private router: Router, private toastr: ToastrService) {
   }
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    console.log(next.data.roles);
     const roles = next.data.roles as Array<string>;
     if (roles) {
       const match = this.authenticationService.roleMatch(roles);

@@ -18,7 +18,7 @@ import { FullwidthComponent } from './@pages/layout/fullwidth/fullwidth.componen
 import { TrackAndAlbumComponent } from './@pages/components/track-and-album-list/track-and-album-list.component';
 import { ForgotPasswordComponent } from './@pages/components/forgot-password/forgot-password.component';
 import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
-
+import { RoleGuard } from './@guard/role.guard';
 const routes: Routes = [
   {
     path: '',
@@ -54,6 +54,8 @@ const routes: Routes = [
         canActivate: [AuthenticationGuard],
       },
       { path: 'album/:id', component: AlbumComponent },
+      { path: 'single/:trackId', component: AlbumComponent },
+      { path: 'search/:keyword', component: TrackAndAlbumComponent },
       { path: 'genre/:category-id/:genre-id', component: TrackAndAlbumComponent },
     ],
   },
@@ -73,6 +75,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  
+exports: [RouterModule],
 })
 export class AppRoutingModule {}

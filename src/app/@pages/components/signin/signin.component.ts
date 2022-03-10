@@ -49,6 +49,9 @@ export class SigninComponent implements OnInit, OnDestroy {
         .pipe(finalize(() => (this.showLoading = false)))
         .subscribe((response: any) => {
           this.authenticationService.saveToken(response.data.token);
+          this.appUserService.getTrackLiked().subscribe((res: any) => {
+            this.appUserService.addTrackLikedToLocalCache(res.data);
+          });
           this.appUserService.getUserInfo(response.data.userId).subscribe((userInfo: any) => this.authenticationService.addUserInfoToLocalCache(userInfo.data));
           this.router.navigate(['/home']).then(r => this.toastr.success("Login successfully!"));
           

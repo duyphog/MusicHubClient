@@ -8,13 +8,13 @@
               <figure class="image is-48x48">
                 <img
                   style="width: 300px; height: 300px;"
-                  src="{{ albumInfo?.imgUrl }}"
+                  src="{{ albumInfo === undefined ? 'assets/images/my-logo.png' : albumInfo?.imgUrl }}"
                   alt="" class="">
               </figure>
-              <div class="opacity">
-              </div>
+              <!-- <div class="opacity">
+              </div> -->
             </div>
-            <div class="zm-actions-container">
+            <!-- <div class="zm-actions-container">
               <div class="zm-box zm-actions playlist-actions">
                 <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button"
                   tabindex="0">
@@ -32,12 +32,12 @@
                   </i>
                 </button>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
       <div class="media-content">
-        <div class="content-top">
+        <div *ngIf="albumInfo" class="content-top">
           <div class="user-playlist-title">
             <h3 class="title">
               {{ albumInfo?.name }}
@@ -45,10 +45,24 @@
           </div>
           <div class="subtitle">
             <span *ngFor="let singer of albumInfo?.singers; let index = index" class="followers">
-              {{ singer.nickName }}{{ index === albumInfo?.singers.length - 1 ? '' : ',' }}
+              {{ singer.nickName }}{{ index === albumInfo?.singers.length - 1 ? '' : ',' }} &nbsp;
             </span>
             •
             <span>{{ albumInfo?.musicYear }}</span>
+          </div>
+        </div>
+        <div *ngIf="trackInfo" class="content-top">
+          <div class="user-playlist-title">
+            <h3 class="title">
+              {{ trackInfo?.name }}
+            </h3>
+          </div>
+          <div class="subtitle">
+            <span *ngFor="let singer of trackInfo?.singers; let index = index" class="followers">
+              {{ singer.nickName }}{{ index === trackInfo?.singers.length - 1 ? '' : ',' }} &nbsp;
+            </span>
+            •
+            <span>{{ trackInfo?.musicYear }}</span>
           </div>
         </div>
         <div class="level actions">
@@ -66,15 +80,7 @@
               Tạm dùng
             </span>
           </button> -->
-          <div class="level">
-            <div class="level-item is-narrow">
-              <button class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
-                <i class="icon ic-like">
-                </i>
-                <!-- <i class="icon ic-like-full">
-                    </i> -->
-              </button>
-            </div>
+          <div *ngIf="albumInfo" class="level">
             <div class="level-item is-narrow">
               <button (click)="openChooseOptionAlbum()" class="zm-btn zm-tooltip-btn is-hover-circle button"
                 tabindex="0">
@@ -88,16 +94,9 @@
               <ul class="menu-list">
                 <li><button (click)="addAlbumToCurrentPlaylist()" class="zm-btn button" tabindex="0"><i class="icon ic-add-play-now"></i><span>Thêm vào danh
                       sách phát</span></button></li>
-                <li><button class="zm-btn button" tabindex="0"><i class="icon ic-comment"></i><span>Bình
-                      luận</span></button></li>
+               
                 <li> <button class="zm-btn button" tabindex="0"><i class="icon ic-download"></i><span>Tải
                       xuống</span></button></li>
-                <li><button class="zm-btn button" tabindex="0"><i class="icon ic-link"></i><span>Sao chép
-                      link</span></button></li>
-                <li>
-                  <div class="menu-list--submenu"><button class="zm-btn button" tabindex="0"><i
-                        class="icon ic-share"></i><span>Chia sẻ</span><i class="icon ic-go-right"></i></button></div>
-                </li>
               </ul>
             </div>
           </div>
@@ -217,7 +216,7 @@
                 </div>
               </div>
             </div>
-            <div style="max-height: 250px; overflow: hidden;" class="track-list">
+            <div *ngIf="albumInfo" style="max-height: 250px; overflow: hidden;" class="track-list">
               <div *ngFor="let track of albumInfo?.tracks; let index = index" style="flex-grow: 1;" class="">
                 <div name="select-song" class="select-item" id="track{{ index }}" #item>
                   <div class="checkbox-wrapper">
@@ -241,7 +240,7 @@
                           <div class="zm-actions-container">
                             <div class="zm-box zm-actions">
                                 <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
-                                <button (click)="playCurrentTrack(track.id)" class="zm-btn action-play button" tabindex="0">
+                                <button (click)="playCurrentTrack(track)" class="zm-btn action-play button" tabindex="0">
                                   <i class="icon action-play ic-play"></i>
                                 </button>
                                 <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
@@ -252,7 +251,7 @@
                         
                         </div>
                         <div class="card-info">
-                          <div class="title-wrapper">
+                          <div routerLink="/single/{{ track.id }}" style="cursor: pointer" class="title-wrapper">
                             <span class="item-title title">
                               <span>
                                 <span>
@@ -266,52 +265,57 @@
                           </div>
                           <div class="subtitle">
                             <span *ngFor="let singer of track.singers; let index = index" class="followers">
-                              {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }}
+                              {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                             </span>
                           </div>
                         </div>
                       </div>
-                      <div class="media-right">
-                        <div class="hover-items">
-                          <div class="level">
-                            <div class="level-item">
-                              <button class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
-                                <i class="icon ic-karaoke">
-                                </i>
+                      <div class="media-right ">
+                        <div class="hover-items ">
+                          <div class="level ">
+                            <div class="level-item ">
+                              <button (click)="addTrackToCurrentPlaylist(track)" title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-add-play-now"></i>
                               </button>
                             </div>
-                            <div class="level-item">
-                              <button
+                            <div class="level-item ">
+                              <button (click)="likedTrack(track.id)"
                                 class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
                                 tabindex="0">
-                                <i class="icon ic-like">
-                                </i>
-                                <i class="icon ic-like-full">
-                                </i>
+                                
+                                  <i *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                                  </i>
+                                  <i *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
+                                  </i>
+                                  <i class="icon ic-like-full">
+                                  </i>
+                                  
+                                </button>
+                            </div>
+                            <div class="level-item ">
+                              <button (click)="playNextCurrentTrack(track.id)" title="Phát tiếp theo" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-play-next"></i>
                               </button>
                             </div>
-                            <!-- <div class="level-item">
-                              <button (click)="openChooseOptionTrack(index)"
-                                class="zm-btn zm-tooltip-btn is-hover-circle button" tabindex="0">
-                                <i class="icon ic-more">
-                                </i>
-                              </button>
-                            </div> -->
                           </div>
                         </div>
-                        <div class="action-items">
-                          <div class="level">
-                            <div class="level-item">
-                              <button
-                                class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
-                                tabindex="0">
-                                <i class="icon ic-like">
+                        <div class="action-items ">
+                          <div class="level ">
+                            <div class="level-item ">
+                              <button (click)="likedTrack(track.id)"
+                              class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                              tabindex="0">
+                              
+                                <i title="Thêm vào danh sách yêu thích" *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                                </i>
+                                <i title="Xóa khỏi danh sách yêu thích" *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
                                 </i>
                                 <i class="icon ic-like-full">
                                 </i>
+                                
                               </button>
                             </div>
-                            <div class="level-item duration">
+                            <div class="level-item duration ">
                               {{ appUtilService.getTimeDuration(track.durationSeconds) }}
                             </div>
                           </div>
@@ -435,9 +439,118 @@
                 </div> -->
               </div>
             </div>
+            <div *ngIf="trackInfo" style="max-height: 250px; overflow: hidden;" class="track-list">
+              <div style="flex-grow: 1;" class="">
+                <div name="select-song" class="select-item" id="track1" #item>
+                  <div class="checkbox-wrapper">
+                    <label class="checkbox">
+                      <input name="checkbox-song" (click)="selectedTrack(trackInfo, item)" type="checkbox">
+                    </label>
+                  </div>
+                  <div class="list-item bor-b-1 media-item hide-right active">
+                    <div class="media">
+                      <div class="media-left" style="width: 50%">
+                        <div class="song-prefix mar-r-15">
+                          <span class="number">
+                            1
+                          </span>
+                        </div>
+                        <div class="song-thumb">
+                          <figure class="image is-40x40" title="{{ trackInfo.name }}">
+                            <img src="{{ trackInfo.album === null ? 'assets/images/my-logo.png' : trackInfo.album.imgUrl  }}" alt="" class="">
+                          </figure>
+                          <div class="opacity"></div>
+                          <div class="zm-actions-container">
+                            <div class="zm-box zm-actions">
+                                <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button" tabindex="0"><i class="icon ic-like"></i><i class="icon ic-like-full"></i></button>
+                                <button (click)="playCurrentTrack(trackInfo)" class="zm-btn action-play button" tabindex="0">
+                                  <i class="icon action-play ic-play"></i>
+                                </button>
+                                <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
+                                  <i class="icon ic-more"></i>
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="card-info">
+                          <div class="title-wrapper">
+                            <span class="item-title title">
+                              <span>
+                                <span>
+                                  <span>{{ trackInfo.name }}</span>
+                                </span>
+                                <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
+                                  …
+                                </span>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="subtitle">
+                            <span *ngFor="let singer of trackInfo.singers; let index = index" class="followers">
+                              {{ singer.nickName }}{{ index === trackInfo.singers.length - 1 ? '' : ',' }} &nbsp;
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="media-right ">
+                        <div class="hover-items ">
+                          <div class="level ">
+                            <div class="level-item ">
+                              <button (click)="addTrackToCurrentPlaylist(trackInfo)" title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-add-play-now"></i>
+                              </button>
+                            </div>
+                            <div class="level-item ">
+                              <button (click)="likedTrack(trackInfo.id)"
+                                class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                                tabindex="0">
+                                
+                                  <i *ngIf="appUserService.checkExistTrackInTrackLikedList(trackInfo.id)" class="icon ic-like-full">
+                                  </i>
+                                  <i *ngIf="!appUserService.checkExistTrackInTrackLikedList(trackInfo.id)" class="icon ic-like">
+                                  </i>
+                                  <i class="icon ic-like-full">
+                                  </i>
+                                  
+                                </button>
+                            </div>
+                            <div class="level-item ">
+                              <button (click)="playNextCurrentTrack(trackInfo.id)" title="Phát tiếp theo" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-play-next"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="action-items ">
+                          <div class="level ">
+                            <div class="level-item ">
+                              <button (click)="likedTrack(trackInfo.id)"
+                              class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                              tabindex="0">
+                              
+                                <i title="Thêm vào danh sách yêu thích" *ngIf="appUserService.checkExistTrackInTrackLikedList(trackInfo.id)" class="icon ic-like-full">
+                                </i>
+                                <i title="Xóa khỏi danh sách yêu thích" *ngIf="!appUserService.checkExistTrackInTrackLikedList(trackInfo.id)" class="icon ic-like">
+                                </i>
+                                <i class="icon ic-like-full">
+                                </i>
+                                
+                              </button>
+                            </div>
+                            <div class="level-item duration ">
+                              {{ appUtilService.getTimeDuration(trackInfo.durationSeconds) }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        <h3 class="bottom-info subtitle">
+        <h3 *ngIf="albumInfo" class="bottom-info subtitle">
           <span>
             {{ albumInfo?.tracks.length }} bài hát
           </span>

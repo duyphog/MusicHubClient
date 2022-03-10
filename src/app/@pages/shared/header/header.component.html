@@ -12,7 +12,7 @@
       <i class="icon-settings"> </i>
     </a>
   </div>
-  <form class="search navbar-form navbar-left">
+  <!-- <form class="search navbar-form navbar-left">
     <div class="input-group search__container ">
       <span class="input-group-btn">
         <button type="submit" style="background-color: hsla(0,0%,100%,0.1); margin-top: 2px"
@@ -22,7 +22,8 @@
       </span>
       <input type="text" class="form-control input-sm no-border rounded" placeholder="Search songs, albums..." />
     </div>
-  </form>
+  </form> -->
+  <app-search></app-search>
   <div class="navbar-right">
     <ul class="nav navbar-nav m-n hidden-xs nav-user user">
       <li *ngIf="!authenticationService.isLoggedIn()" style="margin-right: -30px" class="hidden-xs">

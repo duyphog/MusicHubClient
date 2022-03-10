@@ -17,18 +17,21 @@
                 <option *ngFor="let category of listCategory" [value]="category.id">{{ category.name }}</option>
             </select>
             <div *ngIf="categoryIdPlaylist.invalid && (categoryIdPlaylist.dirty || categoryIdPlaylist.touched)" class="help-block">
-                <!-- <div *ngIf="categoryId.errors.min"> -->
                   Vui lòng chọn chuyên mục.
-                <!-- </div> -->
             </div>
             <select formControlName="genreId" class="input-name-playlist" name="genreIdPlaylist" id="">
                 <option [value]="0">Chọn thể loại</option>
                 <option *ngFor="let genre of listGenre" [value]="genre.id">{{ genre.name }}</option>
             </select>
             <div *ngIf="genreIdPlaylist.invalid && (genreIdPlaylist.dirty || genreIdPlaylist.touched)" class="help-block">
-                <!-- <div *ngIf="genreId.errors.required"> -->
                   Vui lòng chọn thể loại.
-                <!-- </div> -->
+            </div>
+            <select formControlName="playlistTypeId" class="input-name-playlist" name="playlistTypeId" id="">
+                <option [value]="0">Chọn loại</option>
+                <option *ngFor="let playlistType of listPlaylistType" [value]="playlistType.id">{{ playlistType.name }}</option>
+            </select>
+            <div *ngIf="playlistTypeId.invalid && (playlistTypeId.dirty || playlistTypeId.touched)" class="help-block">
+                  Vui lòng chọn loại playlist.
             </div>
         </form>
     </div>

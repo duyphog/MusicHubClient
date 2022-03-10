@@ -70,7 +70,6 @@ export class MusicBarComponent implements OnInit, OnDestroy {
       this.trackService.getCurrentTrack().subscribe((track) => {
         this.currentTrack = track;
         this.currentIndex = this.trackService.getIndexOfTrack(track, playlist);
-        // this.audioService.setAudio(this.setTrack(this.currentIndex).trackUrl);
       });
     });
 
