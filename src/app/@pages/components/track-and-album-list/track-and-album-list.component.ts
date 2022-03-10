@@ -106,6 +106,13 @@ export class TrackAndAlbumComponent implements OnInit, OnDestroy {
     this.toastr.info('Thêm vào danh sách phát thành công');
   }
 
+  addTrackToCurrentPlaylist(track: Track): void {
+    if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
+      this.playlistService.addTrackToCurrentPlaylist(track);
+    }
+    this.toastr.info('Thêm vào danh sách phát thành công');
+  }
+
   openChooseOptionTrack(index): void {
     this.chooseOptionTrack[index] = !this.chooseOptionTrack[index];
   }

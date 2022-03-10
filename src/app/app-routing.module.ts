@@ -19,6 +19,7 @@ import { TrackAndAlbumComponent } from './@pages/components/track-and-album-list
 import { ForgotPasswordComponent } from './@pages/components/forgot-password/forgot-password.component';
 import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
 import { RoleGuard } from './@guard/role.guard';
+import { DiscoverComponent } from './@pages/components/discover/discover.component';
 const routes: Routes = [
   {
     path: '',
@@ -26,7 +27,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
-      { path: 'profile', component: ProfileComponent },
+      { path: 'profile/:id', component: ProfileComponent },
       {
         path: 'profile-user',
         component: ProfileUserComponent,
@@ -57,6 +58,7 @@ const routes: Routes = [
       { path: 'single/:trackId', component: AlbumComponent },
       { path: 'search/:keyword', component: TrackAndAlbumComponent },
       { path: 'genre/:category-id/:genre-id', component: TrackAndAlbumComponent },
+      { path: 'discover/:id', component: DiscoverComponent },
     ],
   },
   {
@@ -75,7 +77,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  
+
 exports: [RouterModule],
 })
 export class AppRoutingModule {}

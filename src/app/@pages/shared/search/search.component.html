@@ -38,7 +38,7 @@
           <div class="media-content">
              <h3 class="title"><a class="" routerLink="/single/{{ track.id }}">{{ track.name }}</a></h3>
              <div class="subtitle">
-              <span *ngFor="let singer of track?.singers; let index = index">
+              <span *ngFor="let singer of track?.singers; let index = index" routerLink="/profile/{{ singer.id }}">
                 {{ singer.nickName }}{{ index === track?.singers.length - 1 ? '' : ',' }} &nbsp;
                </span>
              </div>
@@ -46,29 +46,6 @@
         </div>
       </mat-option>
     </ng-container>
-    <!-- <mat-divider></mat-divider>
-    <div class="search__title">Search 2</div>
-    <ng-container *ngFor="let track of filteredTracks | async">
-      <mat-option *ngIf="!tracks.includes(track)" [value]="track">
-        <div class="media song">
-          <div class="media-left">
-             <div>
-                <figure class="image is-40x40"><img src="{{ track.imgUrl }}" alt=""></figure>
-                <div class="opacity "></div>
-                <button class="zm-btn action-play  button" tabindex="0"><i class="icon action-play ic-play"></i></button>
-             </div>
-          </div>
-          <div class="media-content">
-             <h3 class="title"><a class="" href="/bai-hat/Chay-Ve-Khoc-Voi-Anh/ZZO0F8BW.html">{{ track.name }}</a></h3>
-             <div class="subtitle">
-              <span *ngFor="let singer of track?.singers; let index = index">
-                {{ singer.nickName }}{{ index === track?.singers.length - 1 ? '' : ',' }} &nbsp;
-               </span>
-             </div>
-          </div> 
-        </div>
-      </mat-option>
-    </ng-container> -->
   </mat-autocomplete>
 </mat-form-field>
 <!-- </form> -->

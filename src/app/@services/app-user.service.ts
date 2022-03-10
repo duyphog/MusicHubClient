@@ -62,8 +62,8 @@ export class AppUserService extends BaseService {
     return this.getRequest<any>(`${this.path}/track-liked`);
   }
 
-  public getWhiteList(): Observable<any> {
-    return this.getRequest<any>(`${this.path}/white-list`);
+  public getWhiteList(pageNumber: number, pageSize: number): Observable<any> {
+    return this.getRequest<any>(`${this.path}/white-list?page-number=${pageNumber}&page-size=${pageSize}`);
   }
 
   public addTrackLikedToLocalCache(trackLiked: number[]) {

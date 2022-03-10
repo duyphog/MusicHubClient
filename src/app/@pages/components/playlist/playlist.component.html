@@ -13,8 +13,8 @@
                                     <div class="media is-active">
                                         <div class="media-left">
                                             <div class="song-thumb">
-                                                <figure class="image is-40x40" title="{{ currentTrack?.name }}"><img src="{{ imageTrack(currentTrack) }}" alt="" /></figure>
-                                                <div class="opacity"></div>
+                                                <figure class="image is-40x40" title="{{ currentTrack?.name }}"><img style="width: 40px; height: 40px" src="{{ imageTrack(currentTrack) }}" alt="" /></figure>
+                                                <div class="opacity" style="width: 40px; height: 40px"></div>
                                                 <div class="zm-actions-container">
                                                     <div class="zm-box" style="margin: 10px">
                                                       <button class="zm-btn action-play button" tabindex="0"><i class="icon action-play ic-gif-playing-white"></i></button>
@@ -24,7 +24,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-info">
-                                                <div class="title-wrapper">
+                                                <div routerLink="/single/{{ currentTrack?.id }}" class="title-wrapper">
                                                     <span class="item-title title">
                                                         <span>
                                                             <span><span>{{ currentTrack?.name }}</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
@@ -32,7 +32,7 @@
                                                     </span>
                                                 </div>
                                                 <h3 class="is-one-line is-truncate subtitle">
-                                                  <a *ngFor="let singer of currentTrack?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                                                  <a *ngFor="let singer of currentTrack?.singers; let index = index" class="is-ghost" routerLink="/profile/{{ singer.id }}">
                                                     {{ singer.nickName }}{{ index === currentTrack?.singers.length - 1 ? '' : ',' }} &nbsp;
                                                   </a>
                                                 </h3>
@@ -202,7 +202,7 @@
                                                 </div>
                                             </div>
                                             <div class="card-info">
-                                                <div class="title-wrapper">
+                                                <div routerLink="/single/{{ playlistDetail.track.id }}" class="title-wrapper">
                                                     <span class="item-title title">
                                                         <span>
                                                             <span><span>{{ playlistDetail.track.name }}</span></span><span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
@@ -210,7 +210,7 @@
                                                     </span>
                                                 </div>
                                                 <h3 class="is-one-line is-truncate subtitle">
-                                                  <a *ngFor="let singer of playlistDetail.track?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                                                  <a *ngFor="let singer of playlistDetail.track?.singers; let index = index" class="is-ghost" routerLink="/profile/{{ singer.id }}">
                                                     {{ singer.nickName }}{{ index === playlistDetail.track?.singers.length - 1 ? '' : ',' }} &nbsp;
                                                   </a>
                                                 </h3>

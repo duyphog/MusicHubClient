@@ -19,6 +19,7 @@ export class PlaylistService extends BaseService {
 
   currentPlaylist: Playlist;
   currentPlaylist$: BehaviorSubject<Playlist> = new BehaviorSubject<Playlist>(null);
+  // initTrack = this.appUtilService.getFromLocalCache('initTrack');
 
   listPlaylist: BehaviorSubject<Playlist[]> = new BehaviorSubject<Playlist[]>(null);
   listPlaylist$: Observable<Playlist[]> = this.listPlaylist.asObservable();
@@ -31,11 +32,11 @@ export class PlaylistService extends BaseService {
   createInitPlaylist(): Playlist {
     let initPlaylist = new Playlist();
     let initPlaylistDetail = new PlaylistDetail();
+    // let initTrack = this.trackService.getInitTrack();
     let initTrack = new Track();
     let initSinger = new Artist();
     let initTrackUrl = "assets/tracks/sau-tat-ca-1646387817726.mp3";
     initPlaylist.name = "My Playlist";
-    initPlaylist.playlistDetails = [];
     initTrack.trackUrl = initTrackUrl;
     initTrack.id = 0;
     initTrack.name = 'Sau tất cả';
@@ -43,8 +44,14 @@ export class PlaylistService extends BaseService {
     initSinger.nickName = 'singer';
     initTrack.singers = [];
     initTrack.singers[0] = initSinger;
+    // console.log(initTrack);
+    initPlaylist.playlistDetails = [];
+    // this.trackService.getTrack(initTrack[0]?.id).subscribe((track) => {
+      // initPlaylistDetail.track = track;
+    // });
     initPlaylistDetail.track = initTrack;
     initPlaylist.playlistDetails[0] = initPlaylistDetail;
+    
 
     return initPlaylist;
   }
@@ -66,7 +73,7 @@ export class PlaylistService extends BaseService {
 
   setCurrentPlaylist(playlist: Playlist, currentIndex) {
     this.currentPlaylist$.next(playlist);
-    this.trackService.setCurrentTrack(playlist?.playlistDetails[currentIndex].track);
+    this.trackService.setCurrentTrack(playlist?.playlistDetails[currentIndex]?.track);
     this.appUtilService.addToLocalCache('currentPlaylist', playlist);
   }
 
@@ -152,12 +159,12 @@ export class PlaylistService extends BaseService {
     return this.postRequest<any>(this.path, formData);
   }
 
-  getPlaylistByUserId(userId: number): Observable<any> {
-    return this.getRequest<any>(`${this.path}/${userId}`);
+  getPlaylistByUserId(pageNumber: number, pageSize: number): Observable<any> {
+    return this.getRequest<any>(`${this.path}/my-playlist?page-number=${pageNumber}&page-size=${pageSize}`);
   }
 
-  public getPlaylists(): Observable<Playlist[]> {
-    return this.getRequest<Playlist[]>(this.path);
+  getPlaylistByPlaylistTypeId(playlistTypeId: number): Observable<any> {
+    return this.getRequest<any>(`${this.path}/category?playlistTypeId=${playlistTypeId}`);
   }
 
   public getPlaylist(playlistId: number): Observable<Playlist> {

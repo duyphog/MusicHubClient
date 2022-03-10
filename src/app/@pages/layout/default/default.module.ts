@@ -36,6 +36,7 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 import { NgxPaginationModule } from 'ngx-pagination';
+import { DiscoverComponent } from '../../components/discover/discover.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     AlbumComponent,
     TrackAndAlbumComponent,
     NavbarComponent,
+    DiscoverComponent
   ],
   imports: [
     CommonModule,

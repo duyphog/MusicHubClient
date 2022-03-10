@@ -31,7 +31,7 @@ export class TrackService extends BaseService{
   }
 
   getIndexOfTrack(track: Track, playlist: Playlist) {
-    return playlist?.playlistDetails.findIndex(playlistDetail => playlistDetail.track.id === track?.id);
+    return playlist?.playlistDetails.findIndex(playlistDetail => playlistDetail.track?.id === track?.id);
   } 
 
   getRecommendedTracks(): Observable<Track[]> {

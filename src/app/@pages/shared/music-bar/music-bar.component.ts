@@ -74,14 +74,14 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     });
 
     this.trackService.getCurrentTrack().subscribe((track) => {
-      if (track.id === 0) {
+      if (track?.id === 0) {
         let trackUrl = track.trackUrl.substring(this.appUtilService.getIndexOfAssets(track.trackUrl));
         let audioUrl = this.audioService.audio.src.substring(this.appUtilService.getIndexOfAssets(this.audioService.audio.src));
         if (trackUrl !== audioUrl) this.audioService.setAudio(track.trackUrl);
       } else {
-        if (track.trackUrl !== this.audioService.audio.src) this.audioService.setAudio(track.trackUrl);
+        if (track?.trackUrl !== this.audioService.audio.src) this.audioService.setAudio(track?.trackUrl);
       }
-      if (track.id !== 0) this.trackService.listenedTrack(track.id).subscribe((res) => { });
+      if (track?.id !== 0) this.trackService.listenedTrack(track?.id).subscribe((res) => { });
       if (this.isPlaying)
         this.audioService.playAudio() 
       else 
@@ -89,7 +89,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     });
 
 
-    this.audioService.setAudio(this.setTrack(this.currentIndex).trackUrl);
+    this.audioService.setAudio(this.setTrack(this.currentIndex)?.trackUrl);
 
     this.onVolumeSlider(this.percentVolume / 100);
 
@@ -152,7 +152,7 @@ export class MusicBarComponent implements OnInit, OnDestroy {
             Math.random() * this.currentPlaylist.playlistDetails.length
           );
     this.setCurrentTrack(this.currentIndex);
-    this.audioService.setAudio(this.setTrack(this.currentIndex).trackUrl);
+    this.audioService.setAudio(this.setTrack(this.currentIndex)?.trackUrl);
     if (this.isPlaying)
       this.audioService.playAudio() 
     else 

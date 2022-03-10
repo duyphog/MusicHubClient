@@ -44,7 +44,7 @@
             </h3>
           </div>
           <div class="subtitle">
-            <span *ngFor="let singer of albumInfo?.singers; let index = index" class="followers">
+            <span *ngFor="let singer of albumInfo?.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
               {{ singer.nickName }}{{ index === albumInfo?.singers.length - 1 ? '' : ',' }} &nbsp;
             </span>
             •
@@ -58,7 +58,7 @@
             </h3>
           </div>
           <div class="subtitle">
-            <span *ngFor="let singer of trackInfo?.singers; let index = index" class="followers">
+            <span *ngFor="let singer of trackInfo?.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
               {{ singer.nickName }}{{ index === trackInfo?.singers.length - 1 ? '' : ',' }} &nbsp;
             </span>
             •
@@ -264,7 +264,7 @@
                             </span>
                           </div>
                           <div class="subtitle">
-                            <span *ngFor="let singer of track.singers; let index = index" class="followers">
+                            <span *ngFor="let singer of track.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
                               {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                             </span>
                           </div>
@@ -486,7 +486,7 @@
                             </span>
                           </div>
                           <div class="subtitle">
-                            <span *ngFor="let singer of trackInfo.singers; let index = index" class="followers">
+                            <span *ngFor="let singer of trackInfo.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
                               {{ singer.nickName }}{{ index === trackInfo.singers.length - 1 ? '' : ',' }} &nbsp;
                             </span>
                           </div>

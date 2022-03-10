@@ -11,10 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-playlist',
   templateUrl: './playlist.component.html',
-  styleUrls: ['./playlist.component.css']
+  styleUrls: ['./playlist.component.css'],
 })
 export class PlaylistComponent implements OnInit {
-
   chooseOptionSong: boolean[] = [];
 
   currentPlaylist: Playlist;
@@ -25,11 +24,15 @@ export class PlaylistComponent implements OnInit {
 
   currentIndex: number;
 
-  constructor(public dialog: MatDialog, private trackService: TrackService, private playlistService: PlaylistService, private toastr: ToastrService) { }
+  constructor(
+    public dialog: MatDialog,
+    private trackService: TrackService,
+    private playlistService: PlaylistService,
+    private toastr: ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
-      
       this.trackService.getCurrentTrack().subscribe((track) => {
         this.currentTrack = track;
         this.currentPlaylist = new Playlist();
@@ -39,17 +42,20 @@ export class PlaylistComponent implements OnInit {
         this.splitPlaylist(playlist, this.currentIndex);
         this.onChangeIndexPlaylist(playlist);
       });
-
     });
   }
 
   imageTrack(track: Track): string {
-    return track?.album === undefined || track?.album === null ? '/assets/images/my-logo.png' : track.album?.imgUrl;
+    return track?.album === undefined || track?.album === null
+      ? '/assets/images/my-logo.png'
+      : track.album?.imgUrl;
   }
 
   removeTrackFromCurrentPlaylist(track: Track) {
     this.playlistService.removeTrackFromCurrentPlaylist(track);
-    this.toastr.info(`Xóa bài hát ${track.name} khỏi danh sách phát thành công`);
+    this.toastr.info(
+      `Xóa bài hát ${track.name} khỏi danh sách phát thành công`
+    );
   }
 
   playCurrentTrack(id) {
@@ -79,27 +85,39 @@ export class PlaylistComponent implements OnInit {
   }
 
   splitPlaylist(playlist: Playlist, currentIndex): void {
-    playlist.playlistDetails.filter(playlistDetail => {
-      if (this.trackService.getIndexOfTrack(playlistDetail.track, playlist) > currentIndex) {
-        this.listIndexGreaterThanCurrentIndex.push(this.trackService.getIndexOfTrack(playlistDetail.track, playlist))
-      } else if (this.trackService.getIndexOfTrack(playlistDetail.track, playlist) < currentIndex)  {
-        this.listIndexSmallerThanCurrentIndex.push(this.trackService.getIndexOfTrack(playlistDetail.track, playlist))
+    playlist.playlistDetails.filter((playlistDetail) => {
+      if (
+        this.trackService.getIndexOfTrack(playlistDetail.track, playlist) >
+        currentIndex
+      ) {
+        this.listIndexGreaterThanCurrentIndex.push(
+          this.trackService.getIndexOfTrack(playlistDetail.track, playlist)
+        );
+      } else if (
+        this.trackService.getIndexOfTrack(playlistDetail.track, playlist) <
+        currentIndex
+      ) {
+        this.listIndexSmallerThanCurrentIndex.push(
+          this.trackService.getIndexOfTrack(playlistDetail.track, playlist)
+        );
       }
     });
     this.currentListIndex = this.listIndexGreaterThanCurrentIndex;
-    this.listIndexSmallerThanCurrentIndex.forEach(index => {
+    this.listIndexSmallerThanCurrentIndex.forEach((index) => {
       this.currentListIndex.push(index);
     });
   }
 
   onChangeIndexPlaylist(playlist: Playlist) {
     let countIndex = 0;
-    playlist.playlistDetails.filter(playlistDetail => {
-      if (this.trackService.getIndexOfTrack(playlistDetail.track, playlist) === this.currentListIndex[countIndex]) {
+    playlist.playlistDetails.filter((playlistDetail) => {
+      if (
+        this.trackService.getIndexOfTrack(playlistDetail.track, playlist) ===
+        this.currentListIndex[countIndex]
+      ) {
         this.currentPlaylist.playlistDetails.push(playlistDetail);
         countIndex++;
       }
     });
   }
-
 }

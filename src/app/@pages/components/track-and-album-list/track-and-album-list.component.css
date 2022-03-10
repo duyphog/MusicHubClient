@@ -1869,7 +1869,7 @@ ul {
   z-index: 2;
 }
 
-zm-actions {
+.zm-actions {
   position: absolute;
   left: 50%;
   top: 50%;

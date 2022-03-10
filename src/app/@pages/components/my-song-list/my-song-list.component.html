@@ -56,7 +56,7 @@
           <div class="list list-border song-list-select ">
             <div class="media select-header ">
               <div class="media-left ">
-                <div *ngIf="!songSelected.length" class="sort-wrapper ">
+                <div *ngIf="!trackSelected.length" class="sort-wrapper ">
                   <div class="zm-dropdown zm-group-dropdown mar-r-10 ">
                     <div class="zm-dropdown-trigger-btn ">
                       <button class="zm-btn button " tabindex="0">
@@ -83,14 +83,14 @@
                     Bài hát
                   </div>
                 </div>
-                <div *ngIf="songSelected.length" class="actions">
+                <div *ngIf="trackSelected.length" class="actions">
                   <label class="checkbox">
-                    <input [hidden]="songSelected.length === songList.length" name="check-all" (click)="selectAllSong()"
+                    <input [hidden]="trackSelected.length === whiteListTrack.length" name="check-all" (click)="selectAllSong()"
                       type="checkbox">
-                    <input [hidden]="songSelected.length !== songList.length" name="check-all" (click)="selectAllSong()"
+                    <input [hidden]="trackSelected.length !== whiteListTrack.length" name="check-all" (click)="selectAllSong()"
                       type="checkbox" checked>
                   </label>
-                  <button class="zm-btn action-btn add-queue-btn button" tabindex="0">
+                  <button (click)="addToCurrentPlaylist()" class="zm-btn action-btn add-queue-btn button" tabindex="0">
                     <i class="icon ic-add-play-now"></i><span>Thêm vào danh sách phát</span>
                   </button>
                   <div id="select-menu-id" class="more-btn-wrapper">
@@ -159,7 +159,7 @@
               </div>
               <div class="media-content ">
                 <div class="column-text mar-l-10 ">
-                  Album
+                  <!-- Album -->
                 </div>
               </div>
               <div class="media-right ">
@@ -169,7 +169,7 @@
               </div>
             </div>
             <div class="">
-              <div *ngFor="let song of songList; let index = index" style="flex-grow: 1;" class="">
+              <div *ngFor="let track of whiteListTrack | paginate: { id: 'trackPagination', itemsPerPage: thePageSize, currentPage: thePageNumber, totalItems: theTotalElements }; let index = index" style="flex-grow: 1;" class="">
                 <div name="select-song" class="select-item" id="song{{ index }}" #item>
                   <div class="checkbox-wrapper ">
                     <label class="checkbox">
@@ -180,22 +180,39 @@
                     <div class="media ">
                       <div class="media-left " style="width: 50%;">
                         <div class="song-prefix mar-r-10 ">
-                          <i class="icon ic-song">
-                          </i>
+                          <i class="icon ic-song"></i>
                         </div>
                         <div class="song-thumb ">
                           <figure class="image is-40x40" title="Ai Ai Ai">
-                            <img src="{{ song.srcImg }}" alt="" class="">
+                            <img src="{{ defaultImg }}" alt="" class="">
                           </figure>
-                          <div class="opacity ">
+                          <div class="opacity"></div>
+                          <div class="zm-actions-container">
+                            <div class="zm-box zm-actions">
+                              <button class="zm-btn zm-tooltip-btn animation-like is-hidden active is-hover-circle button"
+                                tabindex="0">
+                                <i class="icon ic-like">
+                                </i>
+                                <i class="icon ic-like-full">
+                                </i>
+                              </button>
+                              <button (click)="playCurrentTrack(track.id)" class="zm-btn button" tabindex="0">
+                                <i class="icon ic-play">
+                                </i>
+                              </button>
+                              <button class="zm-btn zm-tooltip-btn is-hidden is-hover-circle button" tabindex="0">
+                                <i class="icon ic-more">
+                                </i>
+                              </button>
+                            </div>
                           </div>
                         </div>
                         <div class="card-info ">
-                          <div class="title-wrapper ">
+                          <div routerLink="/single/{{ track.id }}" class="title-wrapper ">
                             <span class="item-title title">
                               <span>
                                 <span>
-                                  <span>{{ song.name }}</span>
+                                  <span>{{ track.name }}</span>
                                 </span>
                                 <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">
                                   …
@@ -203,9 +220,9 @@
                               </span>
                             </span>
                           </div>
-                          <h3 class="is-one-line is-truncate subtitle ">
-                            <a class="is-ghost " routerLink="/profile">
-                              {{ song.artist }}
+                          <h3 class="is-one-line is-truncate subtitle">
+                            <a *ngFor="let singer of track.singers; let index = index" class="is-ghost" routerLink="/profile/{{ singer.id }}">
+                              {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                             </a>
                           </h3>
                         </div>
@@ -214,7 +231,7 @@
                         <div routerLink="/album" class="album-info">
                           <span>
                             <span>
-                              <span>Chẳng Hóa Tương Lai (Single)</span>
+                              <!-- <span>Chẳng Hóa Tương Lai (Single)</span> -->
                             </span>
                             <span style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span>
                           </span>
@@ -224,162 +241,46 @@
                         <div class="hover-items ">
                           <div class="level ">
                             <div class="level-item ">
-                              <button class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
-                                <i class="icon ic-karaoke">
-                                </i>
+                              <button (click)="addTrackToCurrentPlaylist(track)" title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-add-play-now"></i>
                               </button>
                             </div>
                             <div class="level-item ">
-                              <button
+                              <button title="Xóa khỏi danh sách yêu thich" (click)="likedTrack(track.id)"
                                 class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
                                 tabindex="0">
-                                <i class="icon ic-like">
-                                </i>
-                                <i class="icon ic-like-full">
-                                </i>
-                              </button>
+                                  <i class="icon ic-like-full">
+                                  </i>
+                                  <i class="icon ic-like-full">
+                                  </i>
+                                  
+                                </button>
                             </div>
                             <div class="level-item ">
-                              <button (click)="openChooseOptionSong(index)"
-                                class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
-                                <i class="icon ic-more">
-                                </i>
+                              <button (click)="playNextCurrentTrack(track.id)" title="Phát tiếp theo" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                                <i class="icon ic-play-next"></i>
                               </button>
-                              <div *ngIf="chooseOptionSong[index]" class="zm-contextmenu song-menu">
-                                <div class="menu">
-                                  <ul class="menu-list">
-                                    <div class="menu-list--submenu">
-                                      <div class="media song-info-menu" style="background: transparent !important;">
-                                        <div class="media-left">
-                                          <figure class="image is-40x40"><img
-                                              src="https://photo-resize-zmp3.zadn.vn/w94_r1x1_png/covers/8/8/88825ed8c45dd6409360affa18d36f1a_1470729217.png"
-                                              alt=""></figure>
-                                        </div>
-                                        <div class="is-w-150 media-content">
-                                          <a>
-                                            <div class="title-wrapper"><span
-                                                class="item-title title"><span><span><span>Nỗi Đau Em Giấu Một
-                                                      Mình</span></span><span
-                                                    style="position: fixed; visibility: hidden; top: 0px; left: 0px;">…</span></span></span>
-                                            </div>
-                                          </a>
-                                          <div class="song-stats">
-                                            <div class="stat-item">
-                                              <i class="icon ic-like"></i><span>86K</span>
-                                            </div>
-                                            <div class="stat-item">
-                                              <i class="icon ic-view"></i><span>8.6M</span>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </ul>
-                                  <ul class="menu-list">
-                                    <div class="group-button-menu">
-                                      <div class="group-button-list">
-                                        <button class="zm-btn button">
-                                          <i class="icon ic-download"></i><span>Tải xuống</span>
-                                        </button>
-                                        <button class="zm-btn button" tabindex="0">
-                                          <i class="icon ic-16-Lyric"></i><span>Lời bài hát</span>
-                                        </button>
-                                        <span class="zm-btn button">
-                                          <i class="icon ic-denial"></i><span>Chặn</span>
-                                        </span>
-                                      </div>
-                                    </div>
-                                  </ul>
-                                  <ul class="menu-list">
-                                    <li><button class="zm-btn button" tabindex="0"><i
-                                          class="icon ic-add-play-now"></i><span>Thêm vào danh sách phát</span></button>
-                                    </li>
-                                    <li><button class="zm-btn button" tabindex="0"><i
-                                          class="icon ic-play-next"></i><span>Phát tiếp theo</span></button></li>
-                                    <li></li>
-                                    <li>
-                                      <div class="menu-list--submenu">
-                                        <button class="zm-btn button" tabindex="0">
-                                          <i class="icon ic-16-Add"></i><span>Thêm vào playlist</span>
-                                          <i class="icon ic-go-right"></i>
-                                        </button>
-                                        <div style="left: -230px; top: -100px;"
-                                          class="menu add-playlist-content submenu-content">
-                                          <ul class="menu-list">
-                                            <li class="search-box">
-                                              <input class="input" placeholder="Tìm playlist">
-                                            </li>
-                                            <li class="mar-t-10">
-                                              <button mat-button (click)="openAddNewPlaylist()" class="zm-btn button"
-                                                tabindex="0">
-                                                <i class="icon ic- z-ic-svg ic-svg-add"></i><span>Tạo playlist
-                                                  mới</span>
-                                              </button>
-                                            </li>
-                                          </ul>
-                                          <div class="playlist-container">
-                                            <div class="top-shadow"></div>
-                                            <div class="content">
-                                              <div
-                                                style="position: relative; overflow: hidden; width: 100%; height: 100%;">
-                                                <div
-                                                  style="position: absolute; inset: 0px; overflow: hidden scroll; margin-right: -6px; margin-bottom: 0px;">
-                                                  <ul class="menu-list">
-                                                    <li>
-                                                      <button class="zm-btn button" tabindex="0"><i
-                                                          class="icon ic-list-music"></i><span>aaa</span>
-                                                      </button>
-                                                    </li>
-                                                  </ul>
-                                                </div>
-                                                <div class="track-horizontal"
-                                                  style="position: absolute; height: 6px; transition: opacity 200ms ease 0s; opacity: 0;">
-                                                  <div
-                                                    style="position: relative; display: block; height: 100%; cursor: pointer; border-radius: inherit; background-color: rgba(0, 0, 0, 0.2); width: 0px;">
-                                                  </div>
-                                                </div>
-                                                <div class="track-vertical"
-                                                  style="position: absolute; width: 4px; transition: opacity 200ms ease 0s; opacity: 0; right: 2px; top: 2px; bottom: 2px; z-index: 100;">
-                                                  <div class="thumb-vertical"
-                                                    style="position: relative; display: block; width: 100%; height: 0px;">
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </li>
-                                    <li><button class="zm-btn button" tabindex="0"><i
-                                          class="icon ic-comment"></i><span>Bình luận</span><span
-                                          class="comment-badge"></span></button></li>
-                                    <li><button class="zm-btn button" tabindex="0"><i class="icon ic-link"></i><span>Sao
-                                          chép link</span></button></li>
-                                    <li>
-                                      <div class="menu-list--submenu"><button class="zm-btn button" tabindex="0"><i
-                                            class="icon ic-share"></i><span>Chia sẻ</span><i
-                                            class="icon ic-go-right"></i></button></div>
-                                    </li>
-                                  </ul>
-                                </div>
-                              </div>
                             </div>
                           </div>
                         </div>
                         <div class="action-items ">
                           <div class="level ">
                             <div class="level-item ">
-                              <button
-                                class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button "
-                                tabindex="0">
-                                <i class="icon ic-like">
+                              <button (click)="likedTrack(track.id)"
+                              class="zm-btn zm-tooltip-btn animation-like undefined active is-hover-circle button"
+                              tabindex="0">
+                              
+                                <i title="Thêm vào danh sách yêu thích" *ngIf="appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like-full">
+                                </i>
+                                <i title="Xóa khỏi danh sách yêu thích" *ngIf="!appUserService.checkExistTrackInTrackLikedList(track.id)" class="icon ic-like">
                                 </i>
                                 <i class="icon ic-like-full">
                                 </i>
+                                
                               </button>
                             </div>
                             <div class="level-item duration ">
-                              03:36
+                              {{ appUtilService.getTimeDuration(track.durationSeconds) }}
                             </div>
                           </div>
                         </div>
@@ -387,6 +288,9 @@
                     </div>
                   </div>
                 </div>
+              </div>
+              <div class="footer-pagination">
+                <pagination-controls id="trackPagination" previousLabel="Prev" nextLabel="Next" (pageChange)="changePage($event)"></pagination-controls>
               </div>
             </div>
           </div>
@@ -410,7 +314,7 @@
                 </span>
               </div>
             </div>
-            <div *ngFor="let playlist of listPlaylist" class="column mar-b-30 is-fullhd-20 is-widescreen-20 is-desktop-3 is-touch-3 is-tablet-3 ">
+            <div *ngFor="let playlist of listPlaylist | paginate: { id: 'playlistPagination', itemsPerPage: thePageSizePlaylist, currentPage: thePageNumberPlaylist, totalItems: theTotalElementsPlaylist }" class="column mar-b-30 is-fullhd-20 is-widescreen-20 is-desktop-3 is-touch-3 is-tablet-3 ">
               <div class="library-playlist-item ">
                 <div class="zm-card ">
                   <a class="" title="{{ playlist?.name }}">
@@ -498,6 +402,9 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="footer-pagination">
+          <pagination-controls id="playlistPagination" previousLabel="Prev" nextLabel="Next" (pageChange)="changePagePlaylist($event)"></pagination-controls>
         </div>
       </mat-tab>
     </div>

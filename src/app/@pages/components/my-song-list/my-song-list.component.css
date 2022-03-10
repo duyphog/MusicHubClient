@@ -157,7 +157,6 @@ a {
 .container {
   min-height: calc(100% - 158px);
   margin-top: 30px;
-  margin-bottom: 200px;
 }
 
 .zm-box {
@@ -778,10 +777,6 @@ img {
   align-items: center;
   visibility: hidden;
   width: 80%;
-}
-
-.media-item.active .zm-actions {
-  visibility: visible;
 }
 
 .media .title {
@@ -1842,4 +1837,40 @@ video {
 	/* margin-top: -4px; */
 	margin-left: 10px;
 	color: #f44336;
+}
+.footer-pagination { 
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.select-item:hover .zm-actions {
+  visibility: visible;
+}
+.zm-actions-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.select-item:hover .opacity {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  visibility: visible;
+}
+
+.media .opacity {
+  visibility: hidden;
+}
+
+.header-thumbnail .opacity {
+  visibility: hidden !important;
+}
+
+.header-thumbnail .opacity {
+  border-radius: 8px;
 }

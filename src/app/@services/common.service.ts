@@ -14,6 +14,7 @@ export class CommonService extends BaseService {
 
   public currentCategory: BehaviorSubject<string> = new BehaviorSubject<string>('');
   public currentGenre: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  public currentPlaylistType: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   path: string = '/common';
 
@@ -29,12 +30,20 @@ export class CommonService extends BaseService {
     this.currentGenre.next(name);
   }
 
+  setCurrentPlaylistType(name: string) {
+    this.currentPlaylistType.next(name);
+  }
+
   getCurrentCategory(): Observable<string> {
     return this.currentCategory.asObservable();
   }
 
   getCurrentGenre(): Observable<string> {
     return this.currentGenre.asObservable();
+  }
+
+  getCurrentPlaylistType(): Observable<string> {
+    return this.currentPlaylistType.asObservable();
   }
 
   listCategory(): Observable<Category[]> {

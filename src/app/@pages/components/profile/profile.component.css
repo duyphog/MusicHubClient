@@ -10,6 +10,10 @@
   margin-left: 0px;
 }
 
+.scrollable {
+  width: 87%;
+}
+
 .container {
   flex-grow: 1;
   position: relative;
@@ -989,13 +993,6 @@ span:hover {
 }
 
 .media:hover .zm-actions {
-  visibility: visible;
-  visibility: visible;
-}
-
-.zm-actions,
-.media-item:hover .zm-actions {
-  visibility: visible;
   visibility: visible;
 }
 
@@ -2026,10 +2023,6 @@ img {
   width: 80%;
 }
 
-.media-item.active .zm-actions {
-  visibility: visible;
-}
-
 .media .title {
   font-weight: 500;
   vertical-align: top;
@@ -2251,7 +2244,6 @@ a:hover {
 }
 
 .column {
-  display: block;
   flex-shrink: 1;
   padding: 0 15px;
 }
@@ -3051,9 +3043,7 @@ video {
 
 .container-song,
 .container-album {
-  min-height: calc(100% - 158px);
   margin-top: 50px;
-  margin-bottom: 200px;
 }
 
 .songs-animate-container {
@@ -3098,4 +3088,10 @@ video {
   z-index: 3;
   left: 40px;
   opacity: 1;
+}
+
+.footer-pagination { 
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }

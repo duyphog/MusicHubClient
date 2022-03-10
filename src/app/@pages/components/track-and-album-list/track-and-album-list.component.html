@@ -54,7 +54,7 @@
                           </a>
                         </div>
                         <div class="subtitle">
-                          <span *ngFor="let singer of album.singers; let index = index" class="followers">
+                          <span *ngFor="let singer of album.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
                             {{ singer.nickName }}{{ index === album.singers.length - 1 ? '' : ',' }} &nbsp;
                           </span>
                         </div>
@@ -121,7 +121,7 @@
                           </span>
                         </div>
                         <div class="subtitle">
-                          <span *ngFor="let singer of track.singers; let index = index" class="followers">
+                          <span *ngFor="let singer of track.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
                             {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                           </span>
                         </div>
@@ -141,7 +141,7 @@
                       <div class="hover-items ">
                         <div class="level ">
                           <div class="level-item ">
-                            <button title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
+                            <button (click)="addTrackToCurrentPlaylist(track)" title="Thêm vào danh sách phát" class="zm-btn zm-tooltip-btn is-hover-circle button " tabindex="0">
                               <i class="icon ic-add-play-now"></i>
                             </button>
                           </div>
@@ -242,7 +242,7 @@
                           </span>
                         </div>
                         <div class="subtitle">
-                          <span *ngFor="let singer of track.singers; let index = index" class="followers">
+                          <span *ngFor="let singer of track.singers; let index = index" routerLink="/profile/{{ singer.id }}" class="followers">
                             {{ singer.nickName }}{{ index === track.singers.length - 1 ? '' : ',' }} &nbsp;
                           </span>
                         </div>

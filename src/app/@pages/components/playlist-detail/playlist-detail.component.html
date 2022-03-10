@@ -256,7 +256,7 @@
                             </span>
                           </div>
                           <h3 class="is-one-line is-truncate subtitle">
-                            <a *ngFor="let singer of playlistDetail?.track.singers; let index = index" class="is-ghost" routerLink="/profile">
+                            <a *ngFor="let singer of playlistDetail?.track.singers; let index = index" class="is-ghost" routerLink="/profile/{{ singer.id }}">
                               {{ singer.nickName }}{{ index === playlistDetail?.track.singers.length - 1 ? '' : ',' }} &nbsp;
                             </a>
                           </h3>
@@ -414,7 +414,7 @@
                     </span>
                   </div>
                   <h3 class="is-one-line is-truncate subtitle">
-                    <a *ngFor="let singer of recommendedTrack?.singers; let index = index" class="is-ghost" routerLink="/profile">
+                    <a *ngFor="let singer of recommendedTrack?.singers; let index = index" class="is-ghost" routerLink="/profile/{{ singer.id }}">
                       {{ singer.nickName }}{{ index === recommendedTrack?.singers.length - 1 ? '' : ',' }} &nbsp;
                     </a>
                   </h3>

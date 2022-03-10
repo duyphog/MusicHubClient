@@ -1,0 +1,92 @@
+<section class="scrollable padder-lg w-f-md " id="bjax-target">
+    <!-- <a href="#" class="pull-right text-muted m-t-lg" data-toggle="class:fa-spin">
+        <i class="icon-refresh i-lg inline" id="refresh"> </i>
+    </a> -->
+    <h2 class="font-thin m-b">
+        CHỦ ĐỀ {{ currentPlaylistTypeName.toUpperCase() === "" ? 'ROMANCE' : currentPlaylistTypeName.toUpperCase() }}
+    </h2>
+    <div style="clear: both; width: 100%;" class="row">
+        <div style="float: left; width: 75%;" class="col-md-9">
+            <div class="row row-sm">
+                <div *ngFor="let playlist of listPlaylist" class="col-md-3 col-lg-3 col-sm-4">
+                    <div class="item">
+                        <div class="pos-rlt">
+                            <!-- <div class="bottom">
+                                <span class="badge bg-info m-l-sm m-b-sm">
+                                    03:20
+                                </span>
+                            </div> -->
+                            <div class="item-overlay opacity r r-2x bg-black">
+                                <div class="text-info padder m-t-sm text-sm">
+                                    <i class="fa fa-star"> </i>
+                                    <i class="fa fa-star"> </i>
+                                    <i class="fa fa-star"> </i>
+                                    <i class="fa fa-star"> </i>
+                                    <i class="fa fa-star-o text-muted"> </i>
+                                </div>
+                                <div class="center text-center m-t-n">
+                                    <a href="#">
+                                        <i class="icon-control-play i-2x"> </i>
+                                    </a>
+                                </div>
+                                <div class="bottom padder m-b-sm">
+                                    <a href="#" class="pull-right">
+                                        <i class="fa fa-heart-o"> </i>
+                                    </a>
+                                    <a href="#">
+                                        <i class="fa fa-plus-circle"> </i>
+                                    </a>
+                                </div>
+                            </div> 
+                            <a href="#">
+                                <img src="{{ playlist.imageUrl === null ? defaultImage : playlist.imageUrl }}" alt="" class="r r-2x img-full" />
+                            </a>
+                        </div>
+                        <div class="padder-v">
+                            <a routerLink="/playlist-detail/{{ playlist.id }}" class="text-ellipsis">
+                                {{ playlist.name }}
+                            </a>
+                            <!-- <a href="#" class="text-ellipsis text-xs text-muted">
+                                Miaow
+                            </a> -->
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div style="float: right;" class="col-md-3">
+            <div id="right1_banner">
+                <a (click)="commonService.setCurrentPlaylistType('Romance')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Romance _ 345 x 110.png')" routerLink="/discover/1" title="Romance">
+                <span>Romance</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Sleep')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Sleep _ 345 x 110.png')" routerLink="/discover/2" title="Sleep">
+                <span>Sleep</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Gym')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Gym _ 345 x 110.png')" routerLink="/discover/3" title="Gym">
+                <span>Gym</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Dance')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Dance _ 345 x 110.png')" routerLink="/discover/4" title="Dance">
+                <span>Dance</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Work')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Work _ 345 x 110.png')" routerLink="/discover/5" title="Work">
+                <span>Work</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Coffee')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Coffee _ 345 x 110.png')" routerLink="/discover/6" title="Coffee">
+                <span>Coffee</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Game')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Game _ 345 x 110.png')" routerLink="/discover/7" title="Game">
+                <span>Game</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('Travel')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Travel _ 345 x 110.png')" routerLink="/discover/8" title="Travel">
+                <span>Travel</span>
+                </a>
+                <a (click)="commonService.setCurrentPlaylistType('New Year')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Newyear _ 345 x 110.png')" routerLink="/discover/9" title="New Year">
+                <span>New Year</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    
+</section>
