@@ -74,7 +74,13 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     });
 
     this.trackService.getCurrentTrack().subscribe((track) => {
-      if (this.audioService.getAudio().src !== track.trackUrl) this.audioService.setAudio(track.trackUrl);
+      if (track.id === 0) {
+        let trackUrl = track.trackUrl.substring(this.appUtilService.getIndexOfAssets(track.trackUrl));
+        let audioUrl = this.audioService.audio.src.substring(this.appUtilService.getIndexOfAssets(this.audioService.audio.src));
+        if (trackUrl !== audioUrl) this.audioService.setAudio(track.trackUrl);
+      } else {
+        if (track.trackUrl !== this.audioService.audio.src) this.audioService.setAudio(track.trackUrl);
+      }
       if (track.id !== 0) this.trackService.listenedTrack(track.id).subscribe((res) => { });
       if (this.isPlaying)
         this.audioService.playAudio() 

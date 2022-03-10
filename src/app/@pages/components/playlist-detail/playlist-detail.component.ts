@@ -174,6 +174,13 @@ export class PlaylistDetailComponent implements OnInit {
     });
   }
 
+  playNextCurrentTrack(trackId: number): void {
+    this.trackService.getTrack(trackId).subscribe((response: any) => {
+      this.playlistService.playNextCurrentTrack(response.data);
+    });
+    this.toastr.info('Thêm vào danh sách phát thành công');
+  }
+
   addPlaylistToCurrentPlaylist(): void {
     this.playlistInfo.playlistDetails.forEach((playlistDetail) => {
       this.trackService.getTrack(playlistDetail.track.id).subscribe((response: any) => { 

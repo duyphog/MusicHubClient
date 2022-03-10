@@ -50,12 +50,17 @@ export class PlaylistService extends BaseService {
   }
 
   addTrackToCurrentPlaylist(track: Track) {
-    
+    let currentIndex;
     const playlistDetail = new PlaylistDetail();
     playlistDetail.track = track;
     this.currentPlaylist = this.getCurrentPlaylistFromLocalCache() === null ? this.createInitPlaylist() : this.getCurrentPlaylistFromLocalCache();
     this.currentPlaylist.playlistDetails.push(playlistDetail);
-    this.setCurrentPlaylist(this.currentPlaylist, 0);
+    
+    this.trackService.getCurrentTrack().subscribe((currentTrack) => {
+      currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
+    });
+
+    this.setCurrentPlaylist(this.currentPlaylist, currentIndex);
 
   }
 
@@ -80,7 +85,7 @@ export class PlaylistService extends BaseService {
   }
 
   removeTrackFromCurrentPlaylist(track: Track) {
-    let currentTrackTmp, currentIndex;
+    let currentIndex;
     this.currentPlaylist = this.getCurrentPlaylistFromLocalCache();
     
     this.currentPlaylist.playlistDetails = this.currentPlaylist.playlistDetails.filter((playlistDetail) => playlistDetail.track.id !== track.id);

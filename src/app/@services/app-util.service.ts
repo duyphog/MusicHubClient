@@ -102,4 +102,8 @@ export class AppUtilService extends BaseService{
 
     return displayMins + ':' + displaySecs;
   }
+
+  getIndexOfAssets(stringUrl: string): number {
+    return stringUrl.indexOf('assets');
+  }
 }

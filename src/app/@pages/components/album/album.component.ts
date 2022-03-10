@@ -77,15 +77,15 @@ export class AlbumComponent implements OnInit {
     return Math.floor(totalDuration / 60);
   }
 
-  playCurrentTrack(track: Track) {
-    
-    if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
-      this.playlistService.addTrackToCurrentPlaylist(track);
-      this.trackService.setCurrentTrack(track);
-    } else {
-      this.trackService.setCurrentTrack(track);
-    }
-    
+  playCurrentTrack(id) {
+    this.trackService.getTrack(id).subscribe((res: any) => {
+      if (!this.playlistService.checkExistTrackInCurrentPlaylist(res.data)) {
+        this.playlistService.addTrackToCurrentPlaylist(res.data);
+        this.trackService.setCurrentTrack(res.data);
+      } else {
+        this.trackService.setCurrentTrack(res.data);
+      }
+    });
   }
 
   // pauseAlbum(): void {
