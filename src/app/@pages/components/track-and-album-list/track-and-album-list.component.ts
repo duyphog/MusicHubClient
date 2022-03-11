@@ -58,8 +58,8 @@ export class TrackAndAlbumComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // this.thePageNumber = 1;
-    this.thePageSize = 1;
+    this.thePageNumber = 1;
+    this.thePageSize = 5;
     this.theTotalElements = 0;
 
     this.thePageNumberTrack = 1;
@@ -108,9 +108,14 @@ export class TrackAndAlbumComponent implements OnInit, OnDestroy {
 
   addTrackToCurrentPlaylist(track: Track): void {
     if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
-      this.playlistService.addTrackToCurrentPlaylist(track);
+      this.trackService.getTrack(track.id).subscribe((response: any) => {
+        this.playlistService.addTrackToCurrentPlaylist(response.data);
+      });
+      this.toastr.success('Thêm vào danh sách phát thành công');
+    } else {
+      this.toastr.info('Bài hát đã tồn tại trong danh sách phát');
     }
-    this.toastr.info('Thêm vào danh sách phát thành công');
+    
   }
 
   openChooseOptionTrack(index): void {

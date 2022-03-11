@@ -144,9 +144,14 @@ export class MySongListComponent implements OnInit {
 
   addTrackToCurrentPlaylist(track: Track): void {
     if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
-      this.playlistService.addTrackToCurrentPlaylist(track);
+      this.trackService.getTrack(track.id).subscribe((response: any) => {
+        this.playlistService.addTrackToCurrentPlaylist(response.data);
+      });
+      this.toastr.success('Thêm vào danh sách phát thành công');
+    } else {
+      this.toastr.info('Bài hát đã tồn tại trong danh sách phát');
     }
-    this.toastr.info('Thêm vào danh sách phát thành công');
+    
   }
 
   addToCurrentPlaylist(): void {

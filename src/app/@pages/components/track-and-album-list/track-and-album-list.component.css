@@ -1378,6 +1378,11 @@ img {
   width: 100%;
 }
 
+.album-list img {
+  height: 235px;
+  width: 100%;
+}
+
 .zm-card-image img {
   transition: transform 0.7s;
 }

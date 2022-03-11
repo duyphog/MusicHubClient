@@ -35,13 +35,13 @@ export class PlaylistService extends BaseService {
     // let initTrack = this.trackService.getInitTrack();
     let initTrack = new Track();
     let initSinger = new Artist();
-    let initTrackUrl = "assets/tracks/sau-tat-ca-1646387817726.mp3";
-    initPlaylist.name = "My Playlist";
+    let initTrackUrl = "assets/tracks/sau-tat-ca-erik-1646978094155.mp3";
+    initPlaylist.name = "Erik";
     initTrack.trackUrl = initTrackUrl;
-    initTrack.id = 0;
+    initTrack.id = 72;
     initTrack.name = 'Sau tất cả';
     initSinger.id = 0;
-    initSinger.nickName = 'singer';
+    initSinger.nickName = 'Erik';
     initTrack.singers = [];
     initTrack.singers[0] = initSinger;
     // console.log(initTrack);

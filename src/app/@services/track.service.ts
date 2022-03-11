@@ -34,8 +34,12 @@ export class TrackService extends BaseService{
     return playlist?.playlistDetails.findIndex(playlistDetail => playlistDetail.track?.id === track?.id);
   } 
 
-  getRecommendedTracks(): Observable<Track[]> {
-    return this.getRequest<Track[]>(`${this.path}/search?category-id=6&genre-id=0&page-number=0&page-size=5`);
+  getRecommendedTracks(categoryId: number, pageNumber: number): Observable<Track[]> {
+    return this.getRequest<Track[]>(`${this.path}/search?category-id=${categoryId}&genre-id=0&page-number=${pageNumber}&page-size=10`);
+  }
+
+  getTopHit(categoryId: number): Observable<Track[]> {
+    return this.getRequest<Track[]>(`${this.path}/top-hit?categoryId=${categoryId}`);
   }
 
   public createTrackFormData(track: Track, genres: Genre[], singers: Artist[], composers: Artist[], album: Album, trackFile: File) {

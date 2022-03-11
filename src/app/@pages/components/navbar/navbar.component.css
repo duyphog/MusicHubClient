@@ -14,14 +14,10 @@
 }
 
 .btn-menu {
-  /* border: none; */
   background-color: transparent;
   color: #fff;
-  /* margin-top: 10px; */
-  /* font-size: 14px; */
   height: 50px;
   font-weight: 700;
-  /* margin-bottom: 8px; */
   padding-bottom: 25px;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -31,12 +27,6 @@
 }
 
 .btn-menu:hover {
-  /* border: 1px solid #fff; */
   cursor: pointer;
   color: rgb(212, 75, 75);
-}
-
-.opened {
-  /* opacity: 1; */
-  /* background-color: #fff; */
 }

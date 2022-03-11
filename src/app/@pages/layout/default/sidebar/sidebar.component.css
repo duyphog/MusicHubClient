@@ -233,6 +233,11 @@ ul {
   line-height: 1;
 }
 
+.icon-cloud-upload:before {
+  font-family: "Simple-Line-Icons";
+  content: "\e084";
+}
+
 .text-success {
   color: #1ab667;
   color: rgb(26, 182, 103);

@@ -37,6 +37,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DiscoverComponent } from '../../components/discover/discover.component';
+import { TopHitComponent } from '../../components/top-hit/top-hit.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { DiscoverComponent } from '../../components/discover/discover.component'
     AlbumComponent,
     TrackAndAlbumComponent,
     NavbarComponent,
-    DiscoverComponent
+    DiscoverComponent,
+    TopHitComponent
   ],
   imports: [
     CommonModule,

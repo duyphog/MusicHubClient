@@ -1,0 +1,88 @@
+<div class="scrollable container-top-hit">
+    <div style="width: 70%; float: left; margin-right: 30px;"  class="tab-content" id="myTabContent">
+        <div class="tab-pane fade active show" id="cat-3" role="tabpanel" aria-labelledby="home-tab">
+            <div class="media media-tab" style="border-top: none">
+                <div class="media-left">
+                    <h2 *ngIf="currentCategoryName !== ''" class="media-title title">Top Hit <br> {{ currentCategoryName }}</h2>
+                    <h2 *ngIf="currentCategoryName === ''" class="media-title title">Top Hit <br> Nhạc Việt Nam</h2>
+                </div>
+                <!-- <div class="media-body">
+                    <p>Bảng Xếp Hạng CSN cập nhật hàng ngày dựa trên số liệu thống kê thực tế trên hệ thống website CSN, dựa vào các chỉ số như: lượt nghe, lượt tải, bình luận, chia sẻ...</p>
+                </div> -->
+            </div>
+            <nav class="nav_sub_bxh d-flex justify-content-between align-items-center">
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav_bxh nav-link active vietnam-music" id="nav-home-tab" data-toggle="tab" href="#cat-3-music" role="tab" aria-controls="nav-home" aria-selected="true">bài hát</a>
+                </div>
+                <div>
+                </div>
+                <!-- <a class="d-flex align-items-center view_all" href="/nhac-hot/vietnam.html" title="">Nghe tất cả <i class="material-icons">play_circle_outline</i></a> -->
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active tab_bxh tab_music_bxh" data-cat_url="vietnam" id="cat-3-music" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <ul class="list-unstyled list_music bxh1">
+                        <li *ngFor="let track of listTrackTopHit; let index = index" class="media align-items-stretch up">
+                            <div class="media_tmp align-self-center d-flex align-items-center mr-3 pl-3" style="width: 50px">
+                                <span class="counter">{{ showIndex(index + 1)  }}</span>
+                            </div>
+                            <div class="media-left align-items-stretch mr-2">
+                                <a style="cursor: pointer;" title="{{ track.name }}">
+                                <img src="{{ defaultImage }}" alt="{{ track.name }}">
+                                <i (click)="playCurrentTrack(track.id)" class="material-icons">play_circle_outline</i>
+                                </a>
+                            </div>
+                            <div class="media-body align-items-stretch d-flex flex-column justify-content-between p-0">
+                                <div>
+                                    <h5 class="media-title mt-0 mb-0"><a routerLink="/single/{{ track.id }}" title="{{ track.name }}">{{ track.name }}</a></h5>
+                                    <div class="author">
+                                        <a *ngFor="let singer of track.singers; let idx = index" routerLink="/profile/{{ singer.id }}">
+                                            {{ singer.nickName }}{{ idx === track.singers.length - 1 ? '' : ',' }} &nbsp;
+                                        </a>
+                                    </div>
+                                </div>
+                                <small class="type_music c1"><span class="card-text" style="color: red">{{ track.bitRate + 'kbps' }}</span></small>
+                            </div>
+                            <div class="media-right align-self-center">
+                                <small class="time_stt"><i class="material-icons listen-material-icons"> headset </i>{{ track.listened }}</small>
+                                <!-- <ul class="list-inline">
+                                    <li class="list-inline-item"><a href="https://chiasenhac.vn/mp3/duc-phuc/ngay-dau-tien-tsv73mdwqtw8m9.html" title="nghe riêng nhạc Ngày Đầu Tiên"><i class="material-icons">headset</i></a></li>
+                                    <li class="list-inline-item"><a href="https://www.facebook.com/dialog/share?app_id=419934814770318&amp;display=popup&amp;href=https://chiasenhac.vn//nhac-hot/vietnam.html?playlist=1&amp;redirect_uri=https://chiasenhac.vn//nhac-hot/vietnam.html?playlist=1" class="fb-share-link" target="_blank" title="chia sẻ Ngày Đầu Tiên"><i class="material-icons">share</i></a></li>
+                                </ul> -->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+           
+        </div>
+        
+    </div>
+    <div style="margin-top: 120px; width: 300px; float: right;" class="col-md-3">
+        <div id="right1_banner">
+            <a (click)="commonService.setCurrentCategory('Beat, Playback')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Romance _ 345 x 110.png')" routerLink="/top-hit/1" title="Beat, Playback">
+            <span>Beat, Playback</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Việt Nam')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Sleep _ 345 x 110.png')" routerLink="/top-hit/2" title="Nhạc Việt Nam">
+            <span>Nhạc Việt Nam</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc US-UK')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Gym _ 345 x 110.png')" routerLink="/top-hit/3" title="Nhạc US-UK">
+            <span>Nhạc US-UK</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Hoa')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Dance _ 345 x 110.png')" routerLink="/top-hit/4" title="Nhạc Hoa">
+            <span>Nhạc Hoa</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Hàn')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Work _ 345 x 110.png')" routerLink="/top-hit/5" title="Nhạc Hàn">
+            <span>Nhạc Hàn</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Nhật')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Coffee _ 345 x 110.png')" routerLink="/top-hit/6" title="Nhạc Nhật">
+            <span>Nhạc Nhật</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Pháp')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Game _ 345 x 110.png')" routerLink="/top-hit/7" title="Nhạc Pháp">
+            <span>Nhạc Pháp</span>
+            </a>
+            <a (click)="commonService.setCurrentCategory('Nhạc Nước Khác')" class="catalog1 weekend" style="background-image: url('https://chiasenhac.vn/imgs/chude/Travel _ 345 x 110.png')" routerLink="/top-hit/8" title="Nhạc Nước Khác">
+            <span>Nhạc Nước Khác</span>
+            </a>
+        </div>
+    </div>
+</div>

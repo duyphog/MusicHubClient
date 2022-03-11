@@ -201,11 +201,11 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.singerCtrl.setValue(null);
   }
 
-  private _filterSinger(value: any): any[] {
-    return this.listSinger.filter((singer) =>
-      singer.nickName.toLowerCase().includes(value?.nickName === undefined ? value : value.nickName.toLowerCase())
-    );
-  }
+  // private _filterSinger(value: any): any[] {
+  //   return this.listSinger.filter((singer) =>
+  //     singer.nickName.toLowerCase().includes(value?.nickName === undefined ? value : value.nickName.toLowerCase())
+  //   );
+  // }
 
   // Genre
   addGenre(event: MatChipInputEvent): void {
@@ -324,8 +324,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.listComposer.push(this.initArtist);
     this.filteredComposers = this.composerCtrl.valueChanges.pipe(
       startWith(''),
-      map((composer: Artist | null) =>
-        composer ? this._filterComposer(composer) : this.listComposer?.slice()
+      map((composer: Artist | null) => this.listComposer?.slice()
       )
     );
 
@@ -333,8 +332,7 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.listSinger.push(this.initArtist);
     this.filteredSingers = this.singerCtrl.valueChanges.pipe(
       startWith(''),
-      map((singer: Artist | null) =>
-        singer ? this._filterSinger(singer) : this.listSinger?.slice()
+      map((singer: Artist | null) => this.listSinger?.slice()
       )
     );
 
@@ -361,22 +359,18 @@ export class UploadSongComponent implements OnInit, OnDestroy {
     this.commonService.listCategory().subscribe((response: any) => (this.listCategory = response.data));
 
     this.singerCtrl.valueChanges.subscribe((val: any) => {
-      let nickName = val?.nickName === undefined ? val : val.nickName;
-      if (!(nickName instanceof Artist)) {
-        this.commonService.listSinger(nickName).subscribe((response) => {
+      if (val !== "" && (typeof val !== "object"))
+        this.commonService.listSinger(val).subscribe((response) => {
           this.listSinger = response.data;
         });
-      }
     });
 
     this.composerCtrl.valueChanges.subscribe((val) => {
-      let nickName = val?.nickName === undefined ? val : val.nickName;
-      if (!(nickName instanceof Artist)) {
-        this.commonService.listComposer(nickName).subscribe((response) => {
+      if (val !== "" && (typeof val !== "object"))
+        this.commonService.listComposer(val).subscribe((response) => {
           this.listComposer = response.data;
         });
-      }
-    });
+      });
   
   }
 

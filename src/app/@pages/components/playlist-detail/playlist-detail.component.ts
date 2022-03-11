@@ -34,26 +34,31 @@ export class PlaylistDetailComponent implements OnInit {
   user: any;
   playlistInfo: Playlist;
   listTrackRecommended: Track[] = [];
+  currentIndex: number  = 0;
 
   constructor(public dialog: MatDialog, public appUserService: AppUserService, private playlistService: PlaylistService, private trackService: TrackService, public appUtilService: AppUtilService, private route: ActivatedRoute, private authenticationService: AuthenticationService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
+    this.currentIndex = 0;
     this.route.paramMap.subscribe(() => {
       this.getPlaylistDetail();
+      this.getRecommendedTrack(2, 0);
     })
 
-    this.trackService.getRecommendedTracks().subscribe((response: any) => {
-      this.listTrackRecommended = response.data.content;
-    })
-
+    
     this.user = this.authenticationService.getUserInfoFromLocalCache();
   }
 
   addTrackToCurrentPlaylist(track: Track): void {
     if (!this.playlistService.checkExistTrackInCurrentPlaylist(track)) {
-      this.playlistService.addTrackToCurrentPlaylist(track);
+      this.trackService.getTrack(track.id).subscribe((response: any) => {
+        this.playlistService.addTrackToCurrentPlaylist(response.data);
+      });
+      this.toastr.success('Thêm vào danh sách phát thành công');
+    } else {
+      this.toastr.info('Bài hát đã tồn tại trong danh sách phát');
     }
-    this.toastr.info('Thêm vào danh sách phát thành công');
+    
   }
 
   getPlaylistDetail() {
@@ -66,8 +71,23 @@ export class PlaylistDetailComponent implements OnInit {
 
       this.playlistService.getPlaylist(+playlistId).subscribe((res: any) => {
         this.playlistInfo = res.data;
+        this.getRecommendedTrack(res.data.category === null ? 2 : res.data.category.id, 0);
       });
     }
+  }
+
+  getRecommendedTrack(categoryId: number, pageNumber: number) {
+    this.trackService.getRecommendedTracks(categoryId, pageNumber).subscribe((response: any) => {
+      this.listTrackRecommended = response.data.content;
+    })
+  }
+
+  loadMoreTrack() {
+    if (this.currentIndex < this.listTrackRecommended.length / 5) 
+      this.currentIndex++;
+    else 
+      this.toastr.info('Không còn bài hát gợi ý thêm');
+    this.getRecommendedTrack(this.playlistInfo.category === null ? 2 : this.playlistInfo.category.id, this.currentIndex);
   }
 
   likedTrack(id: number) {

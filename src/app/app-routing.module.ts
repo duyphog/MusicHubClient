@@ -20,6 +20,7 @@ import { ForgotPasswordComponent } from './@pages/components/forgot-password/for
 import { PlaylistComponent } from './@pages/components/playlist/playlist.component';
 import { RoleGuard } from './@guard/role.guard';
 import { DiscoverComponent } from './@pages/components/discover/discover.component';
+import { TopHitComponent } from './@pages/components/top-hit/top-hit.component';
 const routes: Routes = [
   {
     path: '',
@@ -59,6 +60,7 @@ const routes: Routes = [
       { path: 'search/:keyword', component: TrackAndAlbumComponent },
       { path: 'genre/:category-id/:genre-id', component: TrackAndAlbumComponent },
       { path: 'discover/:id', component: DiscoverComponent },
+      { path: 'top-hit/:id', component: TopHitComponent },
     ],
   },
   {

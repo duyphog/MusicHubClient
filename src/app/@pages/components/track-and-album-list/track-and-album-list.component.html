@@ -1,8 +1,10 @@
 <section class="scrollable padder-lg w-f-md" id="bjax-target">
-  <h3 *ngIf="currentCategoryId && currentGenreId" class="zm-section-title title is-1 ">
-    <!-- Nhạc Việt Nam -->
+  <h3 *ngIf="!currentKeyword && currentCategoryName !== '' " class="zm-section-title title is-1 ">
     {{ currentCategoryName }}
-    <span *ngIf="currentGenreId !== 0"> > {{  currentGenreName }}</span>
+    <span *ngIf="currentGenreId !== 0"> {{ '> ' + currentGenreName }}</span>
+  </h3>
+  <h3 *ngIf="currentCategoryName === '' " class="zm-section-title title is-1 ">
+    Nhạc Việt Nam
   </h3>
   <h3 *ngIf="currentKeyword" class="zm-section-title title is-1 ">
     Kết quả tìm kiếm: {{ currentKeyword }}
@@ -44,7 +46,7 @@
                           </div>
                         </div>
                         <figure class="image is-48x48">
-                          <img src="{{ album.imgUrl }}" alt="" class="">
+                          <img src="{{ album.imgUrl }}" style="height: 235px;" alt="" class="">
                         </figure>
                       </div>
                       <div style="text-align: left !important;" class="zm-card-content">
@@ -86,9 +88,10 @@
                   <div class="media ">
                     <div class="media-left " style="width: 50%;">
                       <div class="song-prefix mar-r-15">
-                        <span class="number">
+                        <!-- <span class="number">
                           {{ index + 1 }}
-                        </span>
+                        </span> -->
+                        <i class="icon ic-song"></i>
                       </div>
                       <div class="song-thumb ">
                         <figure class="image is-40x40" title="Ai Ai Ai">
