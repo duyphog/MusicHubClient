@@ -9,7 +9,7 @@
           </h3>
           <div class="biography">
             <div class="content is-medium">
-              Sinh ngày: {{ singerInfo?.birthday.toLocaleString() }}
+              Sinh ngày: {{ singerInfo?.birthday | date: "dd/MM/yyyy" }}
               
               <!-- <span class="read-more">
                 ... Xem thêm
@@ -53,7 +53,7 @@
                 MỚI NHẤT
               </span>
               <h4 class="mar-0 title">
-                {{ trackList?.length === 0 ? "Hiện ca sĩ chưa có ca khúc mới" : trackList[trackList?.length - 1].name }}
+                {{ trackList?.length <= 0 ? "Hiện ca sĩ chưa có ca khúc mới" : trackList[trackList.length - 1].name }}
               </h4>
               <h3 class="subtitle">
                 {{ trackList?.length === 0 ? "" : "" }}

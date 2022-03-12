@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Playlist } from 'src/app/@model/playlist.model';
 import { Track } from 'src/app/@model/track.model';
@@ -7,14 +7,16 @@ import { PlaylistService } from './../../../@services/playlist.service';
 import { PlaylistDetail } from './../../../@model/playlist-detail.model';
 import { AddNewPlaylist } from '../my-song-list/my-song-list.component';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-playlist',
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css'],
 })
-export class PlaylistComponent implements OnInit {
+export class PlaylistComponent implements OnInit, OnDestroy {
   chooseOptionSong: boolean[] = [];
+  subscription: Subscription[] = [];
 
   currentPlaylist: Playlist;
   listIndexGreaterThanCurrentIndex: number[] = [];
@@ -30,10 +32,15 @@ export class PlaylistComponent implements OnInit {
     private playlistService: PlaylistService,
     private toastr: ToastrService
   ) {}
+  ngOnDestroy(): void {
+    this.subscription.forEach((sub) => {
+      sub.unsubscribe();
+    });
+  }
 
   ngOnInit(): void {
-    this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
-      this.trackService.getCurrentTrack().subscribe((track) => {
+    this.subscription.push(this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
+      this.subscription.push(this.trackService.getCurrentTrack().subscribe((track) => {
         this.currentTrack = track;
         this.currentPlaylist = new Playlist();
         this.currentIndex = this.trackService.getIndexOfTrack(track, playlist);
@@ -41,8 +48,8 @@ export class PlaylistComponent implements OnInit {
         this.listIndexSmallerThanCurrentIndex = [];
         this.splitPlaylist(playlist, this.currentIndex);
         this.onChangeIndexPlaylist(playlist);
-      });
-    });
+      }));
+    }));
   }
 
   imageTrack(track: Track): string {
@@ -54,7 +61,7 @@ export class PlaylistComponent implements OnInit {
   removeTrackFromCurrentPlaylist(track: Track) {
     this.playlistService.removeTrackFromCurrentPlaylist(track);
     this.toastr.info(
-      `Xóa bài hát ${track.name} khỏi danh sách phát thành công`
+      `Xóa bài hát ${track?.name} khỏi danh sách phát thành công`
     );
   }
 
@@ -85,7 +92,7 @@ export class PlaylistComponent implements OnInit {
   }
 
   splitPlaylist(playlist: Playlist, currentIndex): void {
-    playlist.playlistDetails.filter((playlistDetail) => {
+    playlist?.playlistDetails.filter((playlistDetail) => {
       if (
         this.trackService.getIndexOfTrack(playlistDetail.track, playlist) >
         currentIndex
@@ -110,7 +117,7 @@ export class PlaylistComponent implements OnInit {
 
   onChangeIndexPlaylist(playlist: Playlist) {
     let countIndex = 0;
-    playlist.playlistDetails.filter((playlistDetail) => {
+    playlist?.playlistDetails.filter((playlistDetail) => {
       if (
         this.trackService.getIndexOfTrack(playlistDetail.track, playlist) ===
         this.currentListIndex[countIndex]

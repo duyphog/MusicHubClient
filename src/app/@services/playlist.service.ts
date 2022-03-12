@@ -29,39 +29,39 @@ export class PlaylistService extends BaseService {
   }
 
   // write function to create init playlist
-  createInitPlaylist(): Playlist {
-    let initPlaylist = new Playlist();
-    let initPlaylistDetail = new PlaylistDetail();
-    // let initTrack = this.trackService.getInitTrack();
-    let initTrack = new Track();
-    let initSinger = new Artist();
-    let initTrackUrl = "assets/tracks/sau-tat-ca-erik-1646978094155.mp3";
-    initPlaylist.name = "Erik";
-    initTrack.trackUrl = initTrackUrl;
-    initTrack.id = 72;
-    initTrack.name = 'Sau tất cả';
-    initSinger.id = 0;
-    initSinger.nickName = 'Erik';
-    initTrack.singers = [];
-    initTrack.singers[0] = initSinger;
-    // console.log(initTrack);
-    initPlaylist.playlistDetails = [];
-    // this.trackService.getTrack(initTrack[0]?.id).subscribe((track) => {
-      // initPlaylistDetail.track = track;
-    // });
-    initPlaylistDetail.track = initTrack;
-    initPlaylist.playlistDetails[0] = initPlaylistDetail;
+  // createInitPlaylist(): Playlist {
+  //   let initPlaylist = new Playlist();
+  //   let initPlaylistDetail = new PlaylistDetail();
+  //   // let initTrack = this.trackService.getInitTrack();
+  //   let initTrack = new Track();
+  //   let initSinger = new Artist();
+  //   let initTrackUrl = "assets/tracks/sau-tat-ca-erik-1646978094155.mp3";
+  //   initPlaylist.name = "Erik";
+  //   initTrack.trackUrl = initTrackUrl;
+  //   initTrack.id = 72;
+  //   initTrack.name = 'Sau tất cả';
+  //   initSinger.id = 0;
+  //   initSinger.nickName = 'Erik';
+  //   initTrack.singers = [];
+  //   initTrack.singers[0] = initSinger;
+  //   // console.log(initTrack);
+  //   initPlaylist.playlistDetails = [];
+  //   // this.trackService.getTrack(initTrack[0]?.id).subscribe((track) => {
+  //     // initPlaylistDetail.track = track;
+  //   // });
+  //   initPlaylistDetail.track = initTrack;
+  //   initPlaylist.playlistDetails[0] = initPlaylistDetail;
     
 
-    return initPlaylist;
-  }
+  //   return initPlaylist;
+  // }
 
   addTrackToCurrentPlaylist(track: Track) {
     let currentIndex;
     const playlistDetail = new PlaylistDetail();
     playlistDetail.track = track;
-    this.currentPlaylist = this.getCurrentPlaylistFromLocalCache() === null ? this.createInitPlaylist() : this.getCurrentPlaylistFromLocalCache();
-    this.currentPlaylist.playlistDetails.push(playlistDetail);
+    this.currentPlaylist = this.getCurrentPlaylistFromLocalCache() === null ? null : this.getCurrentPlaylistFromLocalCache();
+    this.currentPlaylist?.playlistDetails.push(playlistDetail);
     
     this.trackService.getCurrentTrack().subscribe((currentTrack) => {
       currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
@@ -72,13 +72,15 @@ export class PlaylistService extends BaseService {
   }
 
   setCurrentPlaylist(playlist: Playlist, currentIndex) {
-    this.currentPlaylist$.next(playlist);
-    this.trackService.setCurrentTrack(playlist?.playlistDetails[currentIndex]?.track);
+    if (playlist !== null) {
+      this.currentPlaylist$.next(playlist);
+      this.trackService.setCurrentTrack(playlist?.playlistDetails[currentIndex]?.track);
+    }
     this.appUtilService.addToLocalCache('currentPlaylist', playlist);
   }
 
   getCurrentPlaylist() {
-    this.getCurrentPlaylistFromLocalCache() === null ? this.setCurrentPlaylist(this.createInitPlaylist(), 0) : this.setCurrentPlaylist(this.getCurrentPlaylistFromLocalCache(), 0);
+    this.getCurrentPlaylistFromLocalCache() === null ? this.setCurrentPlaylist(new Playlist(), 0) : this.setCurrentPlaylist(this.getCurrentPlaylistFromLocalCache(), 0);
     return this.currentPlaylist$.asObservable();
   }
 
@@ -87,27 +89,31 @@ export class PlaylistService extends BaseService {
   }
 
   getAllTrackFromCurrentPlaylist() {
-    this.currentPlaylist = this.getCurrentPlaylistFromLocalCache() === null ? this.createInitPlaylist() : this.getCurrentPlaylistFromLocalCache();
+    this.currentPlaylist = this.getCurrentPlaylistFromLocalCache() === null ? null : this.getCurrentPlaylistFromLocalCache();
     return this.currentPlaylist?.playlistDetails;
   }
 
   removeTrackFromCurrentPlaylist(track: Track) {
     let currentIndex;
     this.currentPlaylist = this.getCurrentPlaylistFromLocalCache();
-    
-    this.currentPlaylist.playlistDetails = this.currentPlaylist.playlistDetails.filter((playlistDetail) => playlistDetail.track.id !== track.id);
-    this.trackService.getCurrentTrack().subscribe((currentTrack) => {
-      currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
-      if (currentTrack.name === track.name) {
-        currentIndex = currentIndex === this.currentPlaylist.playlistDetails.length - 1 ? 0 : currentIndex + 1;
-      }
-    });
-    this.setCurrentPlaylist(this.currentPlaylist, currentIndex);
+    this.currentPlaylist.playlistDetails = this.currentPlaylist?.playlistDetails.filter((playlistDetail) => playlistDetail.track.id !== track.id);
+    if (this.currentPlaylist.playlistDetails.length === 0) {
+      window.location.reload();
+      this.setCurrentPlaylist(null, 0);
+    } else {
+      this.trackService.getCurrentTrack().subscribe((currentTrack) => {
+        currentIndex = this.trackService.getIndexOfTrack(currentTrack, this.currentPlaylist);
+        if (currentTrack.name === track.name) {
+          currentIndex = currentIndex === this.currentPlaylist.playlistDetails.length - 1 ? 0 : currentIndex + 1;
+        }
+      });
+      this.setCurrentPlaylist(this.currentPlaylist, currentIndex);
+    }
   }
 
   checkExistTrackInCurrentPlaylist(track: Track) {
     let isExist = false;
-    this.getAllTrackFromCurrentPlaylist().forEach((playlistDetail) => {
+    this.getAllTrackFromCurrentPlaylist()?.forEach((playlistDetail) => {
       if (playlistDetail.track.name === track.name) {
         isExist = true;
       }

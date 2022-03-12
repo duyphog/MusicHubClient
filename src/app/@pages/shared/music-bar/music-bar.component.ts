@@ -15,6 +15,7 @@ import { Playlist } from 'src/app/@model/playlist.model';
 import { PlaylistService } from './../../../@services/playlist.service';
 import { Track } from 'src/app/@model/track.model';
 import { debounceTime } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-music-bar',
@@ -59,34 +60,36 @@ export class MusicBarComponent implements OnInit, OnDestroy {
     public audioService: AudioService,
     public trackService: TrackService,
     public appUtilService: AppUtilService,
-    public playlistService: PlaylistService
+    public playlistService: PlaylistService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
     this.getPlayerStatus();
 
-    this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
+    this.isPlaying = false;
+
+    this.subscriptions.push(this.playlistService.getCurrentPlaylist().subscribe((playlist) => {
       this.currentPlaylist = playlist;
       this.trackService.getCurrentTrack().subscribe((track) => {
         this.currentTrack = track;
         this.currentIndex = this.trackService.getIndexOfTrack(track, playlist);
       });
-    });
+    }));
 
-    this.trackService.getCurrentTrack().subscribe((track) => {
-      if (track?.id === 0) {
-        let trackUrl = track.trackUrl.substring(this.appUtilService.getIndexOfAssets(track.trackUrl));
-        let audioUrl = this.audioService.audio.src.substring(this.appUtilService.getIndexOfAssets(this.audioService.audio.src));
-        if (trackUrl !== audioUrl) this.audioService.setAudio(track.trackUrl);
-      } else {
+    this.subscriptions.push(this.trackService.getCurrentTrack().subscribe((track) => {
+      if (track !== undefined) {
         if (track?.trackUrl !== this.audioService.audio.src) this.audioService.setAudio(track?.trackUrl);
+        this.trackService.listenedTrack(track?.id).subscribe((res) => { });
+      } else if (this.currentPlaylist.playlistDetails.length === 0 && !this.audioService.audio.src) {
+        this.toastr.info('Hiện không có bài hát nào trong danh sách phát', 'Thông báo');
+        this.isPlaying = false;
       }
-      if (track?.id !== 0) this.trackService.listenedTrack(track?.id).subscribe((res) => { });
       if (this.isPlaying)
-        this.audioService.playAudio() 
-      else 
-        this.audioService.pauseAudio();
-    });
+          this.audioService.playAudio() 
+        else 
+          this.audioService.pauseAudio();
+    }));
 
 
     this.audioService.setAudio(this.setTrack(this.currentIndex)?.trackUrl);
@@ -145,11 +148,11 @@ export class MusicBarComponent implements OnInit, OnDestroy {
   onNextSong(): void {
     if (!this.isLoop)
       this.currentIndex = !this.isShuffle
-        ? (this.currentIndex === this.currentPlaylist.playlistDetails.length - 1
+        ? (this.currentIndex === this.currentPlaylist?.playlistDetails.length - 1
           ? 0
           : this.currentIndex + 1)
         : Math.floor(
-            Math.random() * this.currentPlaylist.playlistDetails.length
+            Math.random() * this.currentPlaylist?.playlistDetails.length
           );
     this.setCurrentTrack(this.currentIndex);
     this.audioService.setAudio(this.setTrack(this.currentIndex)?.trackUrl);

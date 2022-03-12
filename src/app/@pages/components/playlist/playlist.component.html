@@ -187,7 +187,7 @@
                             </div>
                             <div class="next-track-list">
                               <div *ngFor="let playlistDetail of currentPlaylist?.playlistDetails; let idx = index" index="1" data-index="1" data-known-size="56" style="z-index: 1065;">
-                                <div *ngIf="playlistDetail.track.name !== currentTrack.name" class="list-item media-item full-left">
+                                <div *ngIf="playlistDetail.track.name !== currentTrack?.name" class="list-item media-item full-left">
                                     <div class="media">
                                         <div class="media-left">
                                             <div class="song-thumb">
