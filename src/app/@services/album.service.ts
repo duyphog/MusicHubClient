@@ -22,7 +22,7 @@ export class AlbumService extends BaseService {
   }
 
   listAlbum(): Observable<Album[]> {
-    return this.getRequest<Album[]>(`${this.path}`);
+    return this.getRequest<Album[]>(`${this.path}/admin/list`);
   }
 
   listAlbumByCategoryAndGenre(categoryId: number, genreId: number, thePageNumber: number, thePageSize: number): Observable<Album[]> {
